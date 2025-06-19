@@ -1,0 +1,5 @@
+// :host означает чтобы обращаемся конкретно к app-layout-у
+:host {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+}

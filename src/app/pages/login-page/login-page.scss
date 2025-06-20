@@ -1,9 +1,10 @@
 :host {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   height: 100dvh;
   align-items: center;
-  margin: 0 5%;
+  margin: 0 150px;
+  gap: 250px;
 }
 
 .tt-control-label {

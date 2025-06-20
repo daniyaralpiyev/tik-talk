@@ -16,6 +16,7 @@ export class ProfileService {
   }
 
   getMe() {
+    // Проверь Profile передается Profile[] или Profile?
     return this.http.get<Profile>(`${this.baseApiUrl}account/me`);
   }
 }

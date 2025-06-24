@@ -7,7 +7,6 @@ import {switchMap} from 'rxjs/operators';
 
 let isRefreshing = false;
 
-
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
     // req, чтобы перехватить, next, чтобы отпустить
     const auth = inject(Auth);
@@ -34,8 +33,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 const refreshAndProceed = (
     auth: Auth,
     req: HttpRequest<any>,
-    next: HttpHandlerFn
-) => {
+    next: HttpHandlerFn) => {
     if (!isRefreshing) {
         isRefreshing = true;
         return auth.refreshAuthToken()
@@ -57,3 +55,14 @@ const addToken = (req: HttpRequest<any>, token: string) => {
         }
     })
 }
+
+// Базовое объяснение работы с токенам:
+// 1)Отправлю бэку логин пароль
+// 2)Он сделает зашифрованную строчку длинную в которой зашифрованная уникальная информация для этого пользователя
+// 3)Он нам его прицепил после
+// 4)Он сохранил в куки
+// 5)Куки постоянно летает межу бэком и фронтом
+// 6)Бэк на каждом запросе смотрит в куки, что там смотрит эту строчку он знает как его расшифровать
+// 7)Он его расшифровывает
+// 8)После понимает так это же это тот юзер обращается все в порядке
+// 9)И отдает данные спокойно

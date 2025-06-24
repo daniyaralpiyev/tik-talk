@@ -1,5 +1,8 @@
 <form
-  class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  class="login-form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
   <h1 class="h1 mb60">Вход</h1>
 
   <label class="tt-control-label mb16">
@@ -11,14 +14,16 @@
   </label>
 
   <label class="tt-control-label mb32">
-    Пароль
+    Password
     <input
       formControlName="password"
       class="tt-input" type="text" placeholder="Введите пароль">
     <img src="/assets/svg/eyes-password.svg" alt="">
   </label>
 
-  <button class="btn btn-shadow" type="submit">Войти</button>
+  <button
+    type="button"
+    class="btn btn-shadow" type="submit">Войти</button>
 </form>
 <img src="/assets/svg/logo-big.svg" alt="">
 

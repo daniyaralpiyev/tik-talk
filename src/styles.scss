@@ -21,7 +21,8 @@ body {
   background: var(--dark-color);
   color: var(--light-color);
   //background-image: url(/assets/imgs/background.jpg);
-  background-image: url(/assets/imgs/background-big.jpg);
+  background-image: url(/assets/imgs/background.jpg);
+  background-size: cover;
 }
 
 .skill-tag {
@@ -92,7 +93,7 @@ body {
   width: 100%;
   margin-top: 8px;
   display: block;
-  border: 1px solid var(--dark-color);
+  border: 1px solid var(--light-color);
   border-radius: 4px;
   padding: 12px 20px;
   background: var(--dark-color);

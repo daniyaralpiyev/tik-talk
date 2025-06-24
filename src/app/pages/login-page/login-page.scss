@@ -1,11 +1,16 @@
 :host {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   height: 100dvh;
   align-items: center;
-  margin: 0 150px;
-  gap: 250px;
+  margin: 0 15%;
+  gap: 0 15%;
 }
+
+.login-form {
+  width: 440px;
+}
+
 
 .tt-control-label {
   position: relative;

@@ -17,7 +17,7 @@ export class SearchPage {
 
   constructor() {
     this.profileService.getTestAccounts()  // Вызов метода сервиса
-      .subscribe(value => {  // Подписка на Observable на поток данных.
+      .subscribe(value => {  // Подписка на Observable на поток данных. (просто Observable в ангуляр не видно)
         this.profiles = value;  // При получении данных (value) они сохраняются в this.profiles.
       })
   }

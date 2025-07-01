@@ -18,11 +18,13 @@
 }
 
 body {
+  height: 100dvh;
   font-family: 'JetBrains Mono', sans-serif;
   background: var(--dark-color);
   color: var(--light-color);
   background-image: url(/assets/imgs/background.jpg);
   background-size: cover;
+  background-repeat:  no-repeat;
 }
 
 .skill-tag {

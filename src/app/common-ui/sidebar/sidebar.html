@@ -17,4 +17,40 @@
   </ul>
 </nav>
 
-<p class="medium-text mb20">Подписчики</p>
+<p class="my1 medium-text mb20">Подписчики</p>
+
+<div class="my2">
+  @for (profile of subscribers$ | async; track profile.id) {
+    <app-subscriber-card
+      [profile]="profile"
+    ></app-subscriber-card>
+  }
+</div>
+
+<!-- [routerLink] это деректива ангуляр которая
+     позволяет делать перенаправления без перезагрузки
+     страницы вместо href используем routerLink -->
+<div class="mt20 to-subscribers">
+  <a
+    [routerLink]="['/subscribers']"
+    class="to-subscribers-link medium-text"
+  >Все подписчики</a>
+  <svg icon="arrow" class="to-subscribers-icon"></svg>
+</div>
+
+<footer class="sidebar__footer">
+<!-- обработает через сигнал этот me() которые перед as -->
+  @if (me(); as me) {
+    @if (me.avatarUrl) {
+    <img [src]="me.avatarUrl | imgUrl" alt="">
+      } @else {
+      <img src="/assets/imgs/avatar-placeholder.png">
+    }
+
+    <div class="medium-text username-text">{{ me.username }}</div>
+
+    <a [routerLink]="['settings']" class="settings-btn">
+      <svg icon="settings"></svg>
+    </a>
+  }
+</footer>

@@ -6,6 +6,7 @@
   --light-color: #FFFFFF;
   --primary-color: #AE7AFF;
   --gray-color: #5F646D;
+  --dark-hover-color: #161616;
 }
 
 *,
@@ -20,7 +21,6 @@ body {
   font-family: 'JetBrains Mono', sans-serif;
   background: var(--dark-color);
   color: var(--light-color);
-  //background-image: url(/assets/imgs/background.jpg);
   background-image: url(/assets/imgs/background.jpg);
   background-size: cover;
 }

@@ -98,9 +98,10 @@
 
 .settings-btn {
   svg {
-    padding-top: 3px;
+    display: flex;
+    align-items: center;
     width: 18px;
     height: 18px;
-    color:  var(--primary-color);
+    color: var(--primary-color);
   }
 }

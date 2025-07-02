@@ -3,14 +3,14 @@ import {SvgIcon} from '../svg-icon/svg-icon';
 import {SubscriberCard} from './subscriber-card/subscriber-card';
 import {RouterLink} from '@angular/router';
 import {ProfileService} from '../../data/services/profile-service';
-import {AsyncPipe, JsonPipe} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
 import {ImgUrlPipe} from '../../helpers/pipes/img-url-pipe';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [SvgIcon, SubscriberCard, RouterLink, AsyncPipe, JsonPipe, ImgUrlPipe],
+  imports: [SvgIcon, SubscriberCard, RouterLink, AsyncPipe, ImgUrlPipe],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss'
 })
@@ -29,12 +29,18 @@ export class Sidebar {
     },
     {
       id: 2,
+      label: 'Пользователь',
+      icon:  'user',
+      link: 'user'
+    },
+    {
+      id: 3,
       label: 'Чаты',
       icon: 'chat',
       link: 'chat'
     },
     {
-      id: 3,
+      id: 4,
       label: 'Поиск',
       icon: 'search',
       link: 'search'

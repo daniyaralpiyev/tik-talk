@@ -5,7 +5,7 @@ import {ProfileCard} from './common-ui/profile-card/profile-card';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ProfileCard],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

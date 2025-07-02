@@ -73,6 +73,12 @@ body {
   font-weight: 800;
 }
 
+.h4 {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 32px;
+}
+
 .h6 {
   font-size: 18px;
   line-height: 24px;
@@ -81,6 +87,20 @@ body {
 
 .subtitle {
   font-size: 14px;
+  line-height: 20px;
+}
+
+.medium-text {
+  font-family: "JetBrains Mono", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.regular {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 20px;
 }
 

@@ -37,4 +37,12 @@ export class ProfileService {
         map(res => res.items.slice(0,subsAmount))
       )
   }
+
+  // Partial - говорит что необязательно могут прийти все поля этого объекта
+  patchProfile(profile: Partial<Profile>) {
+    return this.http.patch<Profile>(
+      `${this.baseApiUrl}account/me`,
+      profile
+    )
+  }
 }

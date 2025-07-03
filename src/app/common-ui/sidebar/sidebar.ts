@@ -25,7 +25,7 @@ export class Sidebar {
       id: 1,
       label: 'Моя Страница',
       icon: 'home',
-      link: ''
+      link: 'profile/me'
     },
     {
       id: 2,

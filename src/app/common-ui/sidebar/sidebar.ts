@@ -31,7 +31,7 @@ export class Sidebar {
       id: 2,
       label: 'Пользователь',
       icon:  'user',
-      link: 'user'
+      link: 'users'
     },
     {
       id: 3,

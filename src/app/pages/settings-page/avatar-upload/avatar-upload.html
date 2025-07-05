@@ -1,0 +1,32 @@
+<img [src]="preview()" alt="" class="avatar">
+
+<div
+  dnd
+  class="dropzone"
+  (keyup.enter)="fileDrop.click()"
+  (fileDropped)="onFileDropped($event)"
+>
+  <!--(keyup.enter)="fileDrop.click()" - Позволяет нажать Enter, чтобы "кликнуть" по скрытому элементу
+          fileDrop (обычно это input type="file"). Это улучшает доступность — пользователь с клавиатурой
+          может нажать Enter и открыть диалог выбора файла.
+          Но в начале должны создать fileDrop через # внутри input вот так #fileDrop
+          пример показан ниже в инпуте-->
+
+  <div class="dropzone-content">
+    <svg icon="upload"></svg>
+    <span class="medium-text">Перетащите изображение или Загрузите</span>
+  </div>
+
+  <!--tabindex - Делает элемент фокусируемым через клавишу Tab.
+        Это нужно, чтобы пользователь мог попасть на элемент с клавиатуры, как на кнопку.
+        Если -1 - элемент не доступен для фокуса через Tab, но можно сфокусировать программно (.focus() в JS)-->
+  <input
+    class="avatar-input"
+    type="file"
+    #fileDrop
+    (change)="fileBrowserHandler($event)"
+  >
+  <!--(change)="fileBrowserHandler($event)" - Обрабатывает изменения в input type="file",
+        т.е. когда пользователь выбирает файл.
+        fileBrowserHandler($event) — метод в компоненте, который получает event.target.files.-->
+</div>

@@ -1,11 +1,11 @@
 import {HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
 import {inject} from "@angular/core";
 import {Auth} from "./auth";
-import {catchError} from "rxjs";
+import {BehaviorSubject, catchError, filter, tap} from "rxjs";
 import {throwError} from "rxjs";
 import {switchMap} from 'rxjs/operators';
 
-let isRefreshing = false;
+let isRefreshing$ = new  BehaviorSubject<boolean>(false);
 
 // Что делает этот интерсептор:
 // перехватывает каждый HTTP-запрос,
@@ -14,13 +14,13 @@ let isRefreshing = false;
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   // req, чтобы перехватить, next, чтобы отпустить
-    const auth = inject(Auth); // получаем Auth-сервис
-    const token = auth.token; // берём текущий токен
+    const authService = inject(Auth); // получаем Auth-сервис
+    const token = authService.token; // берём текущий токен
 
     if (!token) return next(req) // Если токена нет — просто отправляем запрос дальше без изменений.
 
-    if (isRefreshing) { // Если сейчас уже происходит обновление токена, не инициируем его повторно.
-        return refreshAndProceed(auth, req, next)
+    if (isRefreshing$.value) { // Если сейчас уже происходит обновление токена, не инициируем его повторно.
+        return refreshAndProceed(authService, req, next)
     }
 
     // Отправляем запрос с токеном.
@@ -30,7 +30,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
             catchError(err => {
 
                 if (err.status === 403) {
-                    return refreshAndProceed(auth, req, next)
+                    return refreshAndProceed(authService, req, next)
                 }
 
                 return throwError(() => err);
@@ -42,30 +42,41 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 // Обновляет токен с помощью auth.refreshAuthToken()
 // Повторяет оригинальный запрос с новым токеном
 const refreshAndProceed = (
-    auth: Auth, // присвоили класс Auth
+    authService: Auth, // присвоили класс Auth
     req: HttpRequest<any>,
     next: HttpHandlerFn) => {
 
     // Что делает:
     // Обновляет токен с помощью auth.refreshAuthToken()
     // Повторяет оригинальный запрос с новым токеном
-    if (!isRefreshing) {
-        isRefreshing = true;
+    if (!isRefreshing$.value) {
+        isRefreshing$.next(true);
 
-        return auth.refreshAuthToken()
+        return authService.refreshAuthToken()
             .pipe(
                 switchMap(res => {
-                    isRefreshing = false;
 
                     // Если обновление не происходит, запускаем его, сохраняем access_token,
                     // добавляем его в запрос и отправляем заново.
                     return next(addToken(req, res.access_token))
+                      .pipe(
+                        tap(()=> isRefreshing$.next(false))
+                      )
                 })
             )
     }
-    // Если обновление уже в процессе — ждём окончания и
-    // повторно отправляем запрос с текущим токеном.
-    return next(addToken(req, auth.token!))
+
+    if (req.url.includes('refresh')) return next(addToken(req, authService.token!))
+
+    // Если обновление токена уже идёт, то:
+    // ждём его завершения (isRefreshing$ станет false)
+    // затем повторяем оригинальный запрос, добавив актуальный токен.
+    return isRefreshing$.pipe(
+      filter(isRefreshing => !isRefreshing),
+      switchMap(res => {
+        return next(addToken(req, authService.token!))
+      })
+    );
 }
 
 // Что делает:

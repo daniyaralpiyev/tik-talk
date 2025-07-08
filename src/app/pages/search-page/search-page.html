@@ -1,6 +1,10 @@
+<app-profile-filters>
+
+</app-profile-filters>
+
 <div class="profile-card__wrapper">
   <!--Получаем синтаксис шаблонов и в track надо указать что-то уникальное-->
-  @for (profile of profiles; track profile.id) {
+  @for (profile of profiles(); track profile.id) {
     <app-profile-card
       [profile]="profile"
     ></app-profile-card>

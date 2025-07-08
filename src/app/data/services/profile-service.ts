@@ -12,6 +12,7 @@ export class ProfileService {
   baseApiUrl = 'https://icherniakov.ru/yt-course/'; // Базовый URL API. Централизованное хранение базового URL для всех запросов.
 
   me = signal<Profile | null>(null);
+  filteredProfiles = signal<Profile[]>([]);
 
   getTestAccounts() {
     // Метод для запроса данных. Сервис для запросов к API и возвращает Observable<Profile[]>.
@@ -53,6 +54,17 @@ export class ProfileService {
     return this.http.post<Profile>(
       `${this.baseApiUrl}account/upload_image`,
       fd
+    )
+  }
+
+  filterProfiles(params:Record<string, any>) {
+    return this.http.get<Pageble<Profile>>(
+      `${this.baseApiUrl}account/accounts`,
+      {
+        params
+      }
+    ).pipe(
+      tap(res => this.filteredProfiles.set(res.items))
     )
   }
 }

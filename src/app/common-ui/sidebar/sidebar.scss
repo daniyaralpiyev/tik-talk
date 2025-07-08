@@ -9,15 +9,6 @@
   display: grid;
   grid-gap: 8px;
   list-style: none;
-  padding-top: 10px;
-}
-
-.my1 {
-  padding-top: 20px;
-}
-
-.my2 {
-  padding: 20px 0;
 }
 
 .menu-item {
@@ -38,6 +29,7 @@
   border-radius: 2px;
   text-decoration: none;
 
+  &.active,
   &:hover,
   &:focus-visible {
     background: var(--dark-hover-color);

@@ -11,10 +11,14 @@ import {UsersMain} from './pages/users-main/users-main';
 export const routes: Routes = [
   {
     path: '', component: Layout, children: [
-      {path: '', component: SearchPage},
+      // redirectTo: означает по пустому редиректимся в 'profile/me'
+      // pathMatch: означает полное соответствие, 'full' - означает соответствие
+      {path: '', redirectTo: 'profile/me', pathMatch: 'full'},
       {path: 'profile/:id', component: ProfilePage},
       {path: 'settings', component: SettingsPage},
-      {path: 'users', component: UsersMain},
+      {path: 'search', component: SearchPage},
+
+      {path: 'users', component: UsersMain}, // Мой роутинг который я сделал
     ],
     canActivate: [canActivateAuth]
   },

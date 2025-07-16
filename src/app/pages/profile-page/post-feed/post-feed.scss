@@ -2,4 +2,8 @@
   display: grid;
   grid-gap: 16px;
   overflow-y: scroll;
+  scrollbar-color: var(--primary-color) var(--dark-color);// Черный фон scrollbar
+  scrollbar-width: thin; // Тонкий scrollbar
 }
+
+

@@ -9,7 +9,6 @@ import {AsyncPipe} from '@angular/common';
   imports: [
     ProfileCard,
     ProfileFilters,
-    AsyncPipe
   ],
   templateUrl: './search-page.html',
   styleUrl: './search-page.scss'

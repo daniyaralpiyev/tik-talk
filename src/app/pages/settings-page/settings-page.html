@@ -41,8 +41,16 @@
     </label>
   </div>
 
-  <div>
-    <div>
+  <div class="icons-and-btns">
+    <div class="icons-svg">
+      <svg class="icon-items" icon="delete"></svg>
+      <svg class="icon-items" icon="cancel" (click)="cleanInput()"></svg>
+
+      <svg class="icon-items" icon="exit" (click)="onLogin()"></svg>
+    </div>
+
+    <div class="btn-btns">
+      <button class="btn" (click)="onCancel()">Отмена</button>
       <button class="btn" (click)="onSave()">Сохранить</button>
     </div>
   </div>

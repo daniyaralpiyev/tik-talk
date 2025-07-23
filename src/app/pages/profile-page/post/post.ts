@@ -1,21 +1,23 @@
 import {Component, inject, input, OnInit, signal} from '@angular/core';
 import {PostComment, Post} from '../../../data/interfaces/post.interface';
 import {AvatarCircle} from '../../../common-ui/avatar-circle/avatar-circle';
-import {DatePipe} from '@angular/common';
 import {SvgIcon} from '../../../common-ui/svg-icon/svg-icon';
 import {PostInput} from '../post-input/post-input';
 import {CommentComponent} from './comment/comment';
 import {PostService} from '../../../data/services/post.service';
 import {firstValueFrom} from 'rxjs';
+import {CustomRelativeDatePipe} from '../../../helpers/pipes/date-text-ago-pipe';
+import {CustomDirectives} from '../../../common-ui/directives/custom-directives';
 
 @Component({
   selector: 'app-post',
   imports: [
     AvatarCircle,
-    DatePipe,
     SvgIcon,
     PostInput,
-    CommentComponent
+    CommentComponent,
+    CustomRelativeDatePipe,
+    CustomDirectives,
   ],
   templateUrl: './post.html',
   styleUrl: './post.scss'

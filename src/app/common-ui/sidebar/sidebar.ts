@@ -6,11 +6,12 @@ import {ProfileService} from '../../data/services/profile-service';
 import {AsyncPipe} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
 import {ImgUrlPipe} from '../../helpers/pipes/img-url-pipe';
+import {CustomDirectives} from '../directives/custom-directives';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [SvgIcon, SubscriberCard, RouterLink, AsyncPipe, ImgUrlPipe, RouterLinkActive],
+  imports: [SvgIcon, SubscriberCard, RouterLink, AsyncPipe, ImgUrlPipe, RouterLinkActive, CustomDirectives],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss'
 })
@@ -30,7 +31,7 @@ export class Sidebar {
     {
       id: 2,
       label: 'Пользователь',
-      icon:  'user',
+      icon: 'user',
       link: 'users'
     },
     {
@@ -49,5 +50,11 @@ export class Sidebar {
 
   ngOnInit() {
     firstValueFrom(this.profileService.getMe())
+  }
+
+  colorProperty = 'orange'
+
+  setColor(newColor: string) {
+    this.colorProperty = newColor;
   }
 }

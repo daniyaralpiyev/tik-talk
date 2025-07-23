@@ -6,4 +6,7 @@
 .profile-card__wrapper {
   display: grid;
   grid-gap: 8px;
+  overflow-y: scroll;
+  scrollbar-color: var(--primary-color) var(--dark-color);// Черный фон scrollbar
+  scrollbar-width: thin; // Тонкий scrollbar
 }

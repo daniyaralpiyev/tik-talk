@@ -4,13 +4,17 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ProfileService} from '../../data/services/profile-service';
 import {firstValueFrom} from 'rxjs';
 import {AvatarUpload} from './avatar-upload/avatar-upload';
+import {Router, RouterLink} from '@angular/router';
+import {SvgIcon} from '../../common-ui/svg-icon/svg-icon';
 
 @Component({
   selector: 'app-settings-page',
   imports: [
     ProfileHeader,
     ReactiveFormsModule,
-    AvatarUpload
+    AvatarUpload,
+    RouterLink,
+    SvgIcon
   ],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss'
@@ -18,6 +22,7 @@ import {AvatarUpload} from './avatar-upload/avatar-upload';
 export class SettingsPage {
   fb = inject(FormBuilder);
   profileService = inject(ProfileService);
+  router = inject(Router);
 
   @ViewChild(AvatarUpload) avatarUploader!: AvatarUpload
 
@@ -74,5 +79,18 @@ export class SettingsPage {
     if (Array.isArray(stack)) return stack.join(',');
 
     return stack;
+  }
+
+  onCancel() {
+    this.router.navigate(['profile/me']);
+  }
+
+  onLogin() {
+    this.router.navigate(['login']);
+  }
+
+  cleanInput() {
+    const fields = ['firstName', 'lastName', 'description', 'stack', 'username'];
+    fields.forEach(field => this.form.get(field)?.reset());
   }
 }

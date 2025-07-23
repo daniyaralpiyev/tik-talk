@@ -3,6 +3,7 @@ import {PostInput} from '../post-input/post-input';
 import {PostService} from '../../../data/services/post.service';
 import {firstValueFrom, fromEvent} from 'rxjs';
 import {PostComponent} from '../post/post';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-post-feed',
@@ -32,10 +33,13 @@ export class PostFeed {
   ngAfterViewInit() {
     this.resizeFeed()
 
-    // fromEvent(window, 'resize')
-    //   .subscribe(()=> {
-    //     console.log(123123123)
-    //   })
+    fromEvent(window, 'resize')
+      .pipe(
+        debounceTime(1000),
+      )
+      .subscribe(()=> {
+        console.log(123123123)
+      })
   }
 
   resizeFeed() {

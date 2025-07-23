@@ -7,7 +7,7 @@
 .profile-form__wrapper {
   display: flex;
   flex-direction: column;
-  justify-content:  space-between;
+  justify-content: space-between;
   border: 1px solid var(--light-color);
   background: var(--dark-color);
   padding: 32px;
@@ -25,10 +25,52 @@
   grid-gap: 20px;
 }
 
-.profile-label {
-
+.icons-and-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 300px;
 }
 
-.profile-input {
+.icons-svg {
+  display: flex;
+  gap: 15px;
+  width: 300px;
+  height: 50px;
+  padding: 15px;
+}
 
+.icon-items {
+  width: 60px;
+  height: 50px;
+  padding-left: 23px;
+  padding-top: 15px;
+
+  &:hover {
+    color: #E99898;
+    border-bottom: 3px solid var(--primary-color);
+  }
+}
+
+.btn-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  width: 100%;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  cursor: pointer;
+  color: var(--light-color);
+  background: transparent;
+  border-radius: 4px;
+  border: 1px solid var(--light-color);
+
+  &:hover {
+    border: none;
+    border-bottom: 3px solid var(--primary-color);
+    border-radius: 0;
+  }
 }

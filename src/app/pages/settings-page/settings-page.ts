@@ -13,7 +13,6 @@ import {SvgIcon} from '../../common-ui/svg-icon/svg-icon';
     ProfileHeader,
     ReactiveFormsModule,
     AvatarUpload,
-    RouterLink,
     SvgIcon
   ],
   templateUrl: './settings-page.html',

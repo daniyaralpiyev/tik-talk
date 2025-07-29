@@ -1,0 +1,13 @@
+<div class="chats-filters-input__wrapper">
+  <label class="tt-form-label">
+    <span class="tt-form-label__text">Имя пользователя</span>
+    <input type="text" class="tt-form-input">
+  </label>
+</div>
+
+@for (chat of chats$ | async; track chat.id) {
+  <button
+    chats
+    [class]="chat"
+  ></button>
+}

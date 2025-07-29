@@ -17,7 +17,6 @@ import {CustomDirectives} from '../../../common-ui/directives/custom-directives'
     PostInput,
     CommentComponent,
     CustomRelativeDatePipe,
-    CustomDirectives,
   ],
   templateUrl: './post.html',
   styleUrl: './post.scss'

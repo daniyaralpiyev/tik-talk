@@ -38,7 +38,7 @@ export class Sidebar {
       id: 3,
       label: 'Чаты',
       icon: 'chat',
-      link: 'chat'
+      link: 'chats'
     },
     {
       id: 4,

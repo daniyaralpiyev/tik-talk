@@ -38,4 +38,6 @@ export class PostComponent implements OnInit {
 
     this.comments.set(comments);
   }
+
+
 }

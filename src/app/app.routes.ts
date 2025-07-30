@@ -7,6 +7,7 @@ import {canActivateAuth} from './auth/access.guard';
 import {SettingsPage} from './pages/settings-page/settings-page';
 import {UsersMain} from './pages/users-main/users-main';
 import {chatsRoutes} from './pages/chats/chatsRoutes';
+import {Parent} from './test/parent/parent';
 
 export const routes: Routes = [
   {
@@ -26,5 +27,6 @@ export const routes: Routes = [
     ],
     canActivate: [canActivateAuth]
   },
-  {path: 'login', component: LoginPage}
+  {path: 'login', component: LoginPage},
+  {path:'parent', component: Parent}
 ];

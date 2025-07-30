@@ -31,7 +31,7 @@ export class PostInput {
     return this.isCommentInput()
   }
 
-  PostText = ''
+  postText = ''
 
   onTextAreaInput(event: Event) {
     const textArea = event.target as HTMLTextAreaElement;
@@ -41,15 +41,15 @@ export class PostInput {
   }
 
   onCreatePost() {
-    if (!this.PostText) return
+    if (!this.postText) return
 
     if (this.isCommentInput()) {
       firstValueFrom(this.postService.createComment({
-        text: this.PostText,
+        text: this.postText,
         authorId: this.profile()!.id,
         postId: this.postId()
       })).then(() => {
-        this.PostText = ''
+        this.postText = ''
         this.created.emit()
       })
       return;
@@ -57,10 +57,10 @@ export class PostInput {
 
     firstValueFrom(this.postService.createPost({
       title: 'Клевый пост',
-      content: this.PostText,
+      content: this.postText,
       authorId: this.profile()!.id
     })).then(() => {
-      this.PostText = ''
+      this.postText = ''
     })
   }
 }

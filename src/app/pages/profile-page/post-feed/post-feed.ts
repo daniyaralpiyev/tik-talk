@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, inject, Renderer2} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, inject, Renderer2} from '@angular/core';
 import {PostInput} from '../post-input/post-input';
 import {PostService} from '../../../data/services/post.service';
 import {firstValueFrom, fromEvent} from 'rxjs';
@@ -14,7 +14,7 @@ import {debounceTime} from 'rxjs/operators';
   templateUrl: './post-feed.html',
   styleUrl: './post-feed.scss'
 })
-export class PostFeed {
+export class PostFeed implements AfterViewInit {
   postService = inject(PostService)
   hostElement = inject(ElementRef)
   r2 = inject(Renderer2)

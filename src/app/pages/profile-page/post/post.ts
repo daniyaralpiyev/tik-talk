@@ -7,7 +7,6 @@ import {CommentComponent} from './comment/comment';
 import {PostService} from '../../../data/services/post.service';
 import {firstValueFrom} from 'rxjs';
 import {CustomRelativeDatePipe} from '../../../helpers/pipes/date-text-ago-pipe';
-import {CustomDirectives} from '../../../common-ui/directives/custom-directives';
 
 @Component({
   selector: 'app-post',

@@ -8,6 +8,6 @@
 @for (chat of chats$ | async; track chat.id) {
   <button
     chats
-    [class]="chat"
+    [chat]="chat"
   ></button>
 }

@@ -17,7 +17,7 @@ export class ChatsService {
   }
 
   getMyChats() {
-    return this.http.get<Chat[]>(`${this.chatsUrl}get_my_chats`);
+    return this.http.get<Chat[]>(`${this.chatsUrl}get_my_chats/`);
   }
 
   getChatById(chatId: number) {

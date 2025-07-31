@@ -5,6 +5,8 @@
   ></app-avatar-circle>
 
   <div class="last-message__wrapper">
-    <div class="medium-text">{{chat.message}}</div>
+    <div class="chat-user medium-text">{{chat.userFrom.firstName}} {{chat.userFrom.lastName}}</div>
+    <!-- '...' - выводим троеточие визуально -->
+    <div class="medium-text">{{chat.message ?? '...'}}</div>
 </div>
 }

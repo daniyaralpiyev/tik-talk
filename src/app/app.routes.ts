@@ -6,7 +6,6 @@ import {Layout} from './common-ui/layout/layout';
 import {canActivateAuth} from './auth/access.guard';
 import {SettingsPage} from './pages/settings-page/settings-page';
 import {UsersMain} from './pages/users-main/users-main';
-import {chatsRoutes} from './pages/chats/chatsRoutes';
 import {Parent} from './test/parent/parent';
 
 export const routes: Routes = [
@@ -18,10 +17,6 @@ export const routes: Routes = [
       {path: 'profile/:id', component: ProfilePage},
       {path: 'settings', component: SettingsPage},
       {path: 'search', component: SearchPage},
-      {
-        path: 'chats',
-        loadChildren: ()=> chatsRoutes
-      },
 
       {path: 'users', component: UsersMain}, // Мой роутинг который я сделал
     ],

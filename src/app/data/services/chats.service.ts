@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Chat} from '../interfaces/chats.interface';
+import {Chat, LastMessageResponse} from '../interfaces/chats.interface';
 
 @Injectable({
   providedIn: 'root'

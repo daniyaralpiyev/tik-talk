@@ -1,10 +1,8 @@
-import {Component, EventEmitter, HostBinding, inject, input, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, HostBinding, inject, Input, input, Output, Renderer2} from '@angular/core';
 import {AvatarCircle} from '../../../common-ui/avatar-circle/avatar-circle';
 import {ProfileService} from '../../../data/services/profile-service';
 import {SvgIcon} from '../../../common-ui/svg-icon/svg-icon';
-import {PostService} from '../../../data/services/post.service';
 import {FormsModule} from '@angular/forms';
-import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-post-input',
@@ -18,11 +16,11 @@ import {firstValueFrom} from 'rxjs';
 })
 export class PostInput {
   r2 = inject(Renderer2)
-  postService = inject(PostService)
+  profile = inject(ProfileService).me
 
   isCommentInput = input(false)
   postId = input<number>(0)
-  profile = inject(ProfileService).me
+  postText = ''
 
   @Output() created = new EventEmitter()
 
@@ -31,36 +29,16 @@ export class PostInput {
     return this.isCommentInput()
   }
 
-  postText = ''
-
   onTextAreaInput(event: Event) {
     const textArea = event.target as HTMLTextAreaElement;
-
     this.r2.setStyle(textArea, 'height', 'auto'); // textArea становится больше либо меньше по мере заполнения
     this.r2.setStyle(textArea, 'height', textArea.scrollHeight + 'px'); // счет будет в пикселях
   }
 
-  onCreatePost() {
-    if (!this.postText) return
-
-    if (this.isCommentInput()) {
-      firstValueFrom(this.postService.createComment({
-        text: this.postText,
-        authorId: this.profile()!.id,
-        postId: this.postId()
-      })).then(() => {
-        this.postText = ''
-        this.created.emit()
-      })
-      return;
-    }
-
-    firstValueFrom(this.postService.createPost({
-      title: 'Клевый пост',
-      content: this.postText,
-      authorId: this.profile()!.id
-    })).then(() => {
+  onSend() {
+    if (this.postText.trim()) {
+      this.created.emit(this.postText)
       this.postText = ''
-    })
+    }
   }
 }

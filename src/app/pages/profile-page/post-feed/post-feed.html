@@ -1,4 +1,8 @@
-<app-post-input></app-post-input>
+<app-post-input
+  [isCommentInput]="false"
+  [postId]="0"
+  (created)="onCreatePost($event)"
+></app-post-input>
 
 @for (post of feed(); track post.id) {
   <app-post

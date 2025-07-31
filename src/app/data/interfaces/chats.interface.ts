@@ -4,7 +4,7 @@ export interface Chat {
   id: number;
   userFirst: Profile
   userSecond: Profile
-  message: Message[]
+  messages: Message[]
 }
 
 export interface Message {
@@ -17,7 +17,7 @@ export interface Message {
   updatedAt: string
 }
 
-export interface LastMessageResponse {
+export interface LastMessageRes {
   id: number;
   userFrom: Profile,
   message: string

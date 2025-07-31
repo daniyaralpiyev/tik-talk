@@ -37,10 +37,9 @@ export class ProfilePage {
 
   profile$ = this.route.params
     .pipe(
+      // Если совпадает id или если совпадет с id которая
+      // заложена в переменную me тогда моя страница(isMyPage)
       switchMap(({id})=> {
-
-        // Если совпадает id или если совпадет с id которая
-        // заложена в переменную me тогда моя страница(isMyPage)
         this.isMyPage.set(id === 'me' || id === this.profileService.me()?.id);
         if (id ==='me') return this.me$
 

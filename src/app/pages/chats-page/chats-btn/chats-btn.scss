@@ -1,0 +1,10 @@
+:host {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: var(--light-border);
+  padding: 24px 20px;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  grid-gap: 16px;
+}

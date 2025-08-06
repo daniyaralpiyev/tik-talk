@@ -1,4 +1,4 @@
-import {Component, input} from '@angular/core';
+import {Component, HostBinding, input} from '@angular/core';
 import {Message} from '../../../../../data/interfaces/chats.interface';
 import {AvatarCircle} from '../../../../../common-ui/avatar-circle/avatar-circle';
 import {DatePipe} from '@angular/common';
@@ -14,4 +14,9 @@ import {DatePipe} from '@angular/common';
 })
 export class ChatWorkspaceMessage {
   message = input.required<Message>()
+
+  @HostBinding('class.is-mine')
+  get isMine() {
+    return this.message().isMine
+  }
 }

@@ -5,6 +5,7 @@ export interface Chat {
   userFirst: Profile
   userSecond: Profile
   messages: Message[]
+  companion?: Profile
 }
 
 export interface Message {

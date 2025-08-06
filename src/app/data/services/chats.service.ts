@@ -29,12 +29,18 @@ export class ChatsService {
         return {
           ...chat,
           companion: chat.userFirst.id === this.me()!.id ? chat.userSecond : chat.userFirst,
+          messages: chat.messages.map((message) => {
+            return {
+              ...message,
+              user: chat.userFirst.id === message.userFromId ? chat.userFirst : chat.userSecond,
+            }
+          })
         }
       }))
   }
 
   sendMessage(chatId: number, message: string) {
-    return this.http.post(`${this.messageUrl}${chatId}`, {}, {
+    return this.http.post(`${this.messageUrl}send/${chatId}`, {}, {
       params: {
         message
       }

@@ -1,9 +1,14 @@
 import {Component, input} from '@angular/core';
 import {Message} from '../../../../../data/interfaces/chats.interface';
+import {AvatarCircle} from '../../../../../common-ui/avatar-circle/avatar-circle';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-chat-workspace-message',
-  imports: [],
+  imports: [
+    AvatarCircle,
+    DatePipe
+  ],
   templateUrl: './chat-workspace-message.html',
   styleUrl: './chat-workspace-message.scss'
 })

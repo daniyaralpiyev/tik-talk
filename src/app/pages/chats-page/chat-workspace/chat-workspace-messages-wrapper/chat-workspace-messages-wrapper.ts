@@ -1,8 +1,8 @@
-import {Component, inject, input} from '@angular/core';
+import {Component, inject, input, signal} from '@angular/core';
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {MessageInput} from '../../../../common-ui/message-input/message-input';
 import {ChatsService} from '../../../../data/services/chats.service';
-import {Chat} from '../../../../data/interfaces/chats.interface';
+import {Chat, Message} from '../../../../data/interfaces/chats.interface';
 
 @Component({
   selector: 'app-chat-workspace-messages-wrapper',
@@ -17,6 +17,12 @@ export class ChatWorkspaceMessagesWrapper {
   chatsService = inject(ChatsService)
 
   chat = input.required<Chat>()
+
+  messages = signal<Message[]>([])
+
+  onInit() {
+    this.messages.set(this.chat().messages)
+  }
 
   onSendMessage(messageText: string) {
     this.chatsService.sendMessage(this.chat().id, messageText);

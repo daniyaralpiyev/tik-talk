@@ -5,11 +5,18 @@
 }
 
 :host.is-mine {
+  display: flex;
   grid-template-columns: min-content 32px;
   justify-self: end;
 
   .message-container {
     order: -1;
+  }
+
+  .message-text {
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    background: var(--primary-color);
+    justify-self: end;
   }
 }
 
@@ -19,8 +26,6 @@
   font-weight: 500;
   color: var(--light-color);
   width: min-content;
-  mask: linear-gradient(#000 0 0),
-  linear-gradient(-135deg, #000 50%, #0000 0) border-box 100% 100% / 200% 200% no-repeat;
-  mask-composite: exclude;
-  mask-position: 10% 94%;
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0% 100%, 0 12px);
+  margin-top: 10px;
 }

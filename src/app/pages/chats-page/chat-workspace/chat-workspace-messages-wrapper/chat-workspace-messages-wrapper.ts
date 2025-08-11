@@ -1,8 +1,8 @@
-import {Component, inject, input, signal} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {MessageInput} from '../../../../common-ui/message-input/message-input';
 import {ChatsService} from '../../../../data/services/chats.service';
-import {Chat, Message} from '../../../../data/interfaces/chats.interface';
+import {Chat} from '../../../../data/interfaces/chats.interface';
 import {firstValueFrom} from 'rxjs';
 
 @Component({
@@ -23,7 +23,6 @@ export class ChatWorkspaceMessagesWrapper {
 
   async onSendMessage(messageText: string) {
     await firstValueFrom(this.chatsService.sendMessage(this.chat().id, messageText))
-
     await firstValueFrom(this.chatsService.getChatById(this.chat().id))
   }
 }

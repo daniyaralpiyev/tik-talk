@@ -4,6 +4,15 @@
 }
 
 .chats-filters-input__wrapper {
+  position: relative;
   padding: 16px 20px;
   border-bottom: var(--light-border);
+}
+
+.search-input-svg {
+  position: absolute;
+  top: 38px;
+  right: 25px;
+  width: 16px;
+  height: 16px;
 }

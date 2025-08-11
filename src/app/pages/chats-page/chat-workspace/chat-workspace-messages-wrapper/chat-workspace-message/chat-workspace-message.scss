@@ -5,8 +5,8 @@
 }
 
 :host.is-mine {
-  display: flex;
-  grid-template-columns: min-content 32px;
+  display: grid;
+  grid-template-columns: 1fr 32px;
   justify-self: end;
 
   .message-container {
@@ -18,6 +18,15 @@
     background: var(--primary-color);
     justify-self: end;
   }
+
+  .message-text-date {
+    justify-self: end;
+    font-size: 12px;
+  }
+}
+
+.message-text-date {
+  font-size: 12px;
 }
 
 .message-text {

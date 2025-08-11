@@ -49,15 +49,15 @@ export class CustomRelativeDatePipe implements PipeTransform {
     // Логика вывода с отладкой
     console.log('Parsed date:', date, 'Adjusted now:', now, 'Diff (ms):', diffMs);
     if (days > 0) {
-      return `прошло ${days} ${this.getDayWord(days)} назад`;
+      return `${days} ${this.getDayWord(days)} назад`;
     } else if (hours > 0) {
       const remainingMinutes = minutes % 60;
       if (remainingMinutes > 0) {
-        return `прошло ${hours} ${this.getHourWord(hours)} ${remainingMinutes} ${this.getMinuteWord(remainingMinutes)} назад`;
+        return `${hours} ${this.getHourWord(hours)} ${remainingMinutes} ${this.getMinuteWord(remainingMinutes)} назад`;
       }
-      return `прошло ${hours} ${this.getHourWord(hours)} назад`;
+      return `${hours} ${this.getHourWord(hours)} назад`;
     } else if (minutes > 0) {
-      return `прошло ${minutes} ${this.getMinuteWord(minutes)} назад`;
+      return `${minutes} ${this.getMinuteWord(minutes)} назад`;
     } else {
       return 'только что';
     }

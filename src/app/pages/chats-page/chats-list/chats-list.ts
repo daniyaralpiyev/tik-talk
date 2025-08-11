@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ChatsBtn} from '../chats-btn/chats-btn';
 import {ChatsService} from '../../../data/services/chats.service';
@@ -7,6 +7,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 import {map, switchMap} from 'rxjs';
 import {startWith} from 'rxjs/operators';
 import {SvgIcon} from '../../../common-ui/svg-icon/svg-icon';
+import {Message} from '../../../data/interfaces/chats.interface';
 
 @Component({
   selector: 'app-chats-list',

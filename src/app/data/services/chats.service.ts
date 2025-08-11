@@ -21,9 +21,9 @@ export class ChatsService {
   // Периодическое обновление чата
   pollChatMessages(chatId: number) {
     return timer(0, 5000)
-      .pipe( // каждые 5 сек
-      switchMap(() => this.getChatById(chatId))
-    );
+      .pipe( // старт сразу + каждые 5 сек
+        switchMap(() => this.getChatById(chatId))
+      );
   }
 
   createChat(userId: number) {

@@ -10,6 +10,9 @@
       {{ message.user?.lastName }}
       {{ message.createdAt | date: 'HH:mm' }}
     </strong>
+    <div class="message-text-date">
+      {{ message.createdAt | customRelativeDate }}
+    </div>
     <div class="message-text medium-text">
       {{ message.text }}
     </div>

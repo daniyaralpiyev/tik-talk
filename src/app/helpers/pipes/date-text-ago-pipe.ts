@@ -49,7 +49,7 @@ export class CustomRelativeDatePipe implements PipeTransform {
     // Логика вывода с отладкой
     console.log('Parsed date:', date, 'Adjusted now:', now, 'Diff (ms):', diffMs);
     if (days > 0) {
-      return `${days} ${this.getDayWord(days)} назад`;
+      return `${days} ${this.getDayWord(days)}  назад`;
     } else if (hours > 0) {
       const remainingMinutes = minutes % 60;
       if (remainingMinutes > 0) {
@@ -57,7 +57,7 @@ export class CustomRelativeDatePipe implements PipeTransform {
       }
       return `${hours} ${this.getHourWord(hours)} назад`;
     } else if (minutes > 0) {
-      return `${minutes} ${this.getMinuteWord(minutes)} назад`;
+      return `${minutes} ${this.getMinuteWord(minutes)}  назад`;
     } else {
       return 'только что';
     }
@@ -67,29 +67,29 @@ export class CustomRelativeDatePipe implements PipeTransform {
   private getDayWord(count: number): string {
     const lastDigit = count % 10;
     const lastTwoDigits = count % 100;
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'дней';
-    if (lastDigit === 1) return 'день';
-    if ([2, 3, 4].includes(lastDigit)) return 'дня';
-    return 'дней';
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'дн.';
+    if (lastDigit === 1) return 'дн.';
+    if ([2, 3, 4].includes(lastDigit)) return 'дн.';
+    return 'дн.';
   }
 
   // Правильная форма слова "час"
   private getHourWord(count: number): string {
     const lastDigit = count % 10;
     const lastTwoDigits = count % 100;
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'часов';
-    if (lastDigit === 1) return 'час';
-    if ([2, 3, 4].includes(lastDigit)) return 'часа';
-    return 'часов';
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'ч.';
+    if (lastDigit === 1) return 'ч.';
+    if ([2, 3, 4].includes(lastDigit)) return 'ч.';
+    return 'ч.';
   }
 
   // Правильная форма слова "минута"
   private getMinuteWord(count: number): string {
     const lastDigit = count % 10;
     const lastTwoDigits = count % 100;
-    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'минут';
-    if (lastDigit === 1) return 'минута';
-    if ([2, 3, 4].includes(lastDigit)) return 'минуты';
-    return 'минут';
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) return 'мин.';
+    if (lastDigit === 1) return 'мин.';
+    if ([2, 3, 4].includes(lastDigit)) return 'мин.';
+    return 'мин.';
   }
 }

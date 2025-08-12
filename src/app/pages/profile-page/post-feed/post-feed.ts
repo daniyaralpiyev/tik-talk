@@ -37,7 +37,7 @@ export class PostFeed implements AfterViewInit {
 
   @HostListener('window:resize')
   onWindowResize() {
-
+    this.resizeFeed()
   }
 
   constructor() {

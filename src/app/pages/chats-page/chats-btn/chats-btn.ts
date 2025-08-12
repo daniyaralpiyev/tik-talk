@@ -1,15 +1,28 @@
-import {Component, input} from '@angular/core';
+import {Component, input, OnInit, signal} from '@angular/core';
 import {AvatarCircle} from '../../../common-ui/avatar-circle/avatar-circle';
-import {Chat, LastMessageRes} from '../../../data/interfaces/chats.interface';
+import {Chat, LastMessageRes, Message} from '../../../data/interfaces/chats.interface';
+import {CustomRelativeDatePipe} from '../../../helpers/pipes/date-text-ago-pipe';
+import {SvgIcon} from '../../../common-ui/svg-icon/svg-icon';
 
 @Component({
   selector: 'button[chats]',
   imports: [
-    AvatarCircle
+    AvatarCircle,
+    CustomRelativeDatePipe,
+    SvgIcon
   ],
   templateUrl: './chats-btn.html',
   styleUrl: './chats-btn.scss'
 })
 export class ChatsBtn {
   chat = input<LastMessageRes>()
+  message = input<Chat>();
+  messageAmount = signal<Message[]>([]);
+
+  constructor() {
+    const messageData = this.chat()
+    if (messageData) {
+      this.messageAmount.set(this.message()!.messages);
+    }
+  }
 }

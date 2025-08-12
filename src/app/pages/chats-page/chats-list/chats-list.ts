@@ -7,7 +7,6 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 import {map, switchMap} from 'rxjs';
 import {startWith} from 'rxjs/operators';
 import {SvgIcon} from '../../../common-ui/svg-icon/svg-icon';
-import {Message} from '../../../data/interfaces/chats.interface';
 
 @Component({
   selector: 'app-chats-list',
@@ -17,7 +16,7 @@ import {Message} from '../../../data/interfaces/chats.interface';
     AsyncPipe,
     RouterLink,
     RouterLinkActive,
-    SvgIcon
+    SvgIcon,
   ],
   templateUrl: './chats-list.html',
   styleUrl: './chats-list.scss'

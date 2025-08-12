@@ -24,4 +24,6 @@ export interface LastMessageRes {
   id: number;
   userFrom: Profile,
   message: string | null;
+  createdAt: string,
+  messages: Message[]
 }

@@ -18,7 +18,7 @@
 
 .last-message__wrapper {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
   text-align: left;
   color: var(--light-color);
@@ -26,4 +26,22 @@
 
 .chat-user {
   color: var(--light-transparent-color);
+  margin-bottom: 10px;
+}
+
+.time-message {
+  color: #9f9f9f;
+}
+
+.icon-and-comments {
+  display: flex;
+  justify-self: end;
+  margin-top: 10px;
+  gap: 5px;
+  color: var(--primary-color);
+}
+
+.icon-message-svg {
+  width: 16px;
+  height: 16px;
 }

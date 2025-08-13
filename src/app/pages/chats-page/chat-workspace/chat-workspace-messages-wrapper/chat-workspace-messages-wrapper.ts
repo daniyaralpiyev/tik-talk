@@ -2,9 +2,10 @@ import {Component, ElementRef, HostListener, inject, input, Renderer2} from '@an
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {MessageInput} from '../../../../common-ui/message-input/message-input';
 import {ChatsService} from '../../../../data/services/chats.service';
-import {Chat} from '../../../../data/interfaces/chats.interface';
+import {Chat, Message} from '../../../../data/interfaces/chats.interface';
 import {firstValueFrom, fromEvent, Subject, timer} from 'rxjs';
 import {debounceTime, switchMap, takeUntil} from 'rxjs/operators';
+import {DateTime} from 'luxon';
 
 @Component({
   selector: 'app-chat-workspace-messages-wrapper',
@@ -35,19 +36,9 @@ export class ChatWorkspaceMessagesWrapper {
 
   // Метод для отправки сообщения
   async onSendMessage(messageText: string) {
-    await firstValueFrom(
-      this.chatsService.sendMessage(this.chat().id, messageText)
-        .pipe(
-          switchMap(() =>
-            this.chatsService.getChatById(this.chat().id)
-          )
-        )
-    );
+    await firstValueFrom(this.chatsService.sendMessage(this.chat().id, messageText))
+    await firstValueFrom(this.chatsService.getChatById(this.chat().id))
   }
-  // async onSendMessage(messageText: string) {
-  //   await firstValueFrom(this.chatsService.sendMessage(this.chat().id, messageText))
-  //   await firstValueFrom(this.chatsService.getChatById(this.chat().id))
-  // }
 
   // Обработчик изменения размера окна
   @HostListener('window:resize')
@@ -76,5 +67,36 @@ export class ChatWorkspaceMessagesWrapper {
     const {top} = this.hostElement.nativeElement.getBoundingClientRect(); // Получение координат
     const height = window.innerHeight - top - 28; // Вычисление высоты
     this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`); // Установка стиля высоты
+  }
+
+  getGroupedMessages() {
+    const messagesArray = this.messages(); // Получение актуального значения массива сообщений
+    const groupedMessages = new Map(); // Карта для хранения сгруппированных сообщений, структуру ключ/значение.
+
+    // Получение текущей даты и даты вчера
+    const today = DateTime.now().startOf('day');
+    const yesterday = today.minus({days: 1}); // получаем начало «вчерашнего» дня.
+
+    messagesArray.map(message => {
+      const messageDate = DateTime.fromISO(message.createdAt, {zone: 'utc'})
+        .setZone(DateTime.local().zone)
+        .startOf('day');
+
+      let dateLabel;
+      if (messageDate.equals(today)) {
+        dateLabel = 'Сегодня';
+      } else if (messageDate.equals(yesterday)) {
+        dateLabel = 'Вчера';
+      } else {
+        dateLabel = messageDate.toFormat('dd.MM.yyyy');
+      }
+
+      groupedMessages.set(
+        dateLabel,
+        [...(groupedMessages.get(dateLabel) ?? []), message]
+      );
+    });
+
+    return Array.from(groupedMessages.entries()); // Возвращает массив пар [дата, сообщения]
   }
 }

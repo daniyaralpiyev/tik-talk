@@ -13,25 +13,51 @@
     order: -1;
   }
 
+  .user-name-time {
+    justify-content: flex-end; /* прижать к правому краю */
+  }
+
+  .name {
+    order: 2; /* имя после времени */
+  }
+
+  .lastname {
+    order: 3; /* фамилия последней */
+  }
+
+  .time {
+    order: 1; /* время первым */
+  }
+
   .message-text {
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
     background: var(--primary-color);
     justify-self: end;
+    color: var(--dark-color);
+    font-weight: 600;
   }
 
   .message-text-date {
     justify-self: end;
     font-size: 12px;
   }
+}
 
+.user-name-time { /* Общий порядок по умолчанию */
+  display: flex;
+  gap: 8px;
+}
+
+.name {
+  order: 1; /* имя первым */
 }
 
 .lastname {
-  padding-left: 5px;
+  order: 2; /* фамилия вторым */
 }
 
 .time {
-  padding-left: 5px;
+  order: 3; /* время последним */
 }
 
 .message-text-date {

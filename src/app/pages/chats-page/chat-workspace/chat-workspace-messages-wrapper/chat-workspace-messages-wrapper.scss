@@ -13,3 +13,17 @@
   padding: 16px;
   scrollbar-color: var(--primary-color) var(--dark-color);
 }
+
+.date-label-content {
+  display: flex;
+  justify-content: center;
+}
+
+.date-label {
+  text-align: center;
+  background: #161616;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}

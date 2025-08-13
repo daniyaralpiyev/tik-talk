@@ -6,9 +6,11 @@
 
   <div class="message-container">
     <strong class="medium-text mb8">
-      {{ message.user?.firstName }}
-      {{ message.user?.lastName }}
-      {{ message.createdAt | date: 'HH:mm' }}
+      <div class="user-name-time">
+        <span class="name">{{ message.user?.firstName }}</span>
+        <span class="lastname">{{ message.user?.lastName }}</span>
+        <span class="time">{{ message.createdAt | date: 'HH:mm' }}</span>
+      </div>
     </strong>
     <div class="message-text-date">
       {{ message.createdAt | customRelativeDate }}

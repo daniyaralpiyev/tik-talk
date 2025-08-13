@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, inject, input, Renderer2} from '@angular/core';
+import {Component, ElementRef, HostListener, inject, input, OnInit, Renderer2} from '@angular/core';
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {MessageInput} from '../../../../common-ui/message-input/message-input';
 import {ChatsService} from '../../../../data/services/chats.service';
@@ -16,23 +16,31 @@ import {DateTime} from 'luxon';
   templateUrl: './chat-workspace-messages-wrapper.html',
   styleUrl: './chat-workspace-messages-wrapper.scss'
 })
-export class ChatWorkspaceMessagesWrapper {
+export class ChatWorkspaceMessagesWrapper implements OnInit {
   chatsService = inject(ChatsService)
   chat = input.required<Chat>()
   messages = this.chatsService.activeChatMessages
 
-  private destroy$ = new Subject<void>;
   hostElement = inject(ElementRef)
   r2 = inject(Renderer2)
 
-  constructor() {
-    timer(0, 1_800_000) // запуск сразу и повтор каждые 30 минут.
-      .pipe(takeUntil(this.destroy$)) // Отслеживаем уничтожение компонента, чтобы остановить таймер
-      .subscribe(() => { // Подписываемся на события таймера
-        firstValueFrom(this.chatsService.getChatById(this.chat().id)); // Запрашиваем чат по ID
-      });
+  private destroy$ = new Subject<void>;
+  ngOnInit() {
+    this.messagePolling();
   }
 
+  // Периодическое обновление чата
+  /**
+   * Новый метод для периодического запроса сообщений
+   */
+  private messagePolling() {
+    timer(0, 1800000) // Запуск сразу (0) и затем каждый 30 мин
+      .pipe(takeUntil(this.destroy$)) // Завершение подписки при уничтожении компонента
+      .subscribe(async () => {
+        await firstValueFrom(this.chatsService.getChatById(this.chat().id));
+        // Возможно, вам нужно обновить массив сообщений вручную, если он не обновляется автоматически
+      });
+  }
 
   // Метод для отправки сообщения
   async onSendMessage(messageText: string) {

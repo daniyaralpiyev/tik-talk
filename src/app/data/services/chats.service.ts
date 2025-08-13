@@ -1,9 +1,9 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable, input, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Chat, LastMessageRes, Message} from '../interfaces/chats.interface';
 import {ProfileService} from './profile-service';
-import {map, timer} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {firstValueFrom, map, Subject, timer} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,6 @@ export class ChatsService {
   baseApiUrl = 'https://icherniakov.ru/yt-course/';
   chatsUrl = `${this.baseApiUrl}chat/`;
   messageUrl = `${this.baseApiUrl}message/`;
-
-  // Периодическое обновление чата
-  pollChatMessages(chatId: number) {
-    return timer(0, 5000)
-      .pipe( // старт сразу + каждые 5 сек
-        switchMap(() => this.getChatById(chatId))
-      );
-  }
 
   createChat(userId: number) {
     return this.http.post<Chat>(`${this.chatsUrl}${userId}`, {})

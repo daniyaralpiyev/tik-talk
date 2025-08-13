@@ -7,6 +7,9 @@
 
 .messages-wrapper {
   display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  justify-content: start;
   grid-gap: 12px;
   overflow-y: scroll;
   border: 1px solid #505050;
@@ -17,6 +20,8 @@
 .date-label-content {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 30px;
 }
 
 .date-label {
@@ -26,4 +31,10 @@
   border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
+}
+
+.date-message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }

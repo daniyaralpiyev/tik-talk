@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, inject, input, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, HostListener, inject, input, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {MessageInput} from '../../../../common-ui/message-input/message-input';
 import {ChatsService} from '../../../../data/services/chats.service';
@@ -25,14 +25,12 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
   r2 = inject(Renderer2)
 
   private destroy$ = new Subject<void>;
+
   ngOnInit() {
     this.messagePolling();
   }
 
   // Периодическое обновление чата
-  /**
-   * Новый метод для периодического запроса сообщений
-   */
   private messagePolling() {
     timer(0, 1800000) // Запуск сразу (0) и затем каждый 30 мин
       .pipe(takeUntil(this.destroy$)) // Завершение подписки при уничтожении компонента
@@ -106,5 +104,17 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
     });
 
     return Array.from(groupedMessages.entries()); // Возвращает массив пар [дата, сообщения]
+  }
+
+  // Scroll всегда внизу
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef; // навешиваем в шаблоне селектор messagesContainer
+
+  scrollToBottom() {
+    const el = this.messagesContainer.nativeElement;
+    el.scrollTop = el.scrollHeight;
   }
 }

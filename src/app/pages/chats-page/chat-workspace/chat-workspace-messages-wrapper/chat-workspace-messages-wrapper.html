@@ -1,4 +1,4 @@
-<div class="messages-wrapper">
+<div class="messages-wrapper" #messagesContainer>
   @for (group of getGroupedMessages(); track group[0]) {
     <!-- Заголовок даты -->
     <div class="date-label-content">
@@ -7,12 +7,14 @@
       </div>
     </div>
 
-    <!-- Сообщения этой группы -->
-    @for (message of group[1]; track message.id) {
-      <app-chat-workspace-message
-        [message]="message"
-      ></app-chat-workspace-message>
-    }
+    <div class="date-message-content">
+      <!-- Сообщения этой группы -->
+      @for (message of group[1]; track message.id) {
+        <app-chat-workspace-message
+          [message]="message"
+        ></app-chat-workspace-message>
+      }
+    </div>
   }
 </div>
 

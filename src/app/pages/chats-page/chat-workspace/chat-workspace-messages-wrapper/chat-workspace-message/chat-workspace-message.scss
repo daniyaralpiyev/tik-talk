@@ -14,6 +14,8 @@
   }
 
   .user-name-time {
+    display: flex;
+    gap: 8px;
     justify-content: flex-end; /* прижать к правому краю */
   }
 
@@ -22,7 +24,7 @@
   }
 
   .lastname {
-    order: 3; /* фамилия последней */
+    order: 3; /* имя после времени */
   }
 
   .time {
@@ -43,21 +45,9 @@
   }
 }
 
-.user-name-time { /* Общий порядок по умолчанию */
+.user-name-time {
   display: flex;
   gap: 8px;
-}
-
-.name {
-  order: 1; /* имя первым */
-}
-
-.lastname {
-  order: 2; /* фамилия вторым */
-}
-
-.time {
-  order: 3; /* время последним */
 }
 
 .message-text-date {

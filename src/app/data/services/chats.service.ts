@@ -26,25 +26,29 @@ export class ChatsService {
     return this.http.get<LastMessageRes[]>(`${this.chatsUrl}get_my_chats/`);
   }
 
-  getChatById(chatId: number) {
-    return this.http.get<Chat>(`${this.chatsUrl}${chatId}`)
-      .pipe(map(chat => {
-        const patchedMessages = chat.messages.map((message) => {
+  getChatById(chatId: number) { // Метод: получить чат по ID
+    return this.http.get<Chat>(`${this.chatsUrl}${chatId}`) // HTTP GET, ожидаем Chat
+      .pipe( // Подключаем RxJS-операторы
+        map(chat => { // Преобразуем ответ сервера
+          const patchedMessages = chat.messages.map(message => { // Обогащаем каждое сообщение
+            return {
+              ...message, // Копируем поля сообщения
+              user: chat.userFirst.id === message.userFromId // Определяем автора сообщения
+                ? chat.userFirst : chat.userSecond,
+              isMine: message.userFromId === this.me()!.id, // Флаг: моё ли сообщение
+            }
+          })
+
+          this.activeChatMessages.set(patchedMessages) // Обновляем сигнал/стор сообщений
+
           return {
-            ...message,
-            user: chat.userFirst.id === message.userFromId ? chat.userFirst : chat.userSecond,
-            isMine: message.userFromId === this.me()!.id,
+            ...chat, // Копируем поля чата
+            companion: // Вычисляем собеседника
+              chat.userFirst.id === this.me()!.id ? chat.userSecond : chat.userFirst,
+            messages: patchedMessages // Подменяем сообщения на обогащённые (сообщения с дополнительными данными)
           }
         })
-
-        this.activeChatMessages.set(patchedMessages)
-
-        return {
-          ...chat,
-          companion: chat.userFirst.id === this.me()!.id ? chat.userSecond : chat.userFirst,
-          messages: patchedMessages
-        }
-      }))
+      )
   }
 
   sendMessage(chatId: number, message: string) {

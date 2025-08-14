@@ -32,17 +32,20 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
 
   // Периодическое обновление чата
   private messagePolling() {
-    timer(0, 1800000) // Запуск сразу (0) и затем каждый 30 мин
-      .pipe(takeUntil(this.destroy$)) // Завершение подписки при уничтожении компонента
+    timer(0, 1800000) // Запуск сразу с 0 и затем каждый 30 мин
+      .pipe(takeUntil(this.destroy$)) // Завершение и отписка при уничтожении компонента
       .subscribe(async () => {
-        await firstValueFrom(this.chatsService.getChatById(this.chat().id));
-        // Возможно, вам нужно обновить массив сообщений вручную, если он не обновляется автоматически
+        // При каждом срабатывании таймера:
+        await firstValueFrom(this.chatsService.getChatById(this.chat().id)); // Загружаем свежие данные текущего чата
+        // Если данные не обновляются автоматически — можно вручную обновить массив сообщений
       });
   }
 
   // Метод для отправки сообщения
   async onSendMessage(messageText: string) {
+    // Отправляем сообщение на сервер (ждём завершения запроса)
     await firstValueFrom(this.chatsService.sendMessage(this.chat().id, messageText))
+    // После успешной отправки подгружаем чат заново, чтобы обновить список сообщений
     await firstValueFrom(this.chatsService.getChatById(this.chat().id))
   }
 
@@ -80,15 +83,15 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
     const groupedMessages = new Map(); // Карта для хранения сгруппированных сообщений, структуру ключ/значение.
 
     // Получение текущей даты и даты вчера
-    const today = DateTime.now().startOf('day');
-    const yesterday = today.minus({days: 1}); // получаем начало «вчерашнего» дня.
+    const today = DateTime.now().startOf('day'); // Обнуляем время до начала суток (00:00). Это нужно, чтобы корректно сравнивать только по дню.
+    const yesterday = today.minus({days: 1}); // Отнимаем 1 день от начала сегодняшних суток → получаем начало вчерашних суток.
 
     messagesArray.map(message => {
-      const messageDate = DateTime.fromISO(message.createdAt, {zone: 'utc'})
+      const messageDate = DateTime.fromISO(message.createdAt, {zone: 'utc+5'})
         .setZone(DateTime.local().zone)
-        .startOf('day');
+        .startOf('day')
 
-      let dateLabel;
+      let dateLabel; // Переменная для метки группы ('Сегодня', 'Вчера' или dd.MM.yyyy).
       if (messageDate.equals(today)) {
         dateLabel = 'Сегодня';
       } else if (messageDate.equals(yesterday)) {

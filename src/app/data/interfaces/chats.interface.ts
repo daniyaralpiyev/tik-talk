@@ -26,4 +26,5 @@ export interface LastMessageRes {
   message: string | null;
   createdAt: string,
   messages: Message[]
+  unreadCount: number
 }

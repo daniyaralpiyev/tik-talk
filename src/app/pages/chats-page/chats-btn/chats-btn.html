@@ -13,13 +13,15 @@
     <div>
       <span class="time-message">{{ chat.createdAt | customRelativeDate }}</span>
       <div class="icon-and-comments">
-        <!--        Кол-во сообщений чате за все время-->
-        <svg icon="comment" class="icon-message-svg"></svg>
+
+        <svg icon="comment" class="icon-svg"></svg>
         <span>{{ messageAmount().length }}</span>
 
-        <!--        Кол-во непрочитанных в чате-->
-        <svg icon="notification" class="icon-message-svg-notification"></svg>
-        <span>{{ unreadCount() }}</span>
+        @if (chat.unreadCount > 0) {
+          <!--        Кол-во непрочитанных в чате-->
+          <svg icon="notification" class="icon-svg"></svg>
+          <span>{{ chat.unreadCount }}</span>
+        }
       </div>
     </div>
   </div>

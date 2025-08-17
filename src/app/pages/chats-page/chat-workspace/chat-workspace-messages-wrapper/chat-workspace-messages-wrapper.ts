@@ -2,9 +2,9 @@ import {Component, ElementRef, HostListener, inject, input, OnInit, Renderer2, V
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {MessageInput} from '../../../../common-ui/message-input/message-input';
 import {ChatsService} from '../../../../data/services/chats.service';
-import {Chat, Message} from '../../../../data/interfaces/chats.interface';
+import {Chat} from '../../../../data/interfaces/chats.interface';
 import {firstValueFrom, fromEvent, Subject, timer} from 'rxjs';
-import {debounceTime, switchMap, takeUntil} from 'rxjs/operators';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 import {DateTime} from 'luxon';
 
 @Component({
@@ -79,22 +79,23 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
   }
 
   getGroupedMessages() {
-    const messagesArray = this.messages(); // Получение актуального значения массива сообщений
-    const groupedMessages = new Map(); // Карта для хранения сгруппированных сообщений, структуру ключ/значение.
+    const messagesArray = this.messages();
+    const groupedMessages = new Map();
 
-    // Получение текущей даты и даты вчера
-    const today = DateTime.now().startOf('day'); // Обнуляем время до начала суток (00:00). Это нужно, чтобы корректно сравнивать только по дню.
-    const yesterday = today.minus({days: 1}); // Отнимаем 1 день от начала сегодняшних суток → получаем начало вчерашних суток.
+    // Текущая локальная дата и начало дня
+    const now = DateTime.local();
+    const today = now.startOf('day');
+    const yesterday = today.minus({ days: 1 });
 
-    messagesArray.map(message => {
-      const messageDate = DateTime.fromISO(message.createdAt, {zone: 'utc+5'})
-        .setZone(DateTime.local().zone)
-        .startOf('day')
+    messagesArray.forEach(message => {
+      // Преобразуем createdAt как UTC и сразу в локальное время
+      const messageDateTime = DateTime.fromISO(message.createdAt, { zone: 'utc' }).toLocal();
+      const messageDate = messageDateTime.startOf('day');
 
-      let dateLabel; // Переменная для метки группы ('Сегодня', 'Вчера' или dd.MM.yyyy).
-      if (messageDate.equals(today)) {
+      let dateLabel;
+      if (messageDate.hasSame(today, 'day')) {
         dateLabel = 'Сегодня';
-      } else if (messageDate.equals(yesterday)) {
+      } else if (messageDate.hasSame(yesterday, 'day')) {
         dateLabel = 'Вчера';
       } else {
         dateLabel = messageDate.toFormat('dd.MM.yyyy');
@@ -104,10 +105,16 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
         dateLabel,
         [...(groupedMessages.get(dateLabel) ?? []), message]
       );
+
+      // Для отладки
+      console.log('createdAt:', message.createdAt,
+        'локальное время:', messageDateTime.toISO(),
+        'метка:', dateLabel);
     });
 
-    return Array.from(groupedMessages.entries()); // Возвращает массив пар [дата, сообщения]
+    return Array.from(groupedMessages.entries());
   }
+
 
   // Scroll всегда внизу
   ngAfterViewChecked() {

@@ -19,12 +19,6 @@ export class ChatsBtn implements OnInit {
   message = input<Chat>();
   messageAmount = signal<Message[]>([]);
 
-  // Кол-во непрочитанных
-  unreadCount = computed(() => {
-      return this.chat()?.unreadCount ?? 0
-    }
-  );
-
   ngOnInit() {
     const messageData = this.chat()
     if (messageData) {

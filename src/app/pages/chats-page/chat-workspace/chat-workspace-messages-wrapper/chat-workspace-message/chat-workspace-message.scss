@@ -7,40 +7,41 @@
 :host.is-mine {
   display: grid;
   grid-template-columns: 1fr 32px;
-  justify-self: end;
+  justify-self: end; /* выравниваем весь блок вправо */
 
   .message-container {
-    order: -1;
+    order: -1; /* сообщение идёт первым, аватар после */
   }
 
   .user-name-time {
     display: flex;
     gap: 8px;
-    justify-content: flex-end; /* прижать к правому краю */
+    justify-content: flex-end; /* прижать имя и время к правому краю */
   }
 
   .name {
-    order: 2; /* имя после времени */
+    order: 2; /* имя будет после времени */
   }
 
   .lastname {
-    order: 3; /* имя после времени */
+    order: 3; /* фамилия ещё позже */
   }
 
   .time {
-    order: 1; /* время первым */
+    order: 1; /* время идёт первым */
   }
 
   .message-text {
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    /* форма "баббла" сообщения (уголок справа) */
     background: var(--primary-color);
-    justify-self: end;
+    justify-self: end; /* прижать пузырь вправо */
     color: var(--dark-color);
     font-weight: 600;
   }
 
   .message-text-date {
-    justify-self: end;
+    justify-self: end; /* дата тоже справа */
     font-size: 12px;
   }
 }
@@ -59,7 +60,11 @@
   background: var(--message-color);
   font-weight: 500;
   color: var(--light-color);
-  width: min-content;
+  max-width: 50%;
+  overflow-wrap: break-word; /* перенос длинных слов */
+  word-break: break-word; /* если очень длинное слово — ломаем его */
+  white-space: pre-wrap; /* сохраняем переносы строк + переносим текст */
   clip-path: polygon(12px 0, 100% 0, 100% 100%, 0% 100%, 0 12px);
+  /* форма пузыря (уголок слева) */
   margin-top: 10px;
 }

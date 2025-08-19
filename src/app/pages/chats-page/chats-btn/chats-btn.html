@@ -14,11 +14,12 @@
       <span class="time-message">{{ chat.createdAt | customRelativeDate }}</span>
       <div class="icon-and-comments">
 
-        <svg icon="comment" class="icon-svg"></svg>
-        <span>{{ messageAmount().length }}</span>
+<!--            Кол-во сообщении за все время-->
+<!--        <svg icon="comment" class="icon-svg"></svg>-->
+<!--        <span>{{ messageAmount().length }}</span>-->
 
         @if (chat.unreadCount > 0) {
-          <!--        Кол-во непрочитанных в чате-->
+          <!--Кол-во непрочитанных в чате (появится когда будут новые сообщения)-->
           <svg icon="notification" class="icon-svg"></svg>
           <span>{{ chat.unreadCount }}</span>
         }

@@ -1,29 +1,29 @@
-import { inject, Injectable, input, signal } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-import { Chat, LastMessageRes, Message } from '../interfaces/chats.interface'
-import { ProfileService } from './profile-service'
-import { firstValueFrom, map, Subject, timer } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { inject, Injectable, input, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Chat, LastMessageRes, Message } from '../interfaces/chats.interface';
+import { ProfileService } from './profile-service';
+import { firstValueFrom, map, Subject, timer } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ChatsService {
-	http = inject(HttpClient)
-	me = inject(ProfileService).me
+	http = inject(HttpClient);
+	me = inject(ProfileService).me;
 
-	activeChatMessages = signal<Message[]>([])
+	activeChatMessages = signal<Message[]>([]);
 
-	baseApiUrl = 'https://icherniakov.ru/yt-course/'
-	chatsUrl = `${this.baseApiUrl}chat/`
-	messageUrl = `${this.baseApiUrl}message/`
+	baseApiUrl = 'https://icherniakov.ru/yt-course/';
+	chatsUrl = `${this.baseApiUrl}chat/`;
+	messageUrl = `${this.baseApiUrl}message/`;
 
 	createChat(userId: number) {
-		return this.http.post<Chat>(`${this.chatsUrl}${userId}`, {})
+		return this.http.post<Chat>(`${this.chatsUrl}${userId}`, {});
 	}
 
 	getMyChats() {
-		return this.http.get<LastMessageRes[]>(`${this.chatsUrl}get_my_chats/`)
+		return this.http.get<LastMessageRes[]>(`${this.chatsUrl}get_my_chats/`);
 	}
 
 	getChatById(chatId: number) {
@@ -37,17 +37,19 @@ export class ChatsService {
 					const patchedMessages = chat.messages.map((message) => {
 						// Обогащаем каждое сообщение
 						return {
-							...message, // Копируем поля сообщения
+							// Копируем поля сообщения
+							...message,
 							user:
 								chat.userFirst.id === message.userFromId // Определяем автора сообщения
 									? chat.userFirst
 									: chat.userSecond,
 							isMine: message.userFromId === this.me()!.id, // Флаг: моё ли сообщение
-						}
-					})
+						};
+					});
 
-					// todo сгруппировать сообщения и их выводить в шаблоне
-					this.activeChatMessages.set(patchedMessages) // Обновляем сигнал/стор сообщений
+					// todo сгруппировать сообщения из метода getGroupedMessages чтобы в activeChatMessages за set-тить их в шаблоне
+					// Уточни у Ивана на счет этого так как все работает
+					this.activeChatMessages.set(patchedMessages); // Обновляем сигнал/стор сообщений
 
 					return {
 						// Копируем поля чата
@@ -59,9 +61,9 @@ export class ChatsService {
 								: chat.userFirst,
 						// Подменяем сообщения на обогащённые (сообщения с дополнительными данными)
 						messages: patchedMessages,
-					}
+					};
 				}),
-			)
+			);
 	}
 
 	sendMessage(chatId: number, message: string) {
@@ -73,6 +75,6 @@ export class ChatsService {
 					message,
 				},
 			},
-		)
+		);
 	}
 }

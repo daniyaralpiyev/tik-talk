@@ -1,0 +1,92 @@
+:host {
+	display: grid;
+	justify-content: start;
+	font-family: 'JetBrains Mono', monospace;
+	padding: 50px;
+}
+
+.h4 {
+	font-size: 30px;
+}
+
+.h6 {
+	font-size: 20px;
+}
+
+.mb16 {
+	margin-bottom: 16px;
+}
+
+.tt-control-label {
+	display: grid;
+	color: silver;
+	gap: 10px;
+}
+
+.tt-input {
+	background: black;
+	border: none;
+	height: 45px;
+	border-radius: 5px;
+	padding-left: 10px;
+	color: silver;
+}
+
+.form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 24px;
+}
+
+.btn {
+	background: #a400ff;
+	border-radius: 5px;
+	border: 3px solid #000000;
+	margin-top: 24px;
+	width: 100%;
+	height: 50px;
+	font-family: 'JetBrains Mono', monospace;
+	font-size: 15px;
+	font-weight: 700;
+	color: #000000;
+	cursor: pointer;
+}
+
+.address-and-btn {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 24px;
+}
+
+.validation {
+	display: none;
+}
+
+.tt-input.ng-invalid.ng-touched {
+	border: 2px solid tomato;
+}
+
+.tt-input.ng-invalid.ng-touched + .validation {
+	display: block;
+}
+
+//.ng-submitted {
+//  border: 10px solid aquamarine;
+//}
+
+.two-columns {
+	display: grid;
+	margin-top: 12px;
+	margin-bottom: 12px;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 12px;
+}
+
+.tt-input::-webkit-calendar-picker-indicator {
+	background: #8000c6;
+}
+
+.tt-input.ng-pending {
+	border: 2px dashed #8000c6;
+}

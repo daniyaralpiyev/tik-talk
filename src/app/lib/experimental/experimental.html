@@ -1,0 +1,43 @@
+<form
+  class="content"
+  #form="ngForm"
+  (ngSubmit)="onSubmit(form)"
+>
+  <input
+    type="text"
+    class="tt-input"
+    name="user-name"
+    [(ngModel)]="person.name"
+    (ngModelChange)="onChange($event)"
+    required
+    #usernameControl="ngModel"
+  >
+  @if (usernameControl.hasError('required') && usernameControl.touched) {
+    <span>Это поле обязательно!</span>
+  }
+
+  <input
+    type="text"
+    class="tt-input"
+    name="lastName"
+    [(ngModel)]="person.lastName"
+    required
+    noReact
+    #lastNameControl="ngModel"
+  >
+  @if (lastNameControl.hasError('noReact')) {
+    <span>{{ lastNameControl.getError('noReact').message }}</span>
+  }
+
+  <div ngModelGroup="address">
+    <input
+      type="text"
+      class="tt-input"
+      name="street"
+    >
+  </div>
+
+  <pre>{{ person | json }}</pre>
+
+  <button type="submit">Submit</button>
+</form>

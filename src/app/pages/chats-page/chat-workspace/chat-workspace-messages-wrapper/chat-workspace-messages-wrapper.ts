@@ -127,7 +127,7 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
 		});
 
 		// Возвращаем Map, преобразованный в массив пар [ключ, значение].
-		// В Angular-шаблоне итерируемся через @for.
+		// В html шаблоне итерируемся через @for.
 		return Array.from(groupedMessages.entries());
 	}
 

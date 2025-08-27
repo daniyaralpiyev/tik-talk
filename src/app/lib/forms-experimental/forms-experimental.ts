@@ -98,10 +98,11 @@ export class FormsExperimental {
 	form = new FormGroup({
 		type: new FormControl<ReceiverType>(ReceiverType.PERSON),
 		name: new FormControl<string>('', {
-			validators: [Validators.required],
-			asyncValidators: [this.nameValidator.validate.bind(this.nameValidator)],
-			updateOn: 'blur',
-		}),
+      validators: [Validators.required],
+      asyncValidators: [this.nameValidator.validate.bind(this.nameValidator)],
+      updateOn: 'blur'
+      }
+		),
 		inn: new FormControl<string>(''),
 		lastName: new FormControl<string>('angular2025'),
 		addresses: new FormArray([getAddressForm()]),

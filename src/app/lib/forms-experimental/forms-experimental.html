@@ -21,12 +21,16 @@
   </label>
 
   @if (form.controls.name.touched && form.controls.name.hasError('nameValid')) {
-    <small style="color: tomato">{{ form.controls.name.getError('nameValid')?.message }}</small>
+    <small style="color: tomato">
+      {{ form.controls.name.getError('nameValid')?.message }}
+    </small>
   }
 
   <!-- Работаем с функцией валидатор validateStartWith -->
   @if (form.controls.name.touched && form.controls.name.hasError('startsWith')) {
-    <small style="color: tomato">{{ form.controls.name.getError('startsWith')?.message }}</small>
+    <small style="color: tomato">
+      {{ form.controls.name.getError('startsWith')?.message }}
+    </small>
   }
 
   @if (form.controls.name.touched && form.controls.name.hasError('required')) {
@@ -80,7 +84,9 @@
   </div>
 
   @if (form.controls.dateRange.touched && form.controls.dateRange.hasError('dateRange')) {
-    <small>{{ form.controls.dateRange.getError('dateRange')?.message }}</small>
+    <small>
+      {{ form.controls.dateRange.getError('dateRange')?.message }}
+    </small>
   }
 
   <div>
@@ -146,7 +152,8 @@
     <h4 class="h4 mb16">Дополнительно</h4>
 
     <div style="display: grid; grid-gap: 16px">
-      @for (control of form.controls.feature.controls | keyvalue: sort; track control; let i = $index) {
+      @for (control of form.controls.feature.controls | keyvalue: sort;
+        track control; let i = $index) {
         <label>
           {{ features[i].label }}
           <input type="checkbox" [formControlName]="control.key">

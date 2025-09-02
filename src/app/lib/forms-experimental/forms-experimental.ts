@@ -14,11 +14,13 @@ import { MockService } from '../../data/services/mock.service';
 import { NameValidator } from './name.validator';
 import { KeyValuePipe } from '@angular/common';
 
+// Перечисление: тип получателя — физ./юр. лицо
 enum ReceiverType {
 	PERSON = 'PERSON',
 	LEGAL = 'LEGAL',
 }
 
+// Интерфейс адреса — описывает структуру одного адреса
 interface Address {
 	city?: string;
 	street?: string;
@@ -26,57 +28,72 @@ interface Address {
 	apartment?: number;
 }
 
+// Интерфейс "фичи" (например, опции доставки)
 interface Feature {
-	code: string;
-	label: string;
-	value: boolean;
+  code: string;    // Уникальный код фичи, напр. 'lift'
+  label: string;   // человеко читаемое название
+  value: boolean;  // включена/выключена
 }
 
+// Функция: создаёт FormGroup для одного адреса, с начальными значениями
+// Тип Address — это объект с полями (например, city, street, building, apartment).
+// По умолчанию (= {}) передаётся пустой объект, если ничего не передали.
 function getAddressForm(initialValue: Address = {}) {
-	return new FormGroup({
-		city: new FormControl<string>(initialValue.city ?? ''),
-		street: new FormControl<string>(initialValue.street ?? ''),
-		building: new FormControl<number | null>(initialValue.building ?? null),
-		apartment: new FormControl<number | null>(initialValue.apartment ?? null),
-	});
+  return new FormGroup({
+    // по умолчанию initialValue.city или пустая строка
+    city: new FormControl<string>(initialValue.city ?? ''),
+    street: new FormControl<string>(initialValue.street ?? ''),
+    // либо число, либо null (если не задан)
+    building: new FormControl<number | null>(initialValue.building ?? null),
+    apartment: new FormControl<number | null>(initialValue.apartment ?? null),
+  });
 }
 
-// Функция валидатор(замыкание)
+// Замыкание-валидатор: создаёт валидатор, который проверяет,
+// начинается ли значение с запрещённой буквы
 function validateStartWith(forbiddenLetter: string): ValidatorFn {
-	return (control: AbstractControl) => {
-		return control.value.startsWith(forbiddenLetter)
-			? {
-					startsWith: {
-						message: `${forbiddenLetter} - последняя буква алфавита`,
-					},
-				}
-			: null;
-	};
+  return (control: AbstractControl) => {
+    // Получаем текущее значение контрола
+    const value = control.value;
+    // Если значения нет или это не строка — валидатор не выдаёт ошибку
+    if (!value || typeof value !== 'string') return null;
+
+    // Если значение начинается с forbiddenLetter — возвращаем объект ошибки,
+    // иначе возвращаем null (ошибок нет)
+    return value.startsWith(forbiddenLetter)
+      ? {startsWith: {message: `${forbiddenLetter} - последняя буква алфавита`}}
+      : null;
+  };
 }
 
-function validateDateRange({
-	fromControlName,
-	toControlName,
-}: {
-	fromControlName: string;
-	toControlName: string;
-}) {
+// Эта функция — кастомный валидатор для FormGroup, который проверяет,
+// что поле "Дата начала" (from) не позже, чем "Дата окончания" (to).
+function validateDateRange({fromControlName, toControlName,}:
+                           { fromControlName: string; toControlName: string; }) {
 	return (control: AbstractControl) => {
+    // Получаем вложенные контролы по их именам
 		const fromControl = control.get(fromControlName);
 		const toControl = control.get(toControlName);
 
+    // Если любой из контролов отсутствует — валидатор ничего не делает
 		if (!fromControl || !toControl) return null;
 
+    // Преобразуем их значения в объекты Date
 		const fromDate = new Date(fromControl.value);
 		const toDate = new Date(toControl.value);
 
+    // Если обе даты валидны и fromDate > toDate — ставим ошибку на toControl
 		if (fromDate && toDate && fromDate > toDate) {
+      // Здесь их два валидатора — это два разных уровня валидации: поле и группа.
 			toControl.setErrors({
+        // (setErrors) → ошибка на поле (toDate), то есть пользователь указал диапазон "задом наперёд"
 				dateRange: { message: 'Дата начала не может быть с конца' },
 			});
+      // (return ...) → ошибка на всю группу.
 			return { dateRange: { message: 'Дата начала не может быть с конца' } };
 		}
 
+    // Если проверка прошла — возвращаем null (группа валидна)
 		return null;
 	};
 }
@@ -88,15 +105,19 @@ function validateDateRange({
 	styleUrl: './forms-experimental.scss',
 })
 export class FormsExperimental {
-	ReceiverType = ReceiverType;
+	ReceiverType = ReceiverType; // Делаем доступным enum в шаблоне/классе
 
 	mockService = inject(MockService);
-	nameValidator = inject(NameValidator);
+	nameValidator = inject(NameValidator); // Инжектим асинхронный валидатор NameValidator
 
-	features: Feature[] = [];
+	features: Feature[] = []; // Массив доступных фич (будет заполняться из сервиса)
 
+  // Создаём реактивную форму (FormGroup)
 	form = new FormGroup({
+    // Контрол для типа получателя, по умолчанию - PERSON
 		type: new FormControl<ReceiverType>(ReceiverType.PERSON),
+
+    // Контрол для имени с синхронными и асинхронными валидаторами
 		name: new FormControl<string>('', {
       validators: [Validators.required],
       asyncValidators: [this.nameValidator.validate.bind(this.nameValidator)],
@@ -104,9 +125,13 @@ export class FormsExperimental {
       }
 		),
 		inn: new FormControl<string>(''),
+    // Контрол с дефолтным значением 'angular2025'
 		lastName: new FormControl<string>('angular2025'),
-		addresses: new FormArray([getAddressForm()]),
+    // FormArray для адресов, инициализируем с одним адресом через фабрику getAddressForm()
+    addresses: new FormArray([getAddressForm()]),
+    // FormRecord (словарь) для feature: ключ — code фичи, значение — FormControl
 		feature: new FormRecord({}),
+    // Вложенная группа для диапазона дат с кросс-полем валидатором validateDateRange
 		dateRange: new FormGroup(
 			{
 				from: new FormControl<string>(''),
@@ -119,46 +144,46 @@ export class FormsExperimental {
 	// Конструктор теперь знает благодаря valueChanges
 	// при заполнении формы от физ лица и юр лица
 	constructor() {
-		this.mockService
-			.getAddresses()
-			.pipe(takeUntilDestroyed())
+    this.mockService // Подписываемся на получение адресов из сервиса
+      .getAddresses()
+      .pipe(takeUntilDestroyed()) // автоматическая отписка при уничтожении компонента
 			.subscribe((addrs) => {
-				// while (this.form.controls.addresses.controls.length > 0) {
-				//   this.form.controls.addresses.removeAt(0)
-				// }
-				this.form.controls.addresses.clear();
+				this.form.controls.addresses.clear(); // Очищаем существующие контролы адресов
 
+        // Для каждого адреса из сервиса создаём FormGroup и пушим в FormArray
 				for (const addr of addrs) {
 					this.form.controls.addresses.push(getAddressForm(addr));
 				}
 
-				// this.form.controls.addresses.setControl(1, getAddressForm(addrs[0])) // Заменяет все пустые поля инпут первыми значениями
+
+
+				// this.form.controls.addresses.setControl(1, getAddressForm(addrs[0])) // Заменяет все пустые поля инпут 1-ми значениями
 				// console.log(this.form.controls.addresses.at(0)) // Получаем в консоли первое значение
 				// this.form.controls.addresses.disable() // блокирует все поля
 			});
 
-		this.mockService
+		this.mockService // Подписываемся на получение списка фич из сервиса
 			.getFeatures()
 			.pipe(takeUntilDestroyed())
 			.subscribe((features) => {
-				this.features = features;
+				this.features = features; // Сохраняем массив фич в свойство для отображения в шаблоне
 
+        // Для каждой фичи добавляем контрол в FormRecord: ключ = feature.code, контрол хранит feature.value
 				for (const feature of features) {
 					this.form.controls.feature.addControl(
-						feature.code, // имя или ключ для конрола
-						new FormControl(feature.value), // значение контрола
+						feature.code, // имя/ключ контрола в FormRecord
+						new FormControl(feature.value), // начальное булево значение
 					);
 				}
 			});
 
-		this.form.controls.type.valueChanges // valueChanges это observable
+    // Подписываемся на изменения поля type (PERSON / LEGAL)
+    this.form.controls.type.valueChanges // valueChanges — Observable
 			.pipe(takeUntilDestroyed())
 			.subscribe((val) => {
-				// убирает все валидаторы inn через clearValidators при выборе физ лицо
-				this.form.controls.inn.clearValidators();
+				this.form.controls.inn.clearValidators(); // Сначала убираем все валидаторы у поля inn
 
-				// Добавление валидатора для поля ИНН при выборе, юр лица
-				if (val === ReceiverType.LEGAL) {
+				if (val === ReceiverType.LEGAL) { // Если выбран тип LEGAL — добавляем валидаторы для ИНН
 					this.form.controls.inn.setValidators([
 						Validators.required,
 						Validators.minLength(10),
@@ -168,23 +193,27 @@ export class FormsExperimental {
 			});
 	}
 
-	onSubmit(event: SubmitEvent) {
-		this.form.markAsTouched(); // помечает все поля, как трогали
-		this.form.updateValueAndValidity(); // метод проверяет все поля на соответствие с правилами валидации
-		if (this.form.invalid) return;
+  // Обработчик сабмита формы
+  onSubmit(event: SubmitEvent) {
+    this.form.markAsTouched(); // пометить все контролы как тронутые
+    this.form.updateValueAndValidity(); // пересчитать валидность формы
+    if (this.form.invalid) return; // если форма невалидна — прерываем
 
+    // Выводим текущее value и "сырые" значения (getRawValue)
 		console.log('this.form.value', this.form.value);
-		console.log('this.form.getRawValue', this.form.getRawValue()); // выводим поля формы
+		console.log('this.form.getRawValue', this.form.getRawValue());
 	}
 
-	// вставляем новую форму адреса в начало массива адресов
+  // Вставить новую форму адреса в начало FormArray
 	addAddress() {
 		this.form.controls.addresses.insert(0, getAddressForm());
 	}
 
+  // Удалить адрес по индексу, не эмитируя событие удаления (emitEvent: false)
 	deleteAddress(index: number) {
 		this.form.controls.addresses.removeAt(index, { emitEvent: false });
 	}
 
-	sort = () => 0; // для чекбоксов чтобы работали с правильной логикой
+  // Сортировочная функция-заглушка (используется в шаблоне для чекбоксов/trackBy и т.п.)
+  sort = () => 0; // для чекбоксов, чтобы работали с правильной логикой
 }

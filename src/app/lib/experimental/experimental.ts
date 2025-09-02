@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import {NoReactValidator} from '../validator/no-react.validator';
 
 @Component({
 	selector: 'app-experimental',
-	imports: [JsonPipe, FormsModule],
+	imports: [JsonPipe, FormsModule, NoReactValidator],
 	templateUrl: './experimental.html',
 	styleUrl: './experimental.scss',
 })

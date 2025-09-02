@@ -11,6 +11,7 @@ import { ChatsPageComponent } from './pages/chats-page/chats';
 import { chatsRoutes } from './pages/chats-page/chatsRoutes';
 import { FormsExperimental } from './lib/forms-experimental/forms-experimental';
 import { Experimental } from './lib/experimental/experimental';
+import {AboutMyself} from './pages/settings-page/about-myself/about-myself';
 
 export const routes: Routes = [
 	{
@@ -34,5 +35,6 @@ export const routes: Routes = [
 	{ path: 'login', component: LoginPage },
 	{ path: 'parent', component: Parent },
 	{ path: 'forms-experimental', component: FormsExperimental },
-	{ path: 'experimental', component: Experimental },
+  { path: 'experimental', component: Experimental },
+  { path: 'about-myself', component: AboutMyself },
 ];

@@ -1,0 +1,108 @@
+:host {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 30px;
+  max-width: 800px; /* Широкая форма */
+  margin: 0 auto; /* Центрирование */
+}
+
+.form-main {
+  display: grid;
+  width: 100%;
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.reason-for-contact {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.address-content {
+  padding-top: 26px;
+}
+
+.delivery-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.tt-control-label {
+  display: block;
+  color: #fff;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tt-input {
+  width: 100%;
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  height: 45px;
+  border-radius: 6px;
+  padding: 0 15px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.tt-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.btn {
+  background: var(--primary-color);
+  color: var(--dark-color);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background: #7d10da
+;
+}
+.mb16 {
+  margin-bottom: 16px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.h4 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+}

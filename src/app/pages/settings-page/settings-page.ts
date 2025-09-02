@@ -1,11 +1,12 @@
-import {Component, effect, inject, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, effect, ElementRef, inject, Renderer2, ViewChild} from '@angular/core';
 import {ProfileHeader} from '../../common-ui/profile-header/profile-header';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ProfileService} from '../../data/services/profile-service';
-import {firstValueFrom} from 'rxjs';
+import {firstValueFrom, fromEvent} from 'rxjs';
 import {AvatarUpload} from './avatar-upload/avatar-upload';
 import {Router, RouterLink} from '@angular/router';
 import {SvgIcon} from '../../common-ui/svg-icon/svg-icon';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-settings-page',
@@ -13,15 +14,18 @@ import {SvgIcon} from '../../common-ui/svg-icon/svg-icon';
     ProfileHeader,
     ReactiveFormsModule,
     AvatarUpload,
-    SvgIcon
+    SvgIcon,
+    RouterLink
   ],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss'
 })
-export class SettingsPage {
+export class SettingsPage implements AfterViewInit {
   fb = inject(FormBuilder);
   profileService = inject(ProfileService);
   router = inject(Router);
+  hostElement = inject(ElementRef)
+  r2 = inject(Renderer2)
 
   @ViewChild(AvatarUpload) avatarUploader!: AvatarUpload
 
@@ -46,8 +50,21 @@ export class SettingsPage {
   }
 
   ngAfterViewInit() {
+    this.resizeFeed();
 
+    fromEvent(window, 'resize')
+      .pipe(debounceTime(1000))
+      .subscribe(() => {
+        this.resizeFeed(); // <<< вызываем метод
+      });
   }
+
+  resizeFeed() {
+    const { top } = this.hostElement.nativeElement.getBoundingClientRect();
+    const height = window.innerHeight - top - 24 - 24;
+    this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
+  }
+
 
   onSave() {
     this.form.markAllAsTouched() // Проверка было ли интерактив с формой

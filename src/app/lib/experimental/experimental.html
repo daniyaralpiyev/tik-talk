@@ -7,7 +7,7 @@
     type="text"
     class="tt-input"
     name="user-name"
-    [(ngModel)]="person.name"
+    [ngModel]="person.name"
     (ngModelChange)="onChange($event)"
     required
     #usernameControl="ngModel"
@@ -28,7 +28,7 @@
   @if (lastNameControl.hasError('noReact')) {
     <span>{{ lastNameControl.getError('noReact').message }}</span>
   }
-
+  ,
   <div ngModelGroup="address">
     <input
       type="text"

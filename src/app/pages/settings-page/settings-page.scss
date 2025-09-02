@@ -1,7 +1,6 @@
 :host {
   display: grid;
-  grid-gap: 48px;
-  grid-template-columns: 322px 1fr;
+  grid-gap: 25px;
 }
 
 .profile-form__wrapper {
@@ -33,7 +32,7 @@
 
 .icons-svg {
   display: flex;
-  gap: 15px;
+  gap: 25px;
   width: 300px;
   height: 50px;
   padding: 15px;
@@ -44,10 +43,14 @@
   height: 50px;
   padding-left: 23px;
   padding-top: 15px;
+  border-radius: 4px;
+  border: 1px solid var(--primary-color);
 
   &:hover {
+    border: none;
     color: #E99898;
-    border-bottom: 3px solid var(--primary-color);
+    border-bottom: 1px solid var(--light-color);
+    border-radius: 0;
   }
 }
 
@@ -63,14 +66,46 @@
   font-size: 14px;
   line-height: 24px;
   cursor: pointer;
-  color: var(--light-color);
+  color: var(--primary-color);
   background: transparent;
   border-radius: 4px;
-  border: 1px solid var(--light-color);
+  border: 1px solid var(--primary-color);
 
   &:hover {
     border: none;
-    border-bottom: 3px solid var(--primary-color);
+    border-bottom: 1px solid var(--light-color);
+    border-radius: 0;
+  }
+}
+
+.skills-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  grid-gap: 16px;
+}
+
+.skills-two-columns-btn {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  cursor: pointer;
+  margin-top: 16px;
+
+  a {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+
+  &:hover {
+    border: none;
+    border-bottom: 1px solid var(--light-color);
     border-radius: 0;
   }
 }

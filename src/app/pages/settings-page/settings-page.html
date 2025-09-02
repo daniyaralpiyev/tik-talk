@@ -35,10 +35,16 @@
       <app-avatar-upload></app-avatar-upload>
     </label>
 
-    <label class="tt-form-label">
-      <span class="tt-form-label__text">Навыки (стэк)</span>
-      <input type="text" class="tt-form-input" formControlName="stack">
-    </label>
+    <div class="skills-two-columns">
+      <label class="tt-form-label">
+        <span class="tt-form-label__text">Навыки (стэк)</span>
+        <input type="text" class="tt-form-input" formControlName="stack">
+      </label>
+
+      <label class="tt-form-label skills-two-columns-btn">
+        <a [routerLink]="['/about-myself']">Место работы</a>
+      </label>
+    </div>
   </div>
 
   <div class="icons-and-btns">

@@ -5,16 +5,15 @@
     ></app-profile-header>
 
     @if (isMyPage()) {
-      <a class="btn to-settings-btn" [routerLink]="['/settings']">
-        Редактировать
-        <svg icon="settings" class="to-settings-icon"></svg>
-      </a>
+    <a class="btn to-settings-btn" [routerLink]="['/settings']">
+      Редактировать
+      <svg icon="settings" class="to-settings-icon"></svg>
+    </a>
     } @else {
       <button
         class="btn to-settings-btn"
         (click)="sendMessage(profile.id)"
-      >Написать
-      </button>
+      >Написать</button>
     }
   </header>
 
@@ -27,7 +26,7 @@
       <div class="subscribers-wrapper mb32">
         @for (subscriber of subscribers$ | async; track subscriber.id) {
           <a class="subscriber-avatar-btn" [routerLink]="['/profile', subscriber.id]">
-            <img [src]="subscriber.avatarUrl | imgUrl" alt=""/>
+            <img [src]="subscriber.avatarUrl | imgUrl" alt="" />
           </a>
         }
         <a class="to-subscribers-search" [routerLink]="['/search']">
@@ -36,17 +35,14 @@
 
       <h3 class="h6 mb16">Навыки</h3>
       <div class="stack-wrapper mb32">
-        @for (skill of profile.stack; track skill) {
-          <div class="skill-tag">{{ skill }}</div>
-        }
+      @for (skill of profile.stack; track skill) {
+        <div class="skill-tag">{{skill}}</div>
+      }
       </div>
 
       <h3 class="h6 mb16">О Себе</h3>
-      <p class="medium-text">{{ profile.description }}</p>
+      <p class="medium-text">{{profile.description}}</p>
 
-      <div>
-        <a>Места работы</a>
-      </div>
     </div>
   </main>
 }

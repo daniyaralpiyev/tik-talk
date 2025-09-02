@@ -1,0 +1,155 @@
+<form class="form-main" [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <h4 class="h4 mb16">Заявка на ремонт смартфона</h4>
+
+  <div class="form-row" formGroupName="personInfo">
+    <div>
+      <label class="tt-control-label">
+        Имя
+        <input class="tt-input" type="text" placeholder="Имя" formControlName="name">
+      </label>
+
+      @if (form.controls.personInfo.controls.name.touched
+      && form.controls.personInfo.controls.name.hasError('required')) {
+        <small>Это поле обязательно!</small>
+      }
+    </div>
+
+    <label class="tt-control-label">
+      Фамилия
+      <input class="tt-input" type="text" placeholder="Фамилия" formControlName="lastName">
+    </label>
+
+    <label class="tt-control-label mb16">
+      Тип получателя
+      <select class="tt-input" formControlName="type">
+        <option [value]="ReceiverTypePerson.PERSON">Физическое лицо</option>
+        <option [value]="ReceiverTypePerson.LEGAL">Юридическое лицо</option>
+      </select>
+    </label>
+
+    @if (form.controls.personInfo.controls.type.value === ReceiverTypePerson.LEGAL) {
+      <label class="tt-control-label">
+        ИИН
+        <input class="tt-input" type="text" placeholder="ИИН" formControlName="iin">
+      </label>
+    } @else {
+      <div class="additional-services">
+        <h5 class="mb16">Доп. услуги</h5>
+      </div>
+    }
+  </div>
+
+  <label class="reason-for-contact mb16">
+    Причина обращения
+    <input
+      class="tt-input"
+      type="text"
+      placeholder="Причина обращения"
+      formControlName="description"
+    >
+  </label>
+
+  <div class="form-row" formGroupName="info">
+    <label class="tt-control-label mb16">
+      Тип смартфона
+      <select class="tt-input" formControlName="typePhone">
+        <option [value]="ReceiverTypePhone.OPPO">Oppo</option>
+        <option [value]="ReceiverTypePhone.SPACEX">Apple Iphone</option>
+        <option [value]="ReceiverTypePhone.IPHONE">Space X</option>
+      </select>
+    </label>
+
+    <label class="tt-control-label mb16">
+      Тип ОС
+      <select class="tt-input" formControlName="typeOS">
+        <option [value]="ReceiverTypeOS.IOS">IOS</option>
+        <option [value]="ReceiverTypeOS.ANDROID">Android</option>
+      </select>
+    </label>
+
+    <label class="tt-control-label">
+      Дата заявки на ремонт
+      <input
+        class="tt-input"
+        type="date"
+        formControlName="date"
+      >
+    </label>
+
+    @if (form.controls.info.controls.typeOS.value === ReceiverTypeOS.IOS) {
+      <label class="tt-control-label">
+        Гарантия на IOS
+        <select class="tt-input" formControlName="warranty">
+          <option [value]="ReceiverTypeWarrantyIos.MONTH1">1 месяц</option>
+          <option [value]="ReceiverTypeWarrantyIos.MONTH3">3 месяц</option>
+          <option [value]="ReceiverTypeWarrantyIos.MONTH6">6 месяц</option>
+        </select>
+      </label>
+    } @else {
+      <label class="tt-control-label">
+        Гарантия на Android
+        <input
+          class="tt-input"
+          type="text"
+          placeholder="НЕ ДЕЙСТВУЕТ!"
+          formControlName="warrantyAndroid"
+        >
+      </label>
+    }
+  </div>
+
+  <label class="reason-for-contact mb16">
+    Причина обращения
+    <input
+      class="tt-input"
+      type="text"
+      placeholder="Причина обращения"
+      formControlName="description"
+    >
+  </label>
+
+  <div class="address-content" formGroupName="address">
+    <div class="delivery-section mb16">
+      <h4 class="mb16">Адрес доставки</h4>
+      <button class="btn">Добавить</button>
+    </div>
+
+    <div class="address-grid mb16">
+      <label class="tt-control-label">
+        Город
+        <input class="tt-input" type="text" placeholder="Город" formControlName="city">
+      </label>
+
+      <label class="tt-control-label">
+        Улица
+        <input class="tt-input" type="text" placeholder="Улица" formControlName="street">
+      </label>
+
+      <label class="tt-control-label">
+        Дом
+        <input class="tt-input" type="text" placeholder="Дом" formControlName="home">
+      </label>
+
+      <label class="tt-control-label">
+        Квартира
+        <input class="tt-input" type="text" placeholder="Квартира" formControlName="apartment">
+      </label>
+
+      <div>
+        <label class="tt-control-label">
+          Телефон
+          <input class="tt-input" type="text" placeholder="Телефон" formControlName="phone">
+        </label>
+
+        @if (form.controls.address.controls.phone.touched
+        && form.controls.address.controls.phone.hasError('required')) {
+          <small>Это поле обязательно!</small>
+        }
+      </div>
+    </div>
+
+    <button class="btn">Удалить</button>
+  </div>
+
+  <button class="btn btn-shadow mt20" type="submit">Подтвердить</button>
+</form>

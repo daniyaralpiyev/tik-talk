@@ -1,6 +1,8 @@
 import { Component, inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormRecord, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {AboutMyselfService} from '../../../data/services/about-myself.service';
+import {KeyValuePipe} from '@angular/common';
 
 enum ReceiverTypePhone {
   OPPO = 'OPPO',
@@ -32,25 +34,33 @@ interface Address {
   phone?: number
 }
 
-function getAddressForm() {
+function getAddressForm(initialValue: Address = {}) {
   return new FormGroup({
-    city: new FormControl<string>(''),
-    street: new FormControl<string>(''),
-    home: new FormControl<number | null>(null),
-    apartment: new FormControl<number | null>(null),
-    phone: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(3)
-    ]),
-  })
+    city: new FormControl<string>(initialValue.city ?? ''),
+    street: new FormControl<string>(initialValue.street ?? ''),
+    home: new FormControl<number | null>(initialValue.home ?? null),
+    apartment: new FormControl<number | null>(initialValue.apartment ?? null),
+    phone: new FormControl<number | null>(initialValue.phone ?? null,
+      [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ])
+    })
+}
+
+interface Feature {
+  code: string;    // Уникальный код фичи, напр. 'lift'
+  label: string;   // человеко читаемое название
+  value: boolean;  // включена/выключена
 }
 
 @Component({
   selector: 'app-about-myself',
   imports: [
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    KeyValuePipe
   ],
   templateUrl: './about-myself.html',
   styleUrl: './about-myself.scss'
@@ -61,12 +71,16 @@ export class AboutMyself {
   ReceiverTypeWarrantyIos = ReceiverTypeWarrantyIos;
   ReceiverTypePerson = ReceiverTypePerson;
 
+  aboutMyselfService = inject(AboutMyselfService)
+  features: Feature[] = []
+
   form = new FormGroup({
     personInfo: new FormGroup({
       name: new FormControl<string>('', Validators.required),
       lastName: new FormControl<string>(''),
       type: new FormControl<ReceiverTypePerson>(ReceiverTypePerson.PERSON),
       iin: new FormControl<string>(''),
+      iinDisable: new FormControl<string>({value: 'ТОЛЬКО ЮР. ЛИЦА!', disabled: true}),
     }),
     description: new FormControl<string>(''),
     info: new FormGroup({
@@ -76,10 +90,42 @@ export class AboutMyself {
       warranty: new FormControl<ReceiverTypeWarrantyIos>(ReceiverTypeWarrantyIos.MONTH1),
       warrantyAndroid: new FormControl<string>({value: 'НЕ ДЕЙСТВУЕТ!', disabled: true}),
     }),
-    address: getAddressForm() // остальное передали сюда из формы выше
+    // Все поля с данными внутри поля addresses мы перекинули в getAddressForm
+    addresses: new FormArray([getAddressForm()]),
+    feature: new FormRecord({}),
   })
 
   constructor() {
+    this.aboutMyselfService.getAddresses()
+      .pipe(takeUntilDestroyed())
+      .subscribe(addrs => {
+        // полностью очищаем и удаляем все пустые адреса, если там ничего нет
+        this.form.controls.addresses.clear()
+
+        // прошлись по объекту и каждому адресу пушнули нужную форму из сервиса aboutMyselfService
+        for (const addr of addrs) {
+          this.form.controls.addresses.push(getAddressForm(addr))
+        }
+
+        // Заменяет нужный индекс определенным адресом
+        // this.form.controls.addresses.setControl(0,getAddressForm(addrs[2]))
+        // Получаем нужный контрол по индексу
+        // console.log(this.form.controls.addresses.at(0))
+      })
+
+    this.aboutMyselfService.getFeatures()
+      .pipe(takeUntilDestroyed())
+      .subscribe(features => {
+        this.features = features
+
+        for (const feature of features) {
+          this.form.controls.feature.addControl(
+            feature.code,
+            new FormControl(feature.value)
+          )
+        }
+      })
+
     this.form.controls.personInfo.controls.type.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe(value => {
@@ -98,7 +144,6 @@ export class AboutMyself {
   }
 
   onSubmit(event: SubmitEvent) {
-    console.log('123')
     this.form.markAllAsTouched()
     this.form.updateValueAndValidity()
     if (!this.form.valid) return;
@@ -106,4 +151,14 @@ export class AboutMyself {
     console.log('this.form.value', this.form.value);
     console.log('this.form.getRawValue', this.form.getRawValue())
   }
+
+  addAddress() {
+    this.form.controls.addresses.insert(0, getAddressForm());
+  }
+
+  removeAddress(index: number) {
+    this.form.controls.addresses.removeAt(index, {emitEvent: false});
+  }
+
+  sort = () => 0 // функция сортировки для чекбоксов в правильном порядке
 }

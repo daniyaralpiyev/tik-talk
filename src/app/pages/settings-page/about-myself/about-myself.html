@@ -1,5 +1,5 @@
 <form class="form-main" [formGroup]="form" (ngSubmit)="onSubmit($event)">
-  <h4 class="h4 mb16">Заявка на ремонт смартфона</h4>
+  <h3 class="text mb16">Заявка на ремонт смартфона</h3>
 
   <div class="form-row" formGroupName="personInfo">
     <div>
@@ -33,9 +33,16 @@
         <input class="tt-input" type="text" placeholder="ИИН" formControlName="iin">
       </label>
     } @else {
-      <div class="additional-services">
-        <h5 class="mb16">Доп. услуги</h5>
-      </div>
+      <label class="tt-control-label">
+        ИИН
+        <input
+          class="tt-input"
+          type="text"
+          formControlName="iinDisable"
+          style="color: var(--primary-color);
+          font-weight: bold"
+        >
+      </label>
     }
   </div>
 
@@ -91,8 +98,9 @@
         <input
           class="tt-input"
           type="text"
-          placeholder="НЕ ДЕЙСТВУЕТ!"
           formControlName="warrantyAndroid"
+          style="color: var(--primary-color);
+          font-weight: bold"
         >
       </label>
     }
@@ -108,47 +116,60 @@
     >
   </label>
 
-  <div class="address-content" formGroupName="address">
+  <div>
     <div class="delivery-section mb16">
-      <h4 class="mb16">Адрес доставки</h4>
-      <button class="btn">Добавить</button>
+      <h3 class="mb16">Адрес доставки</h3>
+      <button class="btn" (click)="addAddress()">Добавить</button>
     </div>
 
-    <div class="address-grid mb16">
-      <label class="tt-control-label">
-        Город
-        <input class="tt-input" type="text" placeholder="Город" formControlName="city">
-      </label>
+    @for (group of form.controls.addresses.controls; track group; let i = $index) {
+      <div class="address-content" [formGroup]="group">
 
-      <label class="tt-control-label">
-        Улица
-        <input class="tt-input" type="text" placeholder="Улица" formControlName="street">
-      </label>
+        <div class="address-grid mb16">
+          <label class="tt-control-label">
+            Город
+            <input class="tt-input" type="text" placeholder="Город" formControlName="city">
+          </label>
 
-      <label class="tt-control-label">
-        Дом
-        <input class="tt-input" type="text" placeholder="Дом" formControlName="home">
-      </label>
+          <label class="tt-control-label">
+            Улица
+            <input class="tt-input" type="text" placeholder="Улица" formControlName="street">
+          </label>
 
-      <label class="tt-control-label">
-        Квартира
-        <input class="tt-input" type="text" placeholder="Квартира" formControlName="apartment">
-      </label>
+          <label class="tt-control-label">
+            Дом
+            <input class="tt-input" type="text" placeholder="Дом" formControlName="home">
+          </label>
 
-      <div>
-        <label class="tt-control-label">
-          Телефон
-          <input class="tt-input" type="text" placeholder="Телефон" formControlName="phone">
-        </label>
+          <label class="tt-control-label">
+            Квартира
+            <input class="tt-input" type="text" placeholder="Квартира" formControlName="apartment">
+          </label>
 
-        @if (form.controls.address.controls.phone.touched
-        && form.controls.address.controls.phone.hasError('required')) {
-          <small>Это поле обязательно!</small>
-        }
+          <label class="tt-control-label">
+            Телефон
+            <input class="tt-input" type="text" placeholder="Телефон" formControlName="phone">
+          </label>
+        </div>
+
+        <div class="additional-services" [formGroup]="form.controls.feature">
+          <h3 class="mb16">Доп. услуги</h3>
+
+          <div style="display: flex; gap: 36px">
+            @for (control of form.controls.feature.controls | keyvalue: sort; track control; let i = $index) {
+              <div>
+                <label>
+                  <input type="checkbox" [formControlName]="control.key">
+                </label>
+                {{ features[i].label }}
+              </div>
+            }
+          </div>
+        </div>
+
+        <button class="btn" (click)="removeAddress(i)">Удалить</button>
       </div>
-    </div>
-
-    <button class="btn">Удалить</button>
+    }
   </div>
 
   <button class="btn btn-shadow mt20" type="submit">Подтвердить</button>

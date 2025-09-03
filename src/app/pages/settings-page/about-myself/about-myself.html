@@ -146,10 +146,16 @@
             <input class="tt-input" type="text" placeholder="Квартира" formControlName="apartment">
           </label>
 
-          <label class="tt-control-label">
-            Телефон
-            <input class="tt-input" type="text" placeholder="Телефон" formControlName="phone">
-          </label>
+          <div>
+            <label class="tt-control-label">
+              Телефон
+              <input class="tt-input" type="text" placeholder="Телефон" formControlName="phone">
+            </label>
+            @if (group.controls.phone.touched
+            && group.controls.phone.hasError('required')) {
+              <small>Это поле обязательно!</small>
+            }
+          </div>
         </div>
 
         <div class="additional-services" [formGroup]="form.controls.feature">

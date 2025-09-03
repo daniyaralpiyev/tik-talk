@@ -18,7 +18,7 @@ export class AboutMyselfService {
         street: 'dubai marina street',
         home: 111,
         apartment: 222,
-        phone: 333,
+        phone: 1234567890,
       }
     ])
   }

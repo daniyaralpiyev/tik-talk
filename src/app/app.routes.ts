@@ -23,6 +23,9 @@ export const routes: Routes = [
 			{ path: 'profile/:id', component: ProfilePage },
 			{ path: 'settings', component: SettingsPage },
 			{ path: 'search', component: SearchPage },
+      { path: 'forms-experimental', component: FormsExperimental },
+      { path: 'experimental', component: Experimental },
+      { path: 'about-myself', component: AboutMyself },
 			{
 				path: 'chats',
 				loadChildren: () => chatsRoutes,
@@ -33,7 +36,4 @@ export const routes: Routes = [
 	},
 	{ path: 'login', component: LoginPage },
 	{ path: 'parent', component: Parent },
-	{ path: 'forms-experimental', component: FormsExperimental },
-  { path: 'experimental', component: Experimental },
-  { path: 'about-myself', component: AboutMyself },
 ];

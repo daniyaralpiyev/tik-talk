@@ -88,21 +88,22 @@
 
 .skills-two-columns-btn {
   display: grid;
-  justify-content: center;
-  align-items: center;
   border: 1px solid var(--primary-color);
-  border-radius: 5px;
-  width: 100%;
-  padding: 10px 20px;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 24px;
   cursor: pointer;
   margin-top: 16px;
+  padding: 10px 20px;
+  color: var(--primary-color);
+  border-radius: 4px;
 
-  a {
-    text-decoration: none;
+  button {
+    background: none;
     color: var(--primary-color);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0
   }
 
   &:hover {

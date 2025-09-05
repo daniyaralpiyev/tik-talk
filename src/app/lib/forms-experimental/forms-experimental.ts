@@ -196,7 +196,7 @@ export class FormsExperimental {
   // Обработчик сабмита формы
   onSubmit(event: SubmitEvent) {
     this.form.markAsTouched(); // пометить все контролы как тронутые
-    this.form.updateValueAndValidity(); // пересчитать валидность формы
+    this.form.updateValueAndValidity(); // пересчитать валидность формы на соответствие
     if (this.form.invalid) return; // если форма невалидна — прерываем
 
     // Выводим текущее value и "сырые" значения (getRawValue)

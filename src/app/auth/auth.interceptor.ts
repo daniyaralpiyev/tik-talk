@@ -1,7 +1,7 @@
 import {HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
 import {inject} from "@angular/core";
 import {Auth} from "./auth";
-import {BehaviorSubject, catchError, filter, tap} from "rxjs";
+import {BehaviorSubject, catchError, filter, finalize, tap} from "rxjs";
 import {throwError} from "rxjs";
 import {switchMap} from 'rxjs/operators';
 
@@ -58,10 +58,15 @@ const refreshAndProceed = (
 
                     // Если обновление не происходит, запускаем его, сохраняем access_token,
                     // добавляем его в запрос и отправляем заново.
-                    return next(addToken(req, res.access_token))
-                      .pipe(
-                        tap(()=> isRefreshing$.next(false))
-                      )
+                    // return next(addToken(req, res.access_token))
+                    //   .pipe(
+                    //     tap(()=> isRefreshing$.next(false))
+                    //   )
+
+                    // этот код я взял с chatgpt
+                    return next(addToken(req, res.access_token)).pipe(
+                        finalize(() => isRefreshing$.next(false))
+                      );
                 })
             )
     }

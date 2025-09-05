@@ -1,8 +1,13 @@
-import { Component, inject} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, FormRecord, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {AfterViewInit, Component, ElementRef, HostListener, inject, Renderer2} from '@angular/core';
+import {AbstractControl, FormArray, FormControl, FormGroup, FormRecord, FormsModule, ReactiveFormsModule,
+  ValidationErrors, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {AboutMyselfService} from '../../../data/services/about-myself.service';
 import {KeyValuePipe} from '@angular/common';
+import {Subject} from 'rxjs';
+import { MaskitoDirective } from '@maskito/angular';
+import maskPhone from './maskito-phone'; // твой mask.ts
+import maskData from './maskito-date'; // твой mask.ts
 
 enum ReceiverTypePhone {
   OPPO = 'OPPO',
@@ -19,6 +24,7 @@ enum ReceiverTypeWarrantyIos {
   MONTH1 = 'MONTH1',
   MONTH3 = 'MONTH3',
   MONTH6 = 'MONTH6',
+  TYPE = 'ВЫБЕРИТЕ ГАРАНТИЮ',
 }
 
 enum ReceiverTypePerson {
@@ -31,7 +37,7 @@ interface Address {
   street?: string
   home?: number
   apartment?: number
-  phone?: number
+  phone?: string
 }
 
 function getAddressForm(initialValue: Address = {}) {
@@ -40,14 +46,12 @@ function getAddressForm(initialValue: Address = {}) {
     street: new FormControl<string>(initialValue.street ?? ''),
     home: new FormControl<number | null>(initialValue.home ?? null),
     apartment: new FormControl<number | null>(initialValue.apartment ?? null),
-    phone: new FormControl<number | null>(initialValue.phone ?? null,
-      [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(10)
+    phone: new FormControl<string>(initialValue.phone ?? '', [
+      Validators.required
       ])
     })
 }
+
 
 interface Feature {
   code: string;    // Уникальный код фичи, напр. 'lift'
@@ -60,16 +64,24 @@ interface Feature {
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    KeyValuePipe
+    KeyValuePipe,
+    MaskitoDirective
   ],
   templateUrl: './about-myself.html',
   styleUrl: './about-myself.scss'
 })
-export class AboutMyself {
+export class AboutMyself implements AfterViewInit {
   ReceiverTypePhone = ReceiverTypePhone;
   ReceiverTypeOS = ReceiverTypeOS;
   ReceiverTypeWarrantyIos = ReceiverTypeWarrantyIos;
   ReceiverTypePerson = ReceiverTypePerson;
+
+  readonly phoneMask = maskPhone; // доступ к маске для инпута
+  readonly maskData = maskData; // доступ к маске для инпута
+
+  r2 = inject(Renderer2)
+  hostElement = inject(ElementRef)
+  private destroy$ = new Subject<void>()
 
   aboutMyselfService = inject(AboutMyselfService)
   features: Feature[] = []
@@ -80,14 +92,14 @@ export class AboutMyself {
       lastName: new FormControl<string>(''),
       type: new FormControl<ReceiverTypePerson>(ReceiverTypePerson.PERSON),
       iin: new FormControl<string>(''),
-      iinDisable: new FormControl<string>({value: 'ТОЛЬКО ЮР. ЛИЦА!', disabled: true}),
+      iinDisable: new FormControl<string>({value: 'ТОЛЬКО ЮР. ЛИЦАМ!', disabled: true}),
     }),
     description: new FormControl<string>(''),
     info: new FormGroup({
       typePhone: new FormControl<ReceiverTypePhone>(ReceiverTypePhone.OPPO),
       typeOS: new FormControl<ReceiverTypeOS>(ReceiverTypeOS.IOS),
       date: new FormControl<string>(''),
-      warranty: new FormControl<ReceiverTypeWarrantyIos>(ReceiverTypeWarrantyIos.MONTH1),
+      warranty: new FormControl<ReceiverTypeWarrantyIos>(ReceiverTypeWarrantyIos.TYPE),
       warrantyAndroid: new FormControl<string>({value: 'НЕ ДЕЙСТВУЕТ!', disabled: true}),
     }),
     // Все поля с данными внутри поля addresses мы перекинули в getAddressForm
@@ -96,7 +108,8 @@ export class AboutMyself {
   })
 
   constructor() {
-    this.aboutMyselfService.getAddresses()
+    this.aboutMyselfService
+      .getAddresses()
       .pipe(takeUntilDestroyed())
       .subscribe(addrs => {
         // полностью очищаем и удаляем все пустые адреса, если там ничего нет
@@ -143,22 +156,45 @@ export class AboutMyself {
       })
   }
 
+  addAddress() {
+    this.form.controls.addresses
+      // Вставляем новую форму адреса в начало массива адресов
+      .insert(0, getAddressForm());
+  }
+
+  removeAddress(index: number) {
+    this.form.controls.addresses
+      .removeAt(index, {emitEvent: false});
+  }
+
+  sort = () => 0 // функция сортировки для чекбоксов в правильном порядке
+
   onSubmit(event: SubmitEvent) {
-    this.form.markAllAsTouched()
-    this.form.updateValueAndValidity()
-    if (!this.form.valid) return;
+    this.form.markAllAsTouched() // пометить все контролы как тронутые
+    this.form.updateValueAndValidity() // пересчитать валидность формы на соответствие
+    if (!this.form.valid) return; // если форма невалидна — прерываем
 
     console.log('this.form.value', this.form.value);
     console.log('this.form.getRawValue', this.form.getRawValue())
   }
 
-  addAddress() {
-    this.form.controls.addresses.insert(0, getAddressForm());
+  ngAfterViewInit() {
+    this.resizeFeed()
   }
 
-  removeAddress(index: number) {
-    this.form.controls.addresses.removeAt(index, {emitEvent: false});
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.resizeFeed()
   }
 
-  sort = () => 0 // функция сортировки для чекбоксов в правильном порядке
+  ngOnDestroy() {
+    this.destroy$.next()
+    this.destroy$.complete()
+  }
+
+  resizeFeed() {
+    const {top} = this.hostElement.nativeElement.getBoundingClientRect()
+    const height = window.innerHeight - top - 24 - 24
+    this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
+  }
 }

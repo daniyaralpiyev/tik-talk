@@ -46,16 +46,6 @@
     }
   </div>
 
-  <label class="reason-for-contact mb16">
-    Причина обращения
-    <input
-      class="tt-input"
-      type="text"
-      placeholder="Причина обращения"
-      formControlName="description"
-    >
-  </label>
-
   <div class="form-row" formGroupName="info">
     <label class="tt-control-label mb16">
       Тип смартфона
@@ -75,11 +65,13 @@
     </label>
 
     <label class="tt-control-label">
-      Дата заявки на ремонт
+      Дата заявка на ремонт
       <input
         class="tt-input"
-        type="date"
+        placeholder="Дата"
+        type="text"
         formControlName="date"
+        [maskito]="maskData"
       >
     </label>
 
@@ -87,6 +79,7 @@
       <label class="tt-control-label">
         Гарантия на IOS
         <select class="tt-input" formControlName="warranty">
+          <option [value]="ReceiverTypeWarrantyIos.TYPE">Выберите гарантию...</option>
           <option [value]="ReceiverTypeWarrantyIos.MONTH1">1 месяц</option>
           <option [value]="ReceiverTypeWarrantyIos.MONTH3">3 месяц</option>
           <option [value]="ReceiverTypeWarrantyIos.MONTH6">6 месяц</option>
@@ -99,8 +92,7 @@
           class="tt-input"
           type="text"
           formControlName="warrantyAndroid"
-          style="color: var(--primary-color);
-          font-weight: bold"
+          style="color: var(--primary-color); font-weight: bold"
         >
       </label>
     }
@@ -149,7 +141,13 @@
           <div>
             <label class="tt-control-label">
               Телефон
-              <input class="tt-input" type="text" placeholder="Телефон" formControlName="phone">
+              <input
+                class="tt-input"
+                type="text"
+                placeholder="Телефон"
+                formControlName="phone"
+                [maskito]="phoneMask"
+              >
             </label>
             @if (group.controls.phone.touched
             && group.controls.phone.hasError('required')) {

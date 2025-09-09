@@ -8,9 +8,17 @@
         <input class="tt-input" type="text" placeholder="Имя" formControlName="name">
       </label>
 
+      <!-- @if использует функцию валидатор - validateStartWith -->
+      @if (form.controls.personInfo.controls.name.touched
+      && form.controls.personInfo.controls.name.hasError('startsWith')) {
+        <small style="color: tomato">
+          {{ form.controls.personInfo.controls.name.getError('startsWith')?.message }}
+        </small>
+      }
+
       @if (form.controls.personInfo.controls.name.touched
       && form.controls.personInfo.controls.name.hasError('required')) {
-        <small>Это поле обязательно!</small>
+        <small style="color: tomato">Это поле обязательно!</small>
       }
     </div>
 
@@ -65,10 +73,10 @@
     </label>
 
     <label class="tt-control-label">
-      Дата заявка на ремонт
+      Дата заявки
       <input
         class="tt-input"
-        placeholder="Дата"
+        placeholder="dd/mm/yyyy"
         type="text"
         formControlName="date"
         [maskito]="maskData"
@@ -107,6 +115,37 @@
       formControlName="description"
     >
   </label>
+
+  <div class="delivery-section-date mb16">
+    <h3 class="mb16">Период доставки</h3>
+  </div>
+
+  <div class="two-columns" formGroupName="dateRange">
+    <label class="tt-control-label">
+      Дата от
+      <input
+        class="tt-input"
+        type="date"
+        formControlName="from"
+      >
+    </label>
+
+    <label class="tt-control-label">
+      Дата до
+      <input
+        class="tt-input"
+        type="date"
+        formControlName="to"
+      >
+    </label>
+  </div>
+
+  @if (form.controls.dateRange.touched
+  && form.controls.dateRange.hasError('dateRange')) {
+    <small style="color: tomato">
+      {{ form.controls.dateRange.getError('dateRange')?.message }}
+    </small>
+  }
 
   <div>
     <div class="delivery-section mb16">
@@ -151,7 +190,7 @@
             </label>
             @if (group.controls.phone.touched
             && group.controls.phone.hasError('required')) {
-              <small>Это поле обязательно!</small>
+              <small style="color: tomato">Это поле обязательно!</small>
             }
           </div>
         </div>

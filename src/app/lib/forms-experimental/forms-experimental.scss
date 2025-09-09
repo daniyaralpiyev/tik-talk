@@ -84,10 +84,10 @@
 }
 
 .tt-input::-webkit-calendar-picker-indicator {
-	background: #8000c6;
+	background: var(--primary-color);
   cursor: pointer;
 }
 
 .tt-input.ng-pending {
-	border: 2px dashed #8000c6;
+	border: 2px dashed var(--primary-color);
 }

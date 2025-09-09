@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, HostListener, inject, Renderer2} from '@angular/core';
 import {AbstractControl, FormArray, FormControl, FormGroup, FormRecord, FormsModule, ReactiveFormsModule,
-  ValidationErrors, Validators} from '@angular/forms';
+  ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {AboutMyselfService} from '../../../data/services/about-myself.service';
 import {KeyValuePipe} from '@angular/common';
@@ -40,6 +40,12 @@ interface Address {
   phone?: string
 }
 
+interface Feature {
+  code: string;    // Уникальный код фичи, напр. 'lift'
+  label: string;   // человеко читаемое название
+  value: boolean;  // включена/выключена
+}
+
 function getAddressForm(initialValue: Address = {}) {
   return new FormGroup({
     city: new FormControl<string>(initialValue.city ?? ''),
@@ -52,12 +58,42 @@ function getAddressForm(initialValue: Address = {}) {
     })
 }
 
+function validateStartWith(forbiddenLetter: string): ValidatorFn {
+  return (control: AbstractControl) => {
+    const value: string = control.value ?? '';
 
-interface Feature {
-  code: string;    // Уникальный код фичи, напр. 'lift'
-  label: string;   // человеко читаемое название
-  value: boolean;  // включена/выключена
+    // сравниваем оба в нижнем регистре
+    if (value.toLowerCase().startsWith(forbiddenLetter.toLowerCase())) {
+      return {
+        startsWith: {
+          message: `${forbiddenLetter} это имя CEO!`
+        }
+      };
+    }
+
+    return null;
+  };
 }
+
+function validateDateRange({fromControlName, toControlName}: {fromControlName: string, toControlName: string}) {
+  return ( control: AbstractControl ) => {
+    const fromControl = control.get(fromControlName)
+    const toControl = control.get(toControlName)
+
+    if (!fromControl || !toControl) return null
+
+    const fromDate = new Date(fromControl.value)
+    const toDate = new Date(toControl.value)
+
+    if (fromDate && toDate && fromDate > toDate) {
+      toControl.setErrors({dateRange: {message: 'Дата не может быть с конца!'}})
+      return {dateRange: {message: 'Дата не может быть с конца!'}}
+    }
+
+    return null
+  }
+}
+
 
 @Component({
   selector: 'app-about-myself',
@@ -88,7 +124,10 @@ export class AboutMyself implements AfterViewInit {
 
   form = new FormGroup({
     personInfo: new FormGroup({
-      name: new FormControl<string>('', Validators.required),
+      name: new FormControl<string>(
+        '',
+        [Validators.required, validateStartWith('Vax')]
+      ),
       lastName: new FormControl<string>(''),
       type: new FormControl<ReceiverTypePerson>(ReceiverTypePerson.PERSON),
       iin: new FormControl<string>(''),
@@ -105,6 +144,10 @@ export class AboutMyself implements AfterViewInit {
     // Все поля с данными внутри поля addresses мы перекинули в getAddressForm
     addresses: new FormArray([getAddressForm()]),
     feature: new FormRecord({}),
+    dateRange: new FormGroup({
+      from: new FormControl<string>(''),
+      to: new FormControl<string>(''),
+    }, validateDateRange({fromControlName: 'from', toControlName: 'to'}))
   })
 
   constructor() {

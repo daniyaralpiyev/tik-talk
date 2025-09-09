@@ -41,6 +41,11 @@
   padding-top: 28px;
 }
 
+.delivery-section-date {
+  text-align: center;
+  margin-top: 26px;
+}
+
 .btn-content {
   display: flex;
   align-items: center;
@@ -111,4 +116,32 @@
   color: #fff;
   margin-bottom: 24px;
   text-align: center;
+}
+
+// так же это действие можно делать через шаблон без манипуляции в css
+.tt-input.ng-invalid.ng-touched {
+  border: 2px solid tomato;
+}
+
+.validation {
+  display: none;
+}
+
+.tt-input.ng-invalid.ng-touched + .validation {
+  display: block;
+}
+
+// Граница у формы после нажатия на кнопку
+//.ng-submitted {
+//  border: 1px solid var(--primary-color);
+//}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 12px;
+}
+
+.tt-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }

@@ -23,7 +23,7 @@ export class NameValidator implements AsyncValidator {
           // проверяем, есть ли имя в списке
           return users.some((u: Profile) => u.firstName === control.value)
             ? null // если есть → поле валидно
-            : { nameValid: { message: `Имя должно быть одним из списка: ${users.map((u) => u.firstName).join(', ')}`}};
+            : { nameValid: {message: `Имя должно быть одним из списка: ${users.map((u) => u.firstName).join(', ')}`}};
         }),
       );
   }

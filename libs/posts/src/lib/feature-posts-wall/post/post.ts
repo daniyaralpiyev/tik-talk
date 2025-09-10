@@ -1,0 +1,50 @@
+import {Component, inject, input, OnInit, signal} from '@angular/core';
+import {firstValueFrom} from 'rxjs';
+import {AvatarCircle, SvgIcon} from '@tt/common-ui';
+import {CommentComponent, PostInput} from '../../ui';
+import {CustomRelativeDatePipe} from '../../../../../common-ui/src/lib/pipes/date-text-ago-pipe';
+import {Post, PostComment, PostService} from '../../data';
+import {ProfileService} from '@tt/profile';
+
+@Component({
+  selector: 'app-post',
+  standalone: true,
+  imports: [
+    AvatarCircle,
+    SvgIcon,
+    PostInput,
+    CommentComponent,
+    CustomRelativeDatePipe,
+  ],
+  templateUrl: './post.html',
+  styleUrl: './post.scss'
+})
+export class PostComponent implements OnInit {
+  postService = inject(PostService);
+  profile = inject(ProfileService).me
+
+  post = input<Post>();
+  comments = signal<PostComment[]>([])
+
+  async ngOnInit() {
+    this.comments.set(this.post()!.comments)
+  }
+
+  // Создание комментария
+  async onCreated(commentText: string) {
+
+      firstValueFrom(this.postService.createComment({
+        text: commentText,
+        authorId: this.profile()!.id,
+        postId: this.post()!.id
+      }))
+        .then(async() => {
+        const comments = await firstValueFrom(
+          this.postService.getCommentsByPostId(this.post()!.id)
+        )
+        this.comments.set(comments);
+      })
+        .catch(error => console.error(error))
+      return;
+  }
+}

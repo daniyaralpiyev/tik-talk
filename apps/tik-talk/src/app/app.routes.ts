@@ -5,8 +5,6 @@ import { ProfilePage } from './pages/profile-page/profile-page';
 import { Layout } from './common-ui/layout/layout';
 import { canActivateAuth } from '@tt/auth';
 import { SettingsPage } from './pages/settings-page/settings-page';
-import { UsersMain } from './pages/users-main/users-main';
-import { Parent } from './test/parent/parent';
 import { chatsRoutes } from './pages/chats-page/chatsRoutes';
 import { FormsExperimental } from './lib/forms-experimental/forms-experimental';
 import { Experimental } from './lib/experimental/experimental';
@@ -30,10 +28,8 @@ export const routes: Routes = [
 				path: 'chats',
 				loadChildren: () => chatsRoutes,
 			},
-			{ path: 'users', component: UsersMain }, // Мой роутинг который я сделал
 		],
 		canActivate: [canActivateAuth],
 	},
 	{ path: 'login', component: LoginPage },
-	{ path: 'parent', component: Parent },
 ];

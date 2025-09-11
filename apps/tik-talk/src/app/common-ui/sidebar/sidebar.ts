@@ -28,12 +28,6 @@ export class Sidebar {
       link: 'profile/me'
     },
     {
-      id: 2,
-      label: 'Пользователь',
-      icon: 'user',
-      link: 'users'
-    },
-    {
       id: 3,
       label: 'Чаты',
       icon: 'chat',

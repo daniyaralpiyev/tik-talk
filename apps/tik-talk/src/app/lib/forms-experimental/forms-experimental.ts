@@ -10,7 +10,7 @@ import {
 	Validators,
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MockService } from '../../data/services/mock.service';
+import { MockService } from '../../../../../../libs/chats/src/lib/data/services/mock.service';
 import { NameValidator } from './name.validator';
 import { KeyValuePipe } from '@angular/common';
 

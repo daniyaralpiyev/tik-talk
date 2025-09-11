@@ -3,5 +3,5 @@ import { SvgIcon } from "./svg-icon/svg-icon";
 
 export {
   AvatarCircle,
-  SvgIcon
+  SvgIcon,
 }

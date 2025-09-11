@@ -46,7 +46,7 @@ export class CustomRelativeDatePipe implements PipeTransform {
     const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
     // Логика вывода с отладкой
-    console.log('Parsed date:', date, 'Adjusted now:', now, 'Diff (ms):', diffMs);
+    // console.log('Parsed date:', date, 'Adjusted now:', now, 'Diff (ms):', diffMs);
     if (days > 0) {
       return `${days} ${this.getDayWord(days)}  назад`;
     } else if (hours > 0) {

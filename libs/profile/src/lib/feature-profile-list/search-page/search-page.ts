@@ -3,7 +3,7 @@ import {fromEvent} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ProfileCard} from '../../ui';
 import {ProfileFilters} from '../profile-filters/profile-filters';
-import {ProfileService} from '../../data';
+import {ProfileService} from '@tt/data-access';
 
 @Component({
   selector: 'app-search-page',

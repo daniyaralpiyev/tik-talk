@@ -6,7 +6,7 @@ import {
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { delay, map, Observable } from 'rxjs';
-import {Profile} from '@tt/interfaces/profile';
+import {Profile} from '@tt/data-access';
 
 @Injectable({
 	providedIn: 'root',

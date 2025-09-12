@@ -1,7 +1,7 @@
 {
-  "name": "interfaces",
+  "name": "data-access",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/interfaces/src",
+  "sourceRoot": "libs/data-access/src",
   "prefix": "tt",
   "projectType": "library",
   "tags": [],
@@ -12,8 +12,8 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "libs/interfaces/jest.config.ts",
-        "tsConfig": "libs/interfaces/tsconfig.spec.json"
+        "jestConfig": "libs/data-access/jest.config.ts",
+        "tsConfig": "libs/data-access/tsconfig.spec.json"
       }
     },
     "lint": {

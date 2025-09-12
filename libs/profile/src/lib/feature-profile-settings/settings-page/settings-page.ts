@@ -3,9 +3,9 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {firstValueFrom, fromEvent} from 'rxjs';
 import {Router, RouterLink} from '@angular/router';
 import {debounceTime} from 'rxjs/operators';
-import {ProfileService} from '@tt/profile';
 import {SvgIcon} from '@tt/common-ui';
 import {AvatarUpload, ProfileHeader} from '../../ui';
+import {ProfileService} from '@tt/data-access';
 
 @Component({
   selector: 'app-settings-page',

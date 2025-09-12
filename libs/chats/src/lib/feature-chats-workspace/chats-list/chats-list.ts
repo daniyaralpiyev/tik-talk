@@ -5,8 +5,9 @@ import {AsyncPipe} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {map, switchMap} from 'rxjs';
 import {startWith} from 'rxjs/operators';
-import {ChatsService} from '../../data';
 import {SvgIcon} from '@tt/common-ui';
+import {ChatsService} from '@tt/data-access';
+
 
 @Component({
   selector: 'app-chats-list',

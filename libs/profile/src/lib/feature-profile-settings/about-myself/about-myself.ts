@@ -6,7 +6,7 @@ import {Subject} from 'rxjs';
 import { MaskitoDirective } from '@maskito/angular';
 import maskPhone from './maskito-phone'; // твой mask.ts
 import maskData from './maskito-date';
-import {AboutMyselfService} from '@tt/chats'; // твой mask.ts
+import {AboutMyselfService} from '@tt/data-access';
 
 enum ReceiverTypePhone {
   OPPO = 'OPPO',

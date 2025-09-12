@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
-import {AvatarCircle, SvgIcon} from '@tt/common-ui';
-import {CustomRelativeDatePipe} from '../../../../../common-ui/src/lib/pipes/date-text-ago-pipe';
-import {Chat, LastMessageRes} from '../../data';
+import {AvatarCircle, CustomRelativeDatePipe, SvgIcon} from '@tt/common-ui';
+import { Chat, LastMessageRes} from '@tt/data-access';
 
 @Component({
   selector: 'button[chats]',

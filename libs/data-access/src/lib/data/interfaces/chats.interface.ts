@@ -1,5 +1,4 @@
-import {Profile} from '@tt/interfaces/profile';
-
+import { Profile } from '../index';
 
 export interface Chat {
   id: number;

@@ -1,7 +1,7 @@
-import {Component, EventEmitter, HostBinding, inject, input, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, inject, Output, Renderer2} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AvatarCircle, SvgIcon} from '@tt/common-ui';
-import {ProfileService} from '@tt/profile';
+import {ProfileService} from '@tt/data-access';
 
 @Component({
   selector: 'app-message-input',

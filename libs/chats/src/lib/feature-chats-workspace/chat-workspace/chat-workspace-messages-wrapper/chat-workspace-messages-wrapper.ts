@@ -13,8 +13,8 @@ import { firstValueFrom, fromEvent, Subject, timer } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import {MessageInput} from '../../../ui';
-import {Chat, ChatsService} from '../../../data';
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
+import {Chat, ChatsService} from '@tt/data-access';
 
 @Component({
 	selector: 'app-chat-workspace-messages-wrapper',

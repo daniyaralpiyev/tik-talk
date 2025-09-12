@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DateTime } from 'luxon';
 
 @Pipe({
-  name: 'customUtcPlus5'
+  name: 'CustomDateTime'
 })
-export class UtcPlus5Pipe implements PipeTransform {
+export class CustomDateTimePipe implements PipeTransform {
   transform(value: string | Date): string {
     if (!value) return '';
 

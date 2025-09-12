@@ -3,7 +3,7 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {switchMap} from 'rxjs/operators';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {AsyncPipe} from '@angular/common';
-import {ProfileService} from '../../data';
+import { ProfileService } from '@tt/data-access';
 import {ProfileHeader} from '../../ui';
 import {ImgUrlPipe, SvgIcon} from '@tt/common-ui';
 import {PostFeed} from '@tt/posts';

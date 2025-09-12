@@ -1,7 +1,7 @@
 import {Component, EventEmitter, HostBinding, inject, input, Output, Renderer2} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AvatarCircle, SvgIcon} from '@tt/common-ui';
-import {ProfileService} from '@tt/profile';
+import {GlobalStoreService} from '@tt/shared';
 
 @Component({
   selector: 'app-post-input',
@@ -15,7 +15,7 @@ import {ProfileService} from '@tt/profile';
 })
 export class PostInput {
   r2 = inject(Renderer2)
-  profile = inject(ProfileService).me
+  profile = inject(GlobalStoreService).me
 
   isCommentInput = input(false)
   postId = input<number>(0)

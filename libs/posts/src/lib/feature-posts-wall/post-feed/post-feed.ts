@@ -12,8 +12,8 @@ import {PostInput} from '../../ui/post-input/post-input';
 import {firstValueFrom, fromEvent} from 'rxjs';
 import {PostComponent} from '../post/post';
 import {debounceTime} from 'rxjs/operators';
-import {ProfileService} from '../../../../../profile/src/lib/data/services/profile-service';
 import {PostService} from '../../data/services/post.service';
+import {ProfileService} from '@tt/profile';
 
 @Component({
   selector: 'app-post-feed',

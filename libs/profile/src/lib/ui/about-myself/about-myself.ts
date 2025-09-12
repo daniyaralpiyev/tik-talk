@@ -1,13 +1,12 @@
 import {AfterViewInit, Component, ElementRef, HostListener, inject, Renderer2} from '@angular/core';
-import {AbstractControl, FormArray, FormControl, FormGroup, FormRecord, FormsModule, ReactiveFormsModule,
-  ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormControl, FormGroup, FormRecord, FormsModule, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {AboutMyselfService} from '../../../../../chats/src/lib/data/services/about-myself.service';
 import {KeyValuePipe} from '@angular/common';
 import {Subject} from 'rxjs';
 import { MaskitoDirective } from '@maskito/angular';
 import maskPhone from './maskito-phone'; // твой mask.ts
-import maskData from './maskito-date'; // твой mask.ts
+import maskData from './maskito-date';
+import {AboutMyselfService} from '@tt/chats'; // твой mask.ts
 
 enum ReceiverTypePhone {
   OPPO = 'OPPO',

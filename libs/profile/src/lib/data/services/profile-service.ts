@@ -1,8 +1,8 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, tap} from 'rxjs';
-import {Pageble} from '@tt/shared';
-import {Profile} from '@tt/profile';
+import {GlobalStoreService, Pageble} from '@tt/shared';
+import {Profile} from '@tt/interfaces/profile';
 
 @Injectable({
   providedIn: 'root' // Регистрирует сервис в корневом инжекторе Angular (root), делая его доступным во всем приложении.
@@ -10,6 +10,7 @@ import {Profile} from '@tt/profile';
 export class ProfileService {
   http = inject(HttpClient); // Регистрация сервиса. Внедряет Angular-сервис HttpClient для выполнения HTTP-запросов.
   baseApiUrl = 'https://icherniakov.ru/yt-course/'; // Базовый URL API. Централизованное хранение базового URL для всех запросов.
+  private globalStoreService = inject(GlobalStoreService)
 
   me = signal<Profile | null>(null);
   filteredProfiles = signal<Profile[]>([]);
@@ -24,7 +25,10 @@ export class ProfileService {
     // Проверь Profile передается Profile[] или Profile?
     return this.http.get<Profile>(`${this.baseApiUrl}account/me`)
       .pipe(
-        tap(res => this.me.set(res))
+        tap(res => {
+          this.me.set(res)
+          this.globalStoreService.me.set(res)
+        })
       )
   }
 

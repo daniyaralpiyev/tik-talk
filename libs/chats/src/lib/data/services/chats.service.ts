@@ -1,4 +1,4 @@
-import { inject, Injectable, input, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chat, LastMessageRes, Message } from '../interfaces/chats.interface';
 import { map } from 'rxjs';

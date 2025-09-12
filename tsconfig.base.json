@@ -34,8 +34,8 @@
       "@tt/shared": [
         "libs/shared/src/index.ts"
       ],
-      "interfaces": [
-        "libs/interfaces/src/index.ts"
+      "@tt/interfaces/*": [
+        "libs/interfaces/src/lib/*"
       ]
     },
     "baseUrl": ".",

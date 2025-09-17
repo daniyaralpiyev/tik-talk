@@ -4,6 +4,8 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {authTokenInterceptor} from '@tt/auth';
+import {provideStore} from '@ngrx/store';
+import {provideEffects} from '@ngrx/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +14,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     // Нужен для получения данных от сервера. Который делает HTTP-запросы
     // (GET/POST/PUT/DELETE). Без него Angular не сможет отправить запросы к API.
-    provideHttpClient(withInterceptors([authTokenInterceptor]))
+    provideHttpClient(withInterceptors([authTokenInterceptor])),
+    provideStore(),
+    provideEffects()
   ]
 };

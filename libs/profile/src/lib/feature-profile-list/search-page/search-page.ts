@@ -1,9 +1,10 @@
-import {Component, ElementRef, HostListener, inject, Renderer2} from '@angular/core';
+import {Component, ElementRef, HostListener, inject, Renderer2, AfterViewInit} from '@angular/core';
 import {fromEvent} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ProfileCard} from '../../ui';
-import {ProfileFilters} from '../profile-filters/profile-filters';
-import {ProfileService} from '@tt/data-access';
+import { ProfileFilters } from '../index';
+import {Store} from '@ngrx/store';
+import {selectFilteredProfiles} from '../../data';
 
 @Component({
   selector: 'app-search-page',
@@ -14,9 +15,9 @@ import {ProfileService} from '@tt/data-access';
   templateUrl: './search-page.html',
   styleUrl: './search-page.scss'
 })
-export class SearchPage {
-  profileService = inject(ProfileService);  // Инъекция сервиса
-  profiles = this.profileService.filteredProfiles
+export class SearchPage implements AfterViewInit {
+  store = inject(Store)
+  profiles = this.store.selectSignal(selectFilteredProfiles)
 
   hostElement = inject(ElementRef)
   r2 = inject(Renderer2)

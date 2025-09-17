@@ -12,7 +12,6 @@ export class ProfileService {
   private globalStoreService = inject(GlobalStoreService)
 
   me = signal<Profile | null>(null);
-  filteredProfiles = signal<Profile[]>([]);
 
   getTestAccounts() {
     // Метод для запроса данных. Сервис для запросов к API и возвращает Observable<Profile[]>.
@@ -61,13 +60,9 @@ export class ProfileService {
   }
 
   filterProfiles(params:Record<string, any>) {
-    return this.http.get<Pageble<Profile>>(
-      `${this.baseApiUrl}account/accounts`,
-      {
+    return this.http
+      .get<Pageble<Profile>>(`${this.baseApiUrl}account/accounts`, {
         params
-      }
-    ).pipe(
-      tap(res => this.filteredProfiles.set(res.items))
-    )
+      })
   }
 }

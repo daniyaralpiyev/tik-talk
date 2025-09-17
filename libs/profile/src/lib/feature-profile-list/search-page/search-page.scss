@@ -1,11 +1,12 @@
 :host {
-  display: grid;
-  grid-gap: 20px;
+  display: block;
+  grid-gap: 10px;
 }
 
 .profile-card__wrapper {
   display: grid;
   grid-gap: 8px;
+  padding-top: 10px;
   overflow-y: scroll;
   scrollbar-color: var(--primary-color) var(--dark-color);// Черный фон scrollbar
   scrollbar-width: thin; // Тонкий scrollbar

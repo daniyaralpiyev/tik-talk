@@ -1,10 +1,8 @@
 import {Component, inject, OnDestroy} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {debounceTime, startWith, switchMap} from 'rxjs/operators';
+import {debounceTime, startWith} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {ProfileService} from '@tt/data-access';
-import {Store} from '@ngrx/store';
-import {profileActions} from '../../data';
+import { profileStore} from '../../data';
 
 @Component({
   selector: 'app-profile-filters',
@@ -16,8 +14,7 @@ import {profileActions} from '../../data';
 })
 export class ProfileFilters implements OnDestroy {
   fb = inject(FormBuilder);
-  profileService = inject(ProfileService);
-  store = inject(Store);
+  store = inject(profileStore);
 
   searchForm = this.fb.group({
     firstName: [''],
@@ -36,7 +33,7 @@ export class ProfileFilters implements OnDestroy {
         // takeUntilDestroyed()
       )
       .subscribe( formValue => { // оставили subscribe чтобы просто сама подписка была
-        this.store.dispatch(profileActions.filterEvents({filters: formValue}))
+        // this.store.filterProfiles(formValue)
       })
   }
 

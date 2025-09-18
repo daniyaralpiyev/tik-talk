@@ -22,6 +22,7 @@
     "@maskito/kit": "^3.10.3",
     "@maskito/phone": "^3.10.3",
     "@ngrx/effects": "^20.0.1",
+    "@ngrx/signals": "^20.0.1",
     "@ngrx/store": "^20.0.1",
     "@ngxs/store": "^20.1.0",
     "@types/luxon": "^3.7.1",

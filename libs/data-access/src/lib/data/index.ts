@@ -8,6 +8,7 @@ import { GlobalStoreService } from "./services/global-store.service";
 import { MockService } from "./services/mock.service";
 import { PostService } from "./services/post.service";
 import { ProfileService } from "./services/profile-service";
+import { SignalStoreService } from "./services/signal-store";
 
 export {
   AboutMyselfService,
@@ -15,7 +16,8 @@ export {
   MockService,
   PostService,
   ProfileService,
-  GlobalStoreService
+  GlobalStoreService,
+  SignalStoreService
 }
 
 export type {

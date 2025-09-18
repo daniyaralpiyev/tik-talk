@@ -7,7 +7,7 @@ import {chatsRoutes} from '@tt/chats';
 import {Layout} from '@tt/layout';
 import {provideState} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import {ProfileEffects, profileFeature} from '../../../../libs/profile/src/lib/data';
+import {ProfileEffects, profileFeature, profileStore} from '../../../../libs/profile/src/lib/data';
 
 export const routes: Routes = [
 	{
@@ -23,8 +23,9 @@ export const routes: Routes = [
         path: 'search',
         component: SearchPage,
         providers: [
-          provideState(profileFeature),
-          provideEffects(ProfileEffects)
+          profileStore,
+          // provideState(profileFeature),
+          // provideEffects(ProfileEffects)
         ]
       },
       { path: 'forms-experimental', component: FormsExperimental },

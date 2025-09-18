@@ -4,6 +4,8 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {map, switchMap} from 'rxjs';
 import {profileActions} from './actions';
 
+// Effects
+// Для побочных эффектов: API-запросы, localStorage, навигация.
 @Injectable({
   providedIn: 'root'
 })

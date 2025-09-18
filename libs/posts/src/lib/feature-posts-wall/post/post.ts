@@ -2,8 +2,7 @@ import {Component, inject, input, OnInit, signal} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {AvatarCircle, CustomRelativeDatePipe, SvgIcon} from '@tt/common-ui';
 import {CommentComponent, PostInput} from '../../ui';
-import {Post, PostService, ProfileService} from '@tt/data-access';
-import {PostComment} from '../../../../../data-access/src/lib/data/interfaces/post.interface';
+import {Post, PostComment, PostService, ProfileService} from '@tt/data-access';
 
 @Component({
   selector: 'app-post',

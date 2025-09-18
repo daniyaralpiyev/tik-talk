@@ -1,6 +1,6 @@
 import { Chat, LastMessageRes, Message } from "./interfaces/chats.interface";
 import { Pageble } from "./interfaces/pageble.interface";
-import { Post } from "./interfaces/post.interface";
+import { CommentCreateDto, Post, PostComment, PostCreateDto } from "./interfaces/post.interface";
 import { Profile } from "./interfaces/profile.interface";
 import { AboutMyselfService } from "./services/about-myself.service";
 import { ChatsService } from "./services/chats.service";
@@ -25,6 +25,9 @@ export type {
   Message,
   LastMessageRes,
   Pageble,
+  PostCreateDto,
   Post,
+  PostComment,
+  CommentCreateDto,
   Profile
 }

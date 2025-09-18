@@ -1,5 +1,7 @@
 /**
  * Файл с примером "NgRx Signal Store"
+ *
+ * Перед тем как использовать нужно импортировать в routes.ts
  */
 import {patchState, signalStore, withComputed, withHooks, withMethods, withState} from '@ngrx/signals';
 import {Profile, ProfileService} from '@tt/data-access';

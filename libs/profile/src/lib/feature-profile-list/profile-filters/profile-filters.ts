@@ -1,8 +1,11 @@
 import {Component, inject, OnDestroy} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {debounceTime, startWith} from 'rxjs/operators';
+import {debounceTime, startWith, switchMap} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import { profileStore} from '../../data';
+import {ProfileService} from '@tt/data-access';
+import {Store} from '@ngrx/store';
+import {profileActions} from '../../data';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-profile-filters',
@@ -14,7 +17,8 @@ import { profileStore} from '../../data';
 })
 export class ProfileFilters implements OnDestroy {
   fb = inject(FormBuilder);
-  store = inject(profileStore);
+  profileService = inject(ProfileService)
+  store = inject(Store);
 
   searchForm = this.fb.group({
     firstName: [''],
@@ -30,10 +34,10 @@ export class ProfileFilters implements OnDestroy {
         startWith({}),
         debounceTime(500), // ждем 0,5 секунду после выводим значение
         // Очищаем за собой работает типа отписки. Этот подход отписки появился в ангуляре с 17 версии
-        // takeUntilDestroyed()
+        takeUntilDestroyed()
       )
-      .subscribe( formValue => { // оставили subscribe чтобы просто сама подписка была
-        // this.store.filterProfiles(formValue)
+      .subscribe(formValue => {
+        this.store.dispatch(profileActions.filterEvents({filters: formValue}))
       })
   }
 

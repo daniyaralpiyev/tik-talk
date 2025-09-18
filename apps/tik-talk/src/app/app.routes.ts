@@ -2,12 +2,11 @@ import { Routes } from '@angular/router';
 import { canActivateAuth, LoginPage} from '@tt/auth';
 import { FormsExperimental } from './lib/forms-experimental/forms-experimental';
 import { Experimental } from './lib/experimental/experimental';
-import {AboutMyself, ProfilePage, SearchPage, SettingsPage} from '@tt/profile';
+import {AboutMyself, ProfileEffects, profileFeature, ProfilePage, SearchPage, SettingsPage} from '@tt/profile';
 import {chatsRoutes} from '@tt/chats';
 import {Layout} from '@tt/layout';
 import {provideState} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import {ProfileEffects, profileFeature, profileStore} from '../../../../libs/profile/src/lib/data';
 
 export const routes: Routes = [
 	{
@@ -23,9 +22,9 @@ export const routes: Routes = [
         path: 'search',
         component: SearchPage,
         providers: [
-          profileStore,
-          // provideState(profileFeature),
-          // provideEffects(ProfileEffects)
+          // profileStore, // провайдим NGRX Signal Store из profile.store.ts
+          provideState(profileFeature), // провайдим selector profileFeature
+          provideEffects(ProfileEffects) // провайдим effects ProfileEffects
         ]
       },
       { path: 'forms-experimental', component: FormsExperimental },

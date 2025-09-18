@@ -3,7 +3,8 @@ import {fromEvent} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ProfileCard} from '../../ui';
 import { ProfileFilters } from '../index';
-import {profileStore} from '../../data';
+import {Store} from '@ngrx/store';
+import {selectFilteredProfiles} from '../../data';
 
 @Component({
   selector: 'app-search-page',
@@ -15,8 +16,8 @@ import {profileStore} from '../../data';
   styleUrl: './search-page.scss'
 })
 export class SearchPage implements AfterViewInit {
-  store = inject(profileStore);
-  profiles = this.store.profiles2;
+  store = inject(Store)
+  profiles = this.store.selectSignal(selectFilteredProfiles)
 
   hostElement = inject(ElementRef)
   r2 = inject(Renderer2)

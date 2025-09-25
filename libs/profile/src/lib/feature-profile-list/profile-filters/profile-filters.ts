@@ -34,6 +34,7 @@ export class ProfileFilters implements OnDestroy {
   constructor() {
     // 1) Подписка на searchTerm$ → берём значение из стора и заливаем в форму
     this.searchTerm$
+      .pipe(takeUntilDestroyed()) // авто-отписка → вручную unsubscribe делать не нужно)
       // searchTerm$ без авто-отписки → нужна ручная отписка (либо переделать takeUntilDestroyed и сделать авто-отписка)
       .subscribe(term =>
         this.searchForm.patchValue(
@@ -47,7 +48,6 @@ export class ProfileFilters implements OnDestroy {
       .pipe(
         startWith(this.searchForm.value), // сразу взять текущее значение формы при инициализации
         debounceTime(500), // ждать 0.5s, чтобы не стрелять диспатч на каждую букву
-        takeUntilDestroyed() // авто-отписка → вручную unsubscribe делать не нужно
       )
       .subscribe(formValue => {
         // отправляем фильтрацию в стор
@@ -60,7 +60,7 @@ export class ProfileFilters implements OnDestroy {
 
   ngOnDestroy() {
     this.searchFormSub.unsubscribe() // ручная отписка
-    // ручная отписка нужна ТОЛЬКО потому, что searchTerm$ выше подписана без takeUntilDestroyed
+    // ручная отписка нужна ТОЛЬКО потому, что выше в пункт 2 идет без takeUntilDestroyed
     // иначе останется "висячая" подписка → утечка памяти
   }
 }

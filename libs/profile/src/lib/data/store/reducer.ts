@@ -6,23 +6,29 @@ import {profileActions} from './actions';
 // Функция, которая решает, как меняется состояние после экшена.
 export interface ProfileState {
   profiles: Profile[],
-  profileFilters: Record<string, any>
+  profileFilters: Record<string, any>,
+  searchTerm: string
 }
 
 export const initialState: ProfileState = {
   profiles: [],
-  profileFilters: {}
+  profileFilters: {},
+  searchTerm: ''
 }
 
 export const profileFeature = createFeature({
   name: 'profileFeature',
   reducer: createReducer(
     initialState,
-    on(profileActions.profilesLoaded, (state, payload) => {
-      return {
+    // кладёт массив профилей в стор.
+    on(profileActions.profilesLoaded, (state, payload) => ({
         ...state,
         profiles: payload.profiles
-      }
-    })
+    })),
+    // сохраняет введённый текст поиска.
+    on(profileActions.setSearchTerm, (state, payload) => ({
+        ...state,
+        searchTerm: payload.term
+    }))
   )
 })

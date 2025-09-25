@@ -1,10 +1,9 @@
 import {Component, inject, OnDestroy} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
-import {debounceTime, startWith, switchMap} from 'rxjs/operators';
+import {debounceTime, startWith} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
-import {ProfileService} from '@tt/data-access';
 import {Store} from '@ngrx/store';
-import {profileActions} from '../../data';
+import {profileActions, selectSearchTerm} from '../../data';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
@@ -17,7 +16,6 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 })
 export class ProfileFilters implements OnDestroy {
   fb = inject(FormBuilder);
-  profileService = inject(ProfileService)
   store = inject(Store);
 
   searchForm = this.fb.group({
@@ -26,22 +24,43 @@ export class ProfileFilters implements OnDestroy {
     stack: [''],
   })
 
+  // хранит ссылку на подписку, чтобы потом вручную отписаться
   searchFormSub!: Subscription
 
+  // селектор из NGRX стора (берёт значение searchTerm из глобального состояния)
+  // observable, который эмитит новое значение при каждом изменении в сторе
+  searchTerm$ = this.store.select(selectSearchTerm)
+
   constructor() {
+    // 1) Подписка на searchTerm$ → берём значение из стора и заливаем в форму
+    this.searchTerm$
+      // searchTerm$ без авто-отписки → нужна ручная отписка (либо переделать takeUntilDestroyed и сделать авто-отписка)
+      .subscribe(term =>
+        this.searchForm.patchValue(
+          { firstName: term }, // обновляем поле "Имя" в форме значением из стора
+          { emitEvent: false } // запрещаем триггерить valueChanges → чтобы не было лишнего диспатча
+        )
+      );
+
+    // 2) Подписка на изменения формы
     this.searchFormSub = this.searchForm.valueChanges
       .pipe(
-        startWith({}),
-        debounceTime(500), // ждем 0,5 секунду после выводим значение
-        // Очищаем за собой работает типа отписки. Этот подход отписки появился в ангуляре с 17 версии
-        takeUntilDestroyed()
+        startWith(this.searchForm.value), // сразу взять текущее значение формы при инициализации
+        debounceTime(500), // ждать 0.5s, чтобы не стрелять диспатч на каждую букву
+        takeUntilDestroyed() // авто-отписка → вручную unsubscribe делать не нужно
       )
       .subscribe(formValue => {
-        this.store.dispatch(profileActions.filterEvents({filters: formValue}))
-      })
+        // отправляем фильтрацию в стор
+        this.store.dispatch(profileActions.filterEvents({ filters: formValue }));
+
+        // сохраняем имя в стор → нужно для восстановления при переходе между страницами
+        this.store.dispatch(profileActions.setSearchTerm({ term: formValue.firstName || '' }));
+      });
   }
 
   ngOnDestroy() {
-    this.searchFormSub.unsubscribe()
+    this.searchFormSub.unsubscribe() // ручная отписка
+    // ручная отписка нужна ТОЛЬКО потому, что searchTerm$ выше подписана без takeUntilDestroyed
+    // иначе останется "висячая" подписка → утечка памяти
   }
 }

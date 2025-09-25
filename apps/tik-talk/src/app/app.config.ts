@@ -1,11 +1,11 @@
 import {ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
-
 import {routes} from './app.routes';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {authTokenInterceptor} from '@tt/auth';
-import {provideStore} from '@ngrx/store';
+import {provideState, provideStore} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
+import {PostsEffects, postsFeature} from '../../../../libs/posts/src/lib/data';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +16,9 @@ export const appConfig: ApplicationConfig = {
     // (GET/POST/PUT/DELETE). Без него Angular не сможет отправить запросы к API.
     provideHttpClient(withInterceptors([authTokenInterceptor])),
     provideStore(),
-    provideEffects()
+    provideEffects(),
+    // когда запровайдил две строки, ниже посты заработали
+    provideEffects(PostsEffects),
+    provideState(postsFeature)
   ]
 };

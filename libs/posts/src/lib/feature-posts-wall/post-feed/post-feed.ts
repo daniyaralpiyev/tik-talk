@@ -13,6 +13,8 @@ import {PostComponent} from '../post/post';
 import {debounceTime} from 'rxjs/operators';
 import {PostService, ProfileService} from '@tt/data-access';
 import {PostInput} from '../../ui';
+import {Store} from '@ngrx/store';
+import {postsActions, selectedPosts} from '../../data';
 
 @Component({
   selector: 'app-post-feed',
@@ -28,8 +30,13 @@ export class PostFeed implements AfterViewInit {
   hostElement = inject(ElementRef)
   r2 = inject(Renderer2)
   profile = inject(ProfileService).me
+  store = inject(Store)
 
-  feed = this.postService.posts
+  // код feed который писал Иван
+  // feed = this.postService.posts
+
+  // Код feed который писал через пример Кристины
+  feed = this.store.selectSignal(selectedPosts); // данные приходят из стора
 
   @Output() created = new EventEmitter()
 
@@ -40,6 +47,7 @@ export class PostFeed implements AfterViewInit {
 
   constructor() {
     firstValueFrom(this.postService.fetchPosts())
+    this.store.dispatch(postsActions.postsGet());
   }
 
   ngAfterViewInit() {

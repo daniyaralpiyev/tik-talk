@@ -1,4 +1,5 @@
 import {ChatWSMessage} from './chat-ws-message.interface';
+import {Observable} from 'rxjs';
 
 export interface ChatConnectionWSParams {
   url: string;
@@ -7,7 +8,7 @@ export interface ChatConnectionWSParams {
 }
 
 export interface ChatWSService {
-  connect:(params: ChatConnectionWSParams) => void;
+  connect:(params: ChatConnectionWSParams) => void | Observable<ChatWSMessage>;
   sendMessage: (text: string, chat_id: number) => void;
   disconnect:() => void;
 }

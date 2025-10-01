@@ -1,12 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { map, Observable} from 'rxjs';
 import {AuthService, Chat, ProfileService } from '../index';
 import {LastMessageRes, Message} from '../interfaces/chats.interface';
 import {ChatWsNativeService} from './chat-ws-native.service';
 import {ChatWSService} from '../interfaces/chata-ws-service.interface';
 import {ChatWSMessage} from '../interfaces/chat-ws-message.interface';
 import {isNewMessage, isUnreadMessage} from '../interfaces/type-guards';
+import {ChatWSRxjsService} from '../interfaces/chat-ws-rxjs.service';
 
 
 @Injectable({
@@ -17,20 +18,31 @@ export class ChatsService {
   _authService = inject(AuthService);
 	me = inject(ProfileService).me;
 
-  wsAdapter: ChatWSService = new ChatWsNativeService()
-
 	activeChatMessages = signal<Message[]>([]);
 
 	baseApiUrl = 'https://icherniakov.ru/yt-course/';
 	chatsUrl = `${this.baseApiUrl}chat/`;
 	messageUrl = `${this.baseApiUrl}message/`;
 
+  // wsAdapter: ChatWSService = new ChatWsNativeService()
+
+  // connectWS() {
+  //   this.wsAdapter.connect({
+  //     url: `${this.baseApiUrl}chat/ws`,
+  //     token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
+  //     handleMessage: this.handleWSMessage
+  //   })
+  // }
+
+  wsAdapter: ChatWSService = new ChatWSRxjsService() // Websocket RXJS RXJS
+
+  // Websocket RXJS RXJS
   connectWS() {
-    this.wsAdapter.connect({
+    return this.wsAdapter.connect({
       url: `${this.baseApiUrl}chat/ws`,
       token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
       handleMessage: this.handleWSMessage
-    })
+    }) as Observable<ChatWSMessage>
   }
 
   handleWSMessage = (message: ChatWSMessage) => {

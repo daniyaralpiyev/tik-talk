@@ -1,8 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs';
-import {Chat, ProfileService } from '../index';
+import {AuthService, Chat, ProfileService } from '../index';
 import {LastMessageRes, Message} from '../interfaces/chats.interface';
+import {ChatWsNativeService} from './chat-ws-native.service';
+import {ChatWSService} from '../interfaces/chata-ws-service.interface';
 
 
 @Injectable({
@@ -10,13 +12,28 @@ import {LastMessageRes, Message} from '../interfaces/chats.interface';
 })
 export class ChatsService {
 	http = inject(HttpClient);
+  _authService = inject(AuthService);
 	me = inject(ProfileService).me;
+
+  wsAdapter: ChatWSService = new ChatWsNativeService()
 
 	activeChatMessages = signal<Message[]>([]);
 
 	baseApiUrl = 'https://icherniakov.ru/yt-course/';
 	chatsUrl = `${this.baseApiUrl}chat/`;
 	messageUrl = `${this.baseApiUrl}message/`;
+
+  connectWS() {
+    this.wsAdapter.connect({
+      url: `${this.baseApiUrl}chat/ws`,
+      token: this._authService.token ?? '',
+      handleMessage: this.handleWSMessage
+    })
+  }
+
+  handleWSMessage(message: unknown) {
+
+  }
 
 	createChat(userId: number) {
 		return this.http.post<Chat>(`${this.chatsUrl}${userId}`, {});

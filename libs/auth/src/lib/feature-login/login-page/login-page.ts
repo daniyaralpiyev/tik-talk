@@ -1,7 +1,7 @@
 import {Component, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Auth} from '@tt/auth';
+import {AuthService} from '@tt/data-access';
 
 @Component({
   selector: 'app-login-page',
@@ -12,7 +12,7 @@ import {Auth} from '@tt/auth';
   styleUrl: './login-page.scss'
 })
 export class LoginPage {
-  authService = inject(Auth);
+  authService = inject(AuthService);
   router = inject(Router);
 
   isPasswordVisible = signal<boolean>(false);

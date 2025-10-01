@@ -1,9 +1,9 @@
 import {HttpHandlerFn, HttpInterceptorFn, HttpRequest} from '@angular/common/http';
 import {inject} from "@angular/core";
-import {Auth} from "./auth";
-import {BehaviorSubject, catchError, filter, finalize, tap} from "rxjs";
+import {BehaviorSubject, catchError, filter, finalize} from "rxjs";
 import {throwError} from "rxjs";
 import {switchMap} from 'rxjs/operators';
+import {AuthService} from '@tt/data-access';
 
 let isRefreshing$ = new  BehaviorSubject<boolean>(false);
 
@@ -14,7 +14,7 @@ let isRefreshing$ = new  BehaviorSubject<boolean>(false);
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 
   // req, чтобы перехватить, next, чтобы отпустить
-    const authService = inject(Auth); // получаем Auth-сервис
+    const authService = inject(AuthService); // получаем Auth-сервис
     const token = authService.token; // берём текущий токен
 
     if (!token) return next(req) // Если токена нет — просто отправляем запрос дальше без изменений.
@@ -42,7 +42,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
 // Обновляет токен с помощью auth.refreshAuthToken()
 // Повторяет оригинальный запрос с новым токеном
 const refreshAndProceed = (
-    authService: Auth, // присвоили класс Auth
+    authService: AuthService, // присвоили класс Auth
     req: HttpRequest<any>,
     next: HttpHandlerFn) => {
 

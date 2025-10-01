@@ -1,9 +1,9 @@
 import {inject} from '@angular/core';
-import {Auth} from './auth';
+import {AuthService} from '../../../../data-access/src/lib/data/services/auth.service';
 import {Router} from '@angular/router';
 
 export const canActivateAuth = () => {
-  const isLoggedIn = inject(Auth).isAuth
+  const isLoggedIn = inject(AuthService).isAuth
 
   if (isLoggedIn) {
     return true;

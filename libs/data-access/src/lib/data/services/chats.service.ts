@@ -5,6 +5,8 @@ import {AuthService, Chat, ProfileService } from '../index';
 import {LastMessageRes, Message} from '../interfaces/chats.interface';
 import {ChatWsNativeService} from './chat-ws-native.service';
 import {ChatWSService} from '../interfaces/chata-ws-service.interface';
+import {ChatWSMessage} from '../interfaces/chat-ws-message.interface';
+import {isNewMessage, isUnreadMessage} from '../interfaces/type-guards';
 
 
 @Injectable({
@@ -26,13 +28,31 @@ export class ChatsService {
   connectWS() {
     this.wsAdapter.connect({
       url: `${this.baseApiUrl}chat/ws`,
-      token: this._authService.token ?? '',
+      token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
       handleMessage: this.handleWSMessage
     })
   }
 
-  handleWSMessage(message: unknown) {
+  handleWSMessage = (message: ChatWSMessage) => {
+    if (!('action' in message)) return
 
+    if (isUnreadMessage(message)) {
+      // TODO непрочитанные сообщения
+    }
+    if (isNewMessage(message)) {
+      this.activeChatMessages.set([
+        ...this.activeChatMessages(),
+        {
+          id: message.data.id,
+          userFromId: message.data.author,
+          personalChatId: message.data.chat_id,
+          text: message.data.message,
+          createdAt: message.data.created_at,
+          isRead: false,
+          isMine: false
+        }
+      ])
+    }
   }
 
 	createChat(userId: number) {

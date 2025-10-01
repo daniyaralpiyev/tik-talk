@@ -49,10 +49,14 @@ export class ChatWorkspaceMessagesWrapper implements OnInit {
 
 	// Метод для отправки сообщения
 	async onSendMessage(messageText: string) {
+    this.chatsService.wsAdapter.sendMessage(
+      messageText,
+      this.chat().id
+    )
 		// Отправляем сообщение на сервер (ждём завершения запроса)
-		await firstValueFrom(
-			this.chatsService.sendMessage(this.chat().id, messageText),
-		);
+		// await firstValueFrom(
+		// 	this.chatsService.sendMessage(this.chat().id, messageText),
+		// );
 		// После успешной отправки подгружаем чат заново, чтобы обновить список сообщений
 		await firstValueFrom(this.chatsService.getChatById(this.chat().id));
 	}

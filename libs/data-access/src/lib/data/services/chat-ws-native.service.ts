@@ -18,12 +18,12 @@ export class ChatWsNativeService  implements ChatWSService {
     }
   };
 
-  sendMessage(text: string, chatId: number) {
+  sendMessage(text: string, chat_id: number) {
     this._socket?.send(
       // парсим наш объект в строку
       JSON.stringify({
         text,
-        chatId: chatId,
+        chat_id: chat_id,
       })
     );
   };

@@ -1,6 +1,6 @@
 import {Component, HostBinding, input} from '@angular/core';
 import {AvatarCircle, CustomRelativeDatePipe, CustomDateTimePipe} from '@tt/common-ui';
-import {Message} from '../../../../../../../data-access/src/lib/data/interfaces/chats.interface';
+import {Message} from '@tt/data-access';
 
 @Component({
   selector: 'app-chat-workspace-message',

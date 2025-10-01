@@ -6,6 +6,6 @@ export interface ChatConnectionWSParams {
 
 export interface ChatWSService {
   connect:(params: ChatConnectionWSParams) => void;
-  sendMessage: (text: string, chatId: number) => void;
+  sendMessage: (text: string, chat_id: number) => void;
   disconnect:() => void;
 }

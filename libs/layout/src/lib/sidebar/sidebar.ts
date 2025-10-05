@@ -1,10 +1,10 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject, OnInit} from '@angular/core';
 import {SubscriberCard} from './subscriber-card/subscriber-card';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {AsyncPipe} from '@angular/common';
 import {firstValueFrom} from 'rxjs';
 import {CustomDirectives, ImgUrlPipe, SvgIcon} from '@tt/common-ui';
-import {ProfileService} from '@tt/data-access';
+import {ChatsService, ProfileService} from '@tt/data-access';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,9 +13,11 @@ import {ProfileService} from '@tt/data-access';
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss'
 })
-export class Sidebar {
+export class Sidebar implements OnInit {
   profileService = inject(ProfileService);
   subscribers$ = this.profileService.getSubscribersShortList();
+  chatsService = inject(ChatsService); // ORANGE WS добавляем
+  unreadCount = computed(() => this.chatsService.unreadCount()); // ORANGE WS реактивное значение
 
   me = this.profileService.me
 
@@ -42,6 +44,7 @@ export class Sidebar {
 
   ngOnInit() {
     firstValueFrom(this.profileService.getMe())
+    this.chatsService.connectWS(); // 👈 запускаем WebSocket при загрузке
   }
 
   colorProperty = 'orange'

@@ -16,14 +16,14 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 export class ChatsPageComponent implements OnInit {
   _chatService = inject(ChatsService);
 
-  // ngOnInit() {
-  //   this._chatService.connectWS();
-  // }
-
-  // Websocket RXJS
   ngOnInit() {
-    this._chatService.connectWS()
-      .pipe(takeUntilDestroyed())
-      .subscribe()
+    this._chatService.connectWS();
   }
+
+  // // Websocket RXJS
+  // ngOnInit() {
+  //   this._chatService.connectWS()
+  //     .pipe(takeUntilDestroyed())
+  //     .subscribe()
+  // }
 }

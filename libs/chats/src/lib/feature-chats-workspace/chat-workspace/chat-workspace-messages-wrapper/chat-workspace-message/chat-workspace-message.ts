@@ -7,6 +7,7 @@ import {Message} from '@tt/data-access';
   imports: [
     AvatarCircle,
     CustomRelativeDatePipe,
+    CustomDateTimePipe,
     CustomDateTimePipe
   ],
   templateUrl: './chat-workspace-message.html',

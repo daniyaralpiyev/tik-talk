@@ -15,6 +15,11 @@
         >
           <svg [icon]="item.icon"></svg>
           <span>{{ item.label }}</span>
+
+          <!-- ORANGE WS бейдж показываем только для пунктa "Чаты" -->
+          @if (item.label === 'Чаты' && unreadCount() > 0) {
+            <span class="badge">{{ unreadCount() }}</span>
+          }
         </a>
       </li>
     }

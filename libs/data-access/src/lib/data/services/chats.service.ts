@@ -20,51 +20,64 @@ export class ChatsService {
 
 	activeChatMessages = signal<Message[]>([]);
 
+  unreadCount = signal<number>(0); // 👈 Добавляем сигнал для непрочитанных
+
 	baseApiUrl = 'https://icherniakov.ru/yt-course/';
 	chatsUrl = `${this.baseApiUrl}chat/`;
 	messageUrl = `${this.baseApiUrl}message/`;
 
-  // wsAdapter: ChatWSService = new ChatWsNativeService()
+  wsAdapter: ChatWSService = new ChatWsNativeService()
 
-  // connectWS() {
-  //   this.wsAdapter.connect({
-  //     url: `${this.baseApiUrl}chat/ws`,
-  //     token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
-  //     handleMessage: this.handleWSMessage
-  //   })
-  // }
-
-  wsAdapter: ChatWSService = new ChatWSRxjsService() // Websocket RXJS RXJS
-
-  // Websocket RXJS RXJS
   connectWS() {
-    return this.wsAdapter.connect({
+    this.wsAdapter.connect({
       url: `${this.baseApiUrl}chat/ws`,
       token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
       handleMessage: this.handleWSMessage
-    }) as Observable<ChatWSMessage>
+    })
   }
 
-  handleWSMessage = (message: ChatWSMessage) => {
-    if (!('action' in message)) return
+  // wsAdapter: ChatWSService = new ChatWSRxjsService() // Websocket RXJS RXJS
+  //
+  // // Websocket RXJS RXJS
+  // connectWS() {
+  //   return this.wsAdapter.connect({
+  //     url: `${this.baseApiUrl}chat/ws`,
+  //     token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
+  //     handleMessage: this.handleWSMessage
+  //   }) as Observable<ChatWSMessage>
+  // }
 
-    if (isUnreadMessage(message)) {
-      // TODO непрочитанные сообщения
-    }
+  handleWSMessage = (message: ChatWSMessage) => {
+    if (!('action' in message)) return;
+
+    // ORANGE Новое сообщение
     if (isNewMessage(message)) {
-      this.activeChatMessages.set([
-        ...this.activeChatMessages(),
-        {
-          id: message.data.id,
-          userFromId: message.data.author,
-          personalChatId: message.data.chat_id,
-          text: message.data.message,
-          createdAt: message.data.created_at,
-          isRead: false,
-          isMine: false
-        }
-      ])
+      const newMsg: Message = {
+        id: message.data.id,
+        userFromId: message.data.author,
+        personalChatId: message.data.chat_id,
+        text: message.data.message,
+        createdAt: message.data.created_at,
+        isRead: false,
+        isMine: false,
+      };
+
+      // ORANGE Если сообщение не из активного чата "считаем непрочитанным"
+      this.unreadCount.update((c) => c + 1);
+
+      // Добавляем в список активных сообщений, если нужно
+      this.activeChatMessages.set([...this.activeChatMessages(), newMsg]);
     }
+
+    // ORANGE Если сервер прислал “непрочитанные”
+    if (isUnreadMessage(message)) {
+      this.unreadCount.set(message.data.count ?? 0);
+    }
+  };
+
+  // ORANGE Обнуляем счётчик при открытии чата
+  resetUnreadCount() {
+    this.unreadCount.set(0);
   }
 
 	createChat(userId: number) {

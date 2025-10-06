@@ -1,10 +1,9 @@
 import { Component, computed, inject, OnInit, DestroyRef } from '@angular/core';
+import { SubscriberCard } from './subscriber-card/subscriber-card';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { firstValueFrom, interval, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-import { SubscriberCard } from './subscriber-card/subscriber-card';
 import { CustomDirectives, ImgUrlPipe, SvgIcon } from '@tt/common-ui';
 import { ChatsService, ProfileService, AuthService } from '@tt/data-access';
 
@@ -18,119 +17,88 @@ import { ChatsService, ProfileService, AuthService } from '@tt/data-access';
     AsyncPipe,
     ImgUrlPipe,
     RouterLinkActive,
-    CustomDirectives,
+    CustomDirectives
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit {
-  // Инъекции зависимостей
   private profileService = inject(ProfileService);
   private chatsService = inject(ChatsService);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
 
-  // Сигналы и вычисляемые значения
-  subscribers$ = this.profileService.getSubscribersShortList(); // список подписчиков
-  unreadCount = computed(() => this.chatsService.unreadCount()); // число непрочитанных сообщений
-  me = this.profileService.me; // данные текущего пользователя
+  subscribers$ = this.profileService.getSubscribersShortList();
+  unreadCount = computed(() => this.chatsService.unreadCount());
+  me = this.profileService.me;
 
-  // Элементы меню сайдбара
   menuItems = [
     { id: 1, label: 'Моя Страница', icon: 'home', link: 'profile/me' },
-    { id: 3, label: 'Чаты', icon: 'chat', link: 'chats' },
-    { id: 4, label: 'Поиск', icon: 'search', link: 'search' },
+    { id: 2, label: 'Чаты', icon: 'chat', link: 'chats' },
+    { id: 3, label: 'Поиск', icon: 'search', link: 'search' },
   ];
 
-  // Прочие свойства
   colorProperty = 'orange';
-  statusMessage = ''; // отображение состояния (например, подключён / ошибка)
+  statusMessage = '';
 
-  // Изменение цвета интерфейса (пример дополнительного поведения)
   setColor(newColor: string) {
     this.colorProperty = newColor;
   }
 
-  // Основной жизненный цикл
   async ngOnInit() {
     try {
-      // Получаем данные профиля
+      // ✅ 1. Получаем профиль
       await firstValueFrom(this.profileService.getMe());
-      this.statusMessage = '👤 Профиль получен';
+      this.statusMessage = 'Профиль успешно загружен ✅';
 
-      // Подключаем WebSocket с актуальным токеном
-      await this.connectWSWithTokenRefresh();
+      // ✅ 2. Подключаем WebSocket с актуальным токеном
+      this.connectWebSocket();
 
-      // Запускаем автообновление токена каждые 5 минут
+      // ✅ 3. Запускаем автоматическое обновление токена
       this.startTokenRefreshLoop();
     } catch (err) {
-      // В случае ошибки выходим из аккаунта
+      console.error('Ошибка инициализации Sidebar:', err);
       this.authService.logout();
-      this.statusMessage = `Ошибка инициализации Sidebar: ${err}`;
     }
   }
 
-  // Подключение WebSocket с предварительным обновлением токена
-  private async connectWSWithTokenRefresh() {
-    try {
-      // Обновляем токен перед подключением
-      await firstValueFrom(this.authService.refreshAuthToken());
-
-      // Отключаем предыдущее соединение (если было)
-      this.chatsService.wsAdapter.disconnect?.();
-
-      // Подключаем новое соединение с актуальным токеном
-      this.chatsService.wsAdapter.connect({
-        url: `${this.chatsService.baseApiUrl}chat/ws`,
-        token: this.authService.token ?? '',
-        handleMessage: this.chatsService.handleWSMessage,
-      });
-
-      this.statusMessage = 'WebSocket успешно подключён после обновления токена';
-    } catch (err) {
-      // В случае ошибки — разлогиниваем пользователя
-      this.authService.logout();
-      this.statusMessage = `Ошибка обновления токена или подключения WS: ${err}`;
-    }
+  // ✅ Подключение WebSocket
+  private connectWebSocket() {
+    this.chatsService.wsAdapter.connect({
+      url: `${this.chatsService.baseApiUrl}chat/ws`,
+      token: this.authService.token ?? '',
+      handleMessage: this.chatsService.handleWSMessage,
+    });
+    this.statusMessage = 'WebSocket подключён ✅';
   }
 
-  // === Цикл автообновления токена ===
+  // ✅ Автообновление токена каждые 5 минут
   private startTokenRefreshLoop() {
-    interval(5 * 60 * 1000) // интервал 5 минут
+    interval(5 * 60 * 1000)
       .pipe(
-        takeUntilDestroyed(this.destroyRef), // останавливается при уничтожении компонента
-        switchMap(() => this.authService.refreshAuthToken()) // обновляем токен
+        takeUntilDestroyed(this.destroyRef),
+        switchMap(() => this.authService.refreshAuthToken())
       )
       .subscribe({
-        // успешное обновление
-        next: async () => {
-          await this.reconnectWebSocket(); // переподключаем WS с новым токеном
-          this.statusMessage = '🔁 Токен обновлён и WS переподключён';
+        next: () => {
+          console.log('🔄 Токен успешно обновлён, переподключаем WS...');
+          this.reconnectWebSocket();
         },
-        // при ошибке обновления
         error: (err) => {
+          console.error('Ошибка автообновления токена:', err);
           this.authService.logout();
-          this.statusMessage = `Ошибка при автообновлении токена: ${err}`;
         },
       });
   }
 
-  // Переподключение WebSocket при обновлении токена
-  private async reconnectWebSocket() {
+  // ✅ Переподключение WS с новым токеном
+  private reconnectWebSocket() {
     try {
-      // Закрываем старое соединение
       this.chatsService.wsAdapter.disconnect?.();
-
-      // Подключаем заново с актуальным токеном
-      this.chatsService.wsAdapter.connect({
-        url: `${this.chatsService.baseApiUrl}chat/ws`,
-        token: this.authService.token ?? '',
-        handleMessage: this.chatsService.handleWSMessage,
-      });
-
-      this.statusMessage = 'WebSocket успешно переподключён';
+      this.connectWebSocket();
+      this.statusMessage = 'WS переподключён 🔁';
     } catch (err) {
-      this.statusMessage = `Ошибка переподключения WebSocket: ${err}`;
+      console.error('Ошибка переподключения WS:', err);
     }
   }
 }

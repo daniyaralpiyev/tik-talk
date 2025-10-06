@@ -47,14 +47,14 @@ export class Sidebar implements OnInit {
 
   async ngOnInit() {
     try {
-      // ✅ 1. Получаем профиль
+      // 1. Получаем профиль
       await firstValueFrom(this.profileService.getMe());
       this.statusMessage = 'Профиль успешно загружен ✅';
 
-      // ✅ 2. Подключаем WebSocket с актуальным токеном
+      // 2. Подключаем WebSocket с актуальным токеном
       this.connectWebSocket();
 
-      // ✅ 3. Запускаем автоматическое обновление токена
+      // 3. Запускаем автоматическое обновление токена
       this.startTokenRefreshLoop();
     } catch (err) {
       console.error('Ошибка инициализации Sidebar:', err);
@@ -62,7 +62,7 @@ export class Sidebar implements OnInit {
     }
   }
 
-  // ✅ Подключение WebSocket
+  // Подключение WebSocket
   private connectWebSocket() {
     this.chatsService.wsAdapter.connect({
       url: `${this.chatsService.baseApiUrl}chat/ws`,
@@ -72,7 +72,7 @@ export class Sidebar implements OnInit {
     this.statusMessage = 'WebSocket подключён ✅';
   }
 
-  // ✅ Автообновление токена каждые 5 минут
+  // Автообновление токена каждые 5 минут
   private startTokenRefreshLoop() {
     interval(5 * 60 * 1000)
       .pipe(
@@ -91,7 +91,7 @@ export class Sidebar implements OnInit {
       });
   }
 
-  // ✅ Переподключение WS с новым токеном
+  // Переподключение WS с новым токеном
   private reconnectWebSocket() {
     try {
       this.chatsService.wsAdapter.disconnect?.();

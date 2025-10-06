@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {interval, map, Observable} from 'rxjs';
+import { map, Observable} from 'rxjs';
 import {AuthService, Chat, ProfileService } from '../index';
 import {LastMessageRes, Message} from '../interfaces/chats.interface';
 import {ChatWsNativeService} from './chat-ws-native.service';
@@ -8,7 +8,6 @@ import {ChatWSService} from '../interfaces/chata-ws-service.interface';
 import {ChatWSMessage} from '../interfaces/chat-ws-message.interface';
 import {isNewMessage, isUnreadMessage} from '../interfaces/type-guards';
 import {ChatWSRxjsService} from '../interfaces/chat-ws-rxjs.service';
-import {switchMap} from 'rxjs/operators';
 
 
 @Injectable({
@@ -30,29 +29,11 @@ export class ChatsService {
   wsAdapter: ChatWSService = new ChatWsNativeService()
 
   connectWS() {
-    // Первичное подключение WebSocket
     this.wsAdapter.connect({
       url: `${this.baseApiUrl}chat/ws`,
-      token: this._authService.token ?? '',
+      token: this._authService.token ?? '', // TODO нужно сделать чтобы токен обновлялся
       handleMessage: this.handleWSMessage
-    });
-
-    // Автообновление токена каждые 5 минут (300 000 мс)
-    interval(5 * 60 * 1000)
-      .pipe(
-        switchMap(() => this._authService.refreshAuthToken()) // обновляем токен
-      )
-      .subscribe({
-        next: () => {
-          console.log('🔄 Токен обновлён, переподключаем WebSocket');
-          this.wsAdapter.connect({
-            url: `${this.baseApiUrl}chat/ws`,
-            token: this._authService.token ?? '', // новый токен
-            handleMessage: this.handleWSMessage
-          });
-        },
-        error: err => console.error('Ошибка при обновлении токена', err)
-      });
+    })
   }
 
   // wsAdapter: ChatWSService = new ChatWSRxjsService() // Websocket RXJS RXJS

@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, of, tap, throwError} from 'rxjs';
+import {catchError, tap, throwError} from 'rxjs';
 import {TokenResponse} from '../interfaces/auth.interface';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
@@ -17,10 +17,7 @@ export class AuthService {
   token: string | null = null; // token изначально = null
   refreshToken: string | null = null; // refreshToken изначально = null
 
-  // Проверяет, есть ли токен в памяти (this.token)
-  // Если нет — пытается достать токены из cookies
-  // Возвращает, true, если токен есть, иначе false
-  // ✅ Используется, чтобы узнать: пользователь авторизован или нет
+  // isAuth	Проверяет наличие токена (авторизован ли пользователь).
   get isAuth() {
     if (!this.token) {
       this.token = this.cookieService.get('token'); // если токена пробуем взять из cookieService
@@ -30,10 +27,7 @@ export class AuthService {
     return !!this.token; // проверка авторизован юзер или нет
   }
 
-  // Создаёт FormData с логином и паролем
-  // Отправляет POST-запрос на /token (авторизация)
-  // Получает access_token и refresh_token
-  // Сохраняет их в cookie и в память (this.token) через savesTokens()
+  // login	Выполняет логин, получает и сохраняет токены.
   login(payload: { username: string, password: string }) {
     const fd = new FormData();
 
@@ -48,10 +42,7 @@ export class AuthService {
     )
   }
 
-  // Отправляет refresh-токен на сервер (/refresh)
-  // Получает новые токены (access_token, refresh_token)
-  // Сохраняет их через savesTokens()
-  // Если ошибка — вызывает logout() и завершает Observable с ошибкой
+  // refreshAuthToken	Обновляет токен по refresh_token, если access истёк.
   refreshAuthToken() {
     return this.http.post<TokenResponse>(
       `${this.baseApiUrl}refresh`,
@@ -67,9 +58,7 @@ export class AuthService {
     )
   }
 
-  // Очищает все куки
-  // Сбрасывает токены из памяти
-  // Перенаправляет пользователя на страницу логина
+  // logout	Полностью разрознивает пользователя.
   logout() {
     this.cookieService.deleteAll() // удаляет куки
     this.token = null; // сбрасывает
@@ -77,10 +66,7 @@ export class AuthService {
     this.router.navigate(['/login']); // перебрасывает
   }
 
-  // Сохраняет access_token и refresh_token в:
-  // Память (this.token)
-  // Cookie (через cookieService)
-  // ✅ Вызывается после успешного логина или обновления токена
+  // savesTokens	Централизованно сохраняет токены в память и куки.
   savesTokens(res: TokenResponse) {
     this.token = res.access_token;
     this.refreshToken = res.refresh_token;
@@ -88,21 +74,4 @@ export class AuthService {
     this.cookieService.set('token', this.token);
     this.cookieService.set('refreshToken', this.refreshToken);
   }
-
-  getFreshToken() {
-    // Если токен уже есть — возвращаем его как Observable
-    if (this.token) {
-      return of(this.token);
-    }
-
-    // Если нет токена — пробуем обновить
-    return this.refreshAuthToken().pipe(map(() => this.token!));
-  }
-
 }
-
-// isAuth	Проверяет наличие токена (авторизован ли пользователь).
-// login	Выполняет логин, получает и сохраняет токены.
-// refreshAuthToken	Обновляет токен по refresh_token, если access истёк.
-// logout	Полностью разрознивает пользователя.
-// savesTokens	Централизованно сохраняет токены в память и куки.

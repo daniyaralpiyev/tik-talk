@@ -60,7 +60,9 @@
   background: var(--message-color);
   font-weight: 500;
   color: var(--light-color);
-  max-width: 30%;
+  width: fit-content;   /* ширина по содержимому */
+  max-width: 50%;       /* максимум — 50% контейнера */
+  min-width: 50px;      /* минимум — 50px */
   overflow-wrap: break-word; /* перенос длинных слов */
   word-break: break-word; /* если очень длинное слово — ломаем его */
   white-space: pre-wrap; /* сохраняем переносы строк + переносим текст */

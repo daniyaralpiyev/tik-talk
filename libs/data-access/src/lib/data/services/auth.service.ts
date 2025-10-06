@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, tap, throwError} from 'rxjs';
+import {catchError, map, of, tap, throwError} from 'rxjs';
 import {TokenResponse} from '../interfaces/auth.interface';
 import {CookieService} from 'ngx-cookie-service';
 import {Router} from '@angular/router';
@@ -88,6 +88,17 @@ export class AuthService {
     this.cookieService.set('token', this.token);
     this.cookieService.set('refreshToken', this.refreshToken);
   }
+
+  getFreshToken() {
+    // Если токен уже есть — возвращаем его как Observable
+    if (this.token) {
+      return of(this.token);
+    }
+
+    // Если нет токена — пробуем обновить
+    return this.refreshAuthToken().pipe(map(() => this.token!));
+  }
+
 }
 
 // isAuth	Проверяет наличие токена (авторизован ли пользователь).

@@ -58,8 +58,9 @@ export class ChatsService {
         personalChatId: message.data.chat_id,
         text: message.data.message,
         createdAt: message.data.created_at,
+        // createdAt: message.data.created_at.replace('T', ' ').replace('Z', ''), // если пробую так то не т реал тайм чата
         isRead: false,
-        isMine: false,
+        isMine: message.data.author === this.me()?.id,
       };
 
       // ORANGE Если сообщение не из активного чата "считаем непрочитанным"

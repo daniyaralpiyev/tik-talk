@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {switchMap} from 'rxjs/operators';
 import {toObservable} from '@angular/core/rxjs-interop';
@@ -19,7 +19,8 @@ import {PostFeed} from '@tt/posts';
     PostFeed,
   ],
   templateUrl: './profile-page.html',
-  styleUrl: './profile-page.scss'
+  styleUrl: './profile-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfilePage {
   profileService = inject(ProfileService);

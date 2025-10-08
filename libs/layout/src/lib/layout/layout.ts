@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Sidebar} from '../sidebar/sidebar';
 
@@ -9,7 +9,8 @@ import {Sidebar} from '../sidebar/sidebar';
     Sidebar
   ],
   templateUrl: './layout.html',
-  styleUrl: './layout.scss'
+  styleUrl: './layout.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Layout {
 }

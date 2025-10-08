@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import {NoReactValidator} from '../validator/no-react.validator';
@@ -8,6 +8,7 @@ import {NoReactValidator} from '../validator/no-react.validator';
 	imports: [JsonPipe, FormsModule, NoReactValidator],
 	templateUrl: './experimental.html',
 	styleUrl: './experimental.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Experimental {
 	person = {

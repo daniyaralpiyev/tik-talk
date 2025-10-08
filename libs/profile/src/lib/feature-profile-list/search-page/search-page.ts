@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, inject, Renderer2, AfterViewInit} from '@angular/core';
+import {Component, ElementRef, HostListener, inject, Renderer2, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
 import {fromEvent} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ProfileCard} from '../../ui';
@@ -13,7 +13,8 @@ import {selectFilteredProfiles} from '../../data';
     ProfileFilters,
   ],
   templateUrl: './search-page.html',
-  styleUrl: './search-page.scss'
+  styleUrl: './search-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchPage implements AfterViewInit {
   store = inject(Store)

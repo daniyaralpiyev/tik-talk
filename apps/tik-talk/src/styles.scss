@@ -1,5 +1,5 @@
-@import "fonts";
-@import "margins";
+@use "fonts" as *;
+@use "margins" as *;
 
 :root {
   --dark-color: #000000;

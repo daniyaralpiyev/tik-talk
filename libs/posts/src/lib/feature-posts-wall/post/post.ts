@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input, OnInit, signal} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {AvatarCircle, CustomRelativeDatePipe, SvgIcon} from '@tt/common-ui';
 import {CommentComponent, PostInput} from '../../ui';
@@ -15,7 +15,8 @@ import {Post, PostComment, PostService, ProfileService} from '@tt/data-access';
     CustomRelativeDatePipe,
   ],
   templateUrl: './post.html',
-  styleUrl: './post.scss'
+  styleUrl: './post.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostComponent implements OnInit {
   postService = inject(PostService);

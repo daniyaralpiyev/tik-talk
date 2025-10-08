@@ -1,4 +1,4 @@
-import { Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ChatsList} from '../chats-list/chats-list';
 import {ChatsService} from '@tt/data-access';
@@ -11,7 +11,8 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     ChatsList
   ],
   templateUrl: './chats.html',
-  styleUrl: './chats.scss'
+  styleUrl: './chats.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatsPageComponent implements OnInit {
   _chatService = inject(ChatsService);

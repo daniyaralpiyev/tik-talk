@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostBinding, inject, input, Output, Renderer2} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, HostBinding, inject, input, Output, Renderer2} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AvatarCircle, SvgIcon} from '@tt/common-ui';
 import {GlobalStoreService} from '@tt/data-access';
@@ -11,7 +11,8 @@ import {GlobalStoreService} from '@tt/data-access';
     FormsModule,
   ],
   templateUrl: './post-input.html',
-  styleUrl: './post-input.scss'
+  styleUrl: './post-input.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostInput {
   r2 = inject(Renderer2)

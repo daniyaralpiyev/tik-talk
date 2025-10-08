@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ImgUrlPipe} from '@tt/common-ui';
 import {Profile} from '@tt/data-access';
 
@@ -9,7 +9,8 @@ import {Profile} from '@tt/data-access';
     ImgUrlPipe
   ],
   templateUrl: './profile-card.html',
-  styleUrl: './profile-card.scss'
+  styleUrl: './profile-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileCard {
   // Это способ приема данных от родительского компонента.

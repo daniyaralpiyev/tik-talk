@@ -1,17 +1,18 @@
 import {
-	Component,
-	ElementRef,
-	HostListener,
-	inject,
-	input,
-	OnInit,
-	Renderer2,
-	ViewChild,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  OnInit,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
 
-import { firstValueFrom, fromEvent, Subject, timer } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { DateTime } from 'luxon';
+import {firstValueFrom, fromEvent, Subject, timer} from 'rxjs';
+import {debounceTime, takeUntil} from 'rxjs/operators';
+import {DateTime} from 'luxon';
 import {MessageInput} from '../../../ui';
 import {ChatWorkspaceMessage} from './chat-workspace-message/chat-workspace-message';
 import {Chat, ChatsService} from '@tt/data-access';
@@ -21,6 +22,7 @@ import {Chat, ChatsService} from '@tt/data-access';
 	imports: [ChatWorkspaceMessage, MessageInput],
 	templateUrl: './chat-workspace-messages-wrapper.html',
 	styleUrl: './chat-workspace-messages-wrapper.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatWorkspaceMessagesWrapper implements OnInit {
 	chatsService = inject(ChatsService);

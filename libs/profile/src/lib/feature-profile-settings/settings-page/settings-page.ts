@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, effect, ElementRef, inject, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, Renderer2, ViewChild} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {firstValueFrom, fromEvent} from 'rxjs';
 import {Router, RouterLink} from '@angular/router';
@@ -17,7 +17,8 @@ import {ProfileService} from '@tt/data-access';
     RouterLink
   ],
   templateUrl: './settings-page.html',
-  styleUrl: './settings-page.scss'
+  styleUrl: './settings-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsPage implements AfterViewInit {
   fb = inject(FormBuilder);

@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, DestroyRef } from '@angular/core';
+import { Component, computed, inject, OnInit, DestroyRef, ChangeDetectionStrategy} from '@angular/core';
 import { SubscriberCard } from './subscriber-card/subscriber-card';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
@@ -21,6 +21,7 @@ import { ChatsService, ProfileService, AuthService } from '@tt/data-access';
   ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar implements OnInit {
   private profileService = inject(ProfileService);

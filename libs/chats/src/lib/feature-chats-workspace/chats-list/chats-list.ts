@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {ChatsBtn} from '../chats-btn/chats-btn';
 import {AsyncPipe} from '@angular/common';
@@ -20,7 +20,8 @@ import {ChatsService} from '@tt/data-access';
     SvgIcon,
   ],
   templateUrl: './chats-list.html',
-  styleUrl: './chats-list.scss'
+  styleUrl: './chats-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatsList {
   chatsService = inject(ChatsService);

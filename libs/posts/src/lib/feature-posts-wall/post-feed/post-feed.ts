@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -23,7 +23,8 @@ import {postsActions, selectedPosts} from '../../data';
     PostComponent,
   ],
   templateUrl: './post-feed.html',
-  styleUrl: './post-feed.scss'
+  styleUrl: './post-feed.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PostFeed implements AfterViewInit {
   postService = inject(PostService)

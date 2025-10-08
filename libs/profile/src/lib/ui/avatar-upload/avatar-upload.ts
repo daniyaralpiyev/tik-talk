@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Dnd, SvgIcon} from '@tt/common-ui';
 
@@ -10,7 +10,8 @@ import {Dnd, SvgIcon} from '@tt/common-ui';
     FormsModule
   ],
   templateUrl: './avatar-upload.html',
-  styleUrl: './avatar-upload.scss'
+  styleUrl: './avatar-upload.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarUpload {
   preview = signal<string>('/assets/imgs/avatar-placeholder.png')

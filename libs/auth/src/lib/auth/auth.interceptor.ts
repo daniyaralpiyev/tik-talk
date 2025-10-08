@@ -5,7 +5,7 @@ import {throwError} from "rxjs";
 import {switchMap} from 'rxjs/operators';
 import {AuthService} from '@tt/data-access';
 
-let isRefreshing$ = new  BehaviorSubject<boolean>(false);
+const isRefreshing$ = new  BehaviorSubject<boolean>(false);
 
 // Что делает этот интерсептор:
 // перехватывает каждый HTTP-запрос,

@@ -68,7 +68,10 @@
           "buildTarget": "tik-talk:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "proxy-conf.json"
+      }
     },
     "extract-i18n": {
       "executor": "@angular/build:extract-i18n"

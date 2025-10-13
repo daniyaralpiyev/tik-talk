@@ -16,3 +16,22 @@
   width: 16px;
   height: 16px;
 }
+
+.chats-list {
+  height: 87.5vh;         /* ограничиваем, чтобы не вылезал за экран */
+  overflow-y: auto;          /* вертикальная прокрутка */
+  border: 1px solid var(--primary-color);
+}
+
+.chats-list::-webkit-scrollbar {
+  display: none;
+}
+
+.chats-list::-webkit-scrollbar-thumb {
+  background-color: rgba(130, 100, 255, 0.5); /* цвет ползунка */
+  border-radius: 4px;
+}
+
+.chats-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(130, 100, 255, 0.8);
+}

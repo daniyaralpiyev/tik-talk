@@ -22,7 +22,7 @@ export class ChatsService {
 
   unreadCount = signal<number>(0); // ORANGE Добавляем сигнал для непрочитанных
 
-	baseApiUrl = 'https://icherniakov.ru/yt-course/';
+	baseApiUrl = '/yt-course/';
 	chatsUrl = `${this.baseApiUrl}chat/`;
 	messageUrl = `${this.baseApiUrl}message/`;
 

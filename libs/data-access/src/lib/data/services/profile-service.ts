@@ -8,7 +8,7 @@ import { GlobalStoreService, Pageble, Profile } from '../index';
 })
 export class ProfileService {
   http = inject(HttpClient); // Регистрация сервиса. Внедряет Angular-сервис HttpClient для выполнения HTTP-запросов.
-  baseApiUrl = 'https://icherniakov.ru/yt-course/'; // Базовый URL API. Централизованное хранение базового URL для всех запросов.
+  baseApiUrl = '/yt-course/'; // Базовый URL API. Централизованное хранение базового URL для всех запросов.
   private globalStoreService = inject(GlobalStoreService)
 
   me = signal<Profile | null>(null);

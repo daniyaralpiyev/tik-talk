@@ -62,7 +62,8 @@ export class ChatsService {
 
 			if (!me || !activeChat) return // Отсутствует информация о пользователе или активном чате
 
-			// if (!message.data.message?.trim()) return // Пустое сообщение — пропускаем
+			// Пустое сообщение — пропускаем
+			// if (!message.data.message?.trim()) return
 
 			// Создаем новое сообщение
 			const newMsg: Message = {

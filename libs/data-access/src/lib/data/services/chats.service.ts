@@ -50,19 +50,19 @@ export class ChatsService {
 	// 	}) as Observable<ChatWSMessage>;
 	// }
 
-	handleWSMessage = (message: ChatWSMessage) => {// Проверяем, содержит ли сообщение свойство action
+	handleWSMessage = (message: ChatWSMessage) => { // Проверяем, содержит ли сообщение свойство action
 		if (!('action' in message)) {
 			console.warn('Сообщение не содержит action:', message);
 			return;    }    // Проверяем, является ли сообщение новым
 
-		if (isNewMessage(message)) {
-			console.log('Новое сообщение из WS:', message.data);
-			const me = this.me();        const activeChat = this.activeChat(); // Проверяем наличие пользователя и активного чата
+		if (isNewMessage(message)) { // Новое сообщение из WS
 
-			if (!me || !activeChat) {
-				console.warn('Отсутствует информация о пользователе или активном чате.');
-				return;
-			}
+			const me = this.me();
+			const activeChat = this.activeChat(); // Проверяем наличие пользователя и активного чата
+
+			if (!me || !activeChat) return // Отсутствует информация о пользователе или активном чате
+
+			// if (!message.data.message?.trim()) return // Пустое сообщение — пропускаем
 
 			// Создаем новое сообщение
 			const newMsg: Message = {

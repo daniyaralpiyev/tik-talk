@@ -28,27 +28,27 @@ export class ChatsService {
 	chatsUrl = `${this.baseApiUrl}chat/`;
 	messageUrl = `${this.baseApiUrl}message/`;
 
-  // wsAdapter: ChatWSService = new ChatWsNativeService()
-  //
-  // connectWS() {
-  //   this.wsAdapter.connect({
-  //     url: `${this.baseApiUrl}chat/ws`,
-  //     token: this._authService.token ?? '',
-  //     handleMessage: this.handleWSMessage
-  //   })
-  // }
+  wsAdapter: ChatWSService = new ChatWsNativeService()
 
-  // Websocket RXJS RXJS
-  wsAdapter: ChatWSService = new ChatWSRxjsService()
-
-  // Websocket RXJS RXJS
   connectWS() {
-    return this.wsAdapter.connect({
+    this.wsAdapter.connect({
       url: `${this.baseApiUrl}chat/ws`,
       token: this._authService.token ?? '',
-			handleMessage: this.handleWSMessage,
-		}) as Observable<ChatWSMessage>;
-	}
+      handleMessage: this.handleWSMessage
+    })
+  }
+
+  // // Websocket RXJS RXJS
+  // wsAdapter: ChatWSService = new ChatWSRxjsService()
+	//
+  // // Websocket RXJS RXJS
+  // connectWS() {
+  //   return this.wsAdapter.connect({
+  //     url: `${this.baseApiUrl}chat/ws`,
+  //     token: this._authService.token ?? '',
+	// 		handleMessage: this.handleWSMessage,
+	// 	}) as Observable<ChatWSMessage>;
+	// }
 
 	handleWSMessage = (message: ChatWSMessage) => {// Проверяем, содержит ли сообщение свойство action
 		if (!('action' in message)) {

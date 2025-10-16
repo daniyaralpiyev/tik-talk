@@ -1,8 +1,8 @@
-import {inject, Injectable} from '@angular/core';
-import {ProfileService} from '@tt/data-access';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {map, switchMap, withLatestFrom } from 'rxjs';
-import {profileActions} from './actions';
+import { inject, Injectable } from '@angular/core';
+import { ProfileService } from '@tt/data-access';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { map, switchMap, withLatestFrom } from 'rxjs';
+import { profileActions } from './actions';
 import { Store } from '@ngrx/store';
 import {
 	selectProfileFilters,
@@ -10,33 +10,38 @@ import {
 } from './selectors';
 
 // Effects
-// Для побочных эффектов: API-запросы, localStorage, навигация.
+// Используются для побочных эффектов: API-запросы, навигация, localStorage и т.д.
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ProfileEffects {
-  profileService = inject(ProfileService);
-  actions$ = inject(Actions)
-	store = inject(Store)
+	// Подключаем зависимости
+	profileService = inject(ProfileService); // сервис для запросов к API
+	actions$ = inject(Actions); // поток всех действий (actions)
+	store = inject(Store); // доступ к состоянию NgRx Store
 
-  filterProfiles = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(
+	// Effect — слушает экшены и запускает асинхронные действия
+	filterProfiles = createEffect(() => {
+		return this.actions$.pipe(
+			ofType( // Реагируем на экшены filterEvents и setPage
 				profileActions.filterEvents,
 				profileActions.setPage
 			),
-			withLatestFrom(
+
+			withLatestFrom( // Получаем текущие фильтры и параметры страницы из стора
 				this.store.select(selectProfileFilters),
 				this.store.select(selectProfilePageable)
 			),
-      switchMap(([_, filters, pageable]) => {
-				console.log(_, filters, pageable);
-				return this.profileService.filterProfiles({
+
+			switchMap(([_, filters, pageable]) => { // Делаем API-запрос через ProfileService
+				return this.profileService.filterProfiles({ // Объединяем фильтры и пагинацию → передаём в запрос
 					...pageable,
 					...filters
 				});
 			}),
-      map(res => profileActions.profilesLoaded({profiles: res.items}))
-    )
-  })
+
+			// Когда данные пришли — отправляем новый экшен profilesLoaded
+			map(res => profileActions.profilesLoaded({ profiles: res.items }))
+		);
+	});
 }

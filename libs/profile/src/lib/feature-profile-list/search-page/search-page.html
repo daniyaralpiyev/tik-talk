@@ -1,11 +1,18 @@
 <app-profile-filters>
 </app-profile-filters>
 
-<div class="profile-card__wrapper" waIntersectionObserver waIntersectionThreshold="0.5">
+<div
+  class="profile-card__wrapper"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  [infiniteScrollContainer]="'app-search-page'"
+  (scrolled)="onScroll()"
+  [fromRoot]="true"
+>
   <!--Получаем синтаксис шаблонов и в track надо указать что-то уникальное-->
-  @for (profile of profiles(); track profile.id; let last = $last) {
+  @for (profile of profiles(); track profile.id) {
     <app-profile-card
-      (waIntersectionObservee)="last ? onIntersection($event) : null"
       [profile]="profile"
     ></app-profile-card>
   }

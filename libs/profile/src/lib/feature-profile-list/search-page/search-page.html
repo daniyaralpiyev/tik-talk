@@ -1,11 +1,21 @@
 <app-profile-filters>
 </app-profile-filters>
 
-<div class="profile-card__wrapper">
+<div class="profile-card__wrapper" waIntersectionObserver waIntersectionThreshold="0.5">
   <!--Получаем синтаксис шаблонов и в track надо указать что-то уникальное-->
-  @for (profile of profiles(); track profile.id) {
+  @for (profile of profiles(); track profile.id; let last = $last) {
     <app-profile-card
+      (waIntersectionObservee)="last ? onIntersection($event) : null"
       [profile]="profile"
     ></app-profile-card>
   }
 </div>
+<!--    @if (last) {-->
+<!--      @defer (on viewport) {-->
+<!--        <tt-infinite-scroll-trigger-->
+<!--          (loaded)="timeToFetch()"-->
+<!--        ></tt-infinite-scroll-trigger>-->
+<!--      } @placeholder {-->
+<!--        <div>Без этого тега div не работает скрол страницы и юзеры ниже не появляются</div>-->
+<!--      }-->
+<!--    }-->

@@ -7,13 +7,17 @@ import {profileActions} from './actions';
 export interface ProfileState {
   profiles: Profile[],
   profileFilters: Record<string, any>,
-  searchTerm: string
+  searchTerm: string,
+	page: number,
+	size: number
 }
 
 export const initialState: ProfileState = {
   profiles: [],
   profileFilters: {},
-  searchTerm: ''
+  searchTerm: '',
+	page: 1,
+	size: 10
 }
 
 export const profileFeature = createFeature({
@@ -21,14 +25,36 @@ export const profileFeature = createFeature({
   reducer: createReducer(
     initialState,
     // кладёт массив профилей в стор.
-    on(profileActions.profilesLoaded, (state, payload) => ({
-        ...state,
-        profiles: payload.profiles
-    })),
+    on(profileActions.profilesLoaded, (state, payload) => {
+        return {
+					...state,
+					profiles: state.profiles.concat(payload.profiles)
+				}
+    }),
+		on(profileActions.filterEvents, (state, payload) => {
+			return {
+				...state,
+				profiles: [],
+				profileFilters: payload.filters,
+				page: 1,
+			}
+		}),
+		on(profileActions.setPage, (state, payload) => {
+			let page = payload.page;
+
+			if (!page) page = state.page + 1;
+
+			return {
+				...state,
+				page,
+			};
+		}),
     // сохраняет введённый текст поиска.
-    on(profileActions.setSearchTerm, (state, payload) => ({
-        ...state,
-        searchTerm: payload.term
-    }))
+    on(profileActions.setSearchTerm, (state, payload) => {
+        return {
+					...state,
+					searchTerm: payload.term
+				}
+    })
   )
 })

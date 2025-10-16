@@ -18,9 +18,8 @@
 }
 
 .chats-list {
-  height: 87.5vh;         /* ограничиваем, чтобы не вылезал за экран */
+  height: 86vh;         /* ограничиваем, чтобы не вылезал за экран */
   overflow-y: auto;          /* вертикальная прокрутка */
-  border: 1px solid var(--primary-color);
 }
 
 .chats-list::-webkit-scrollbar {

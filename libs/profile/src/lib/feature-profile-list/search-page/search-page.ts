@@ -1,37 +1,28 @@
 import {Component, ElementRef, HostListener, inject, Renderer2, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
-import {fromEvent} from 'rxjs';
+import { firstValueFrom, fromEvent, scan, Subject } from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ProfileCard} from '../../ui';
 import { ProfileFilters } from '../index';
 import {Store} from '@ngrx/store';
 import { profileActions, selectFilteredProfiles } from '../../data';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { Profile, ProfileService } from '@tt/data-access';
 
 @Component({
 	selector: 'app-search-page',
-	imports: [
-		ProfileCard,
-		ProfileFilters,
-		InfiniteScrollDirective,
-	],
+	imports: [ProfileCard, ProfileFilters, InfiniteScrollDirective],
 	templateUrl: './search-page.html',
 	styleUrl: './search-page.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchPage implements AfterViewInit {
+export class SearchPage {
 	store = inject(Store);
+	profileService = inject(ProfileService);
 	profiles = this.store.selectSignal(selectFilteredProfiles);
-	console = console;
 
-	timeToFetch() {
-		this.store.dispatch(profileActions.setPage({}));
-	}
+	profileSubjects$ = new Subject<Profile[]>();
 
-	onScroll() {
-		console.log('scroll');
-		this.timeToFetch();
-	}
-
+	// Бесконечный скрол Intersection observer
 	onIntersection(entries: IntersectionObserverEntry[]) {
 		if (!entries.length) return;
 
@@ -39,6 +30,41 @@ export class SearchPage implements AfterViewInit {
 			this.timeToFetch();
 		}
 	}
+
+	timeToFetch() {
+		this.store.dispatch(profileActions.setPage({}));
+	}
+
+	// Бесконечный скрол ngx-infinite-scroll
+	onScroll() {
+		console.log('scroll');
+		this.getNextPage();
+		this.timeToFetch();
+	}
+
+	// *************************
+	// код из бонусного ролика cd с 37 минуты
+	infiniteProfiles$ = this.profileSubjects$.pipe(
+		scan((acc, curr) => {
+			return acc.concat(curr) as Profile[];
+		}, [] as Profile[]),
+	);
+
+	page = 0;
+
+	ngOnInit() {
+		this.getNextPage();
+	}
+
+	async getNextPage() {
+		this.page += 1;
+		const res = await firstValueFrom(
+			this.profileService.filterProfiles({ page: this.page }),
+		);
+
+		this.profileSubjects$.next(res.items);
+	}
+	// *************************
 
 	hostElement = inject(ElementRef);
 	r2 = inject(Renderer2);

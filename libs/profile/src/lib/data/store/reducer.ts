@@ -48,7 +48,7 @@ export const profileFeature = createFeature({
 			}
 		}),
 
-		// 🔵 Обработка смены страницы (для бесконечного скролла)
+		// Обработка смены страницы (для бесконечного скролла)
 		on(profileActions.setPage, (state, payload) => {
 			let page = payload.page;
 

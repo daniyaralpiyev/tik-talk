@@ -13,9 +13,7 @@
 >
   <!--Получаем синтаксис шаблонов и в track надо указать что-то уникальное-->
   @for (profile of profiles(); track profile.id) {
-    <app-profile-card
-      [profile]="profile"
-    ></app-profile-card>
+    <app-profile-card [profile]="profile"></app-profile-card>
   }
 </div>
 <!--    @if (last) {-->

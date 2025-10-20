@@ -18,7 +18,11 @@ import { Profile, ProfileService } from '@tt/data-access';
 
 @Component({
 	selector: 'app-search-page',
-	imports: [ProfileCard, ProfileFilters, InfiniteScrollDirective],
+	imports: [
+		ProfileCard,
+		ProfileFilters,
+		InfiniteScrollDirective,
+	],
 	templateUrl: './search-page.html',
 	styleUrl: './search-page.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,7 +64,7 @@ export class SearchPage {
 	// Код из бонусного ролика (ручное накопление данных через RxJS)
 	// Аккумулируем все подгруженные профили в одном массиве
 	infiniteProfiles$ = this.profileSubjects$.pipe(
-		scan((acc, curr) => acc.concat(curr) as Profile[], [] as Profile[])
+		scan((acc, curr) => acc.concat(curr) as Profile[], [] as Profile[]),
 	);
 
 	page = 0;
@@ -74,7 +78,7 @@ export class SearchPage {
 	async getNextPage() {
 		this.page += 1;
 		const res = await firstValueFrom(
-			this.profileService.filterProfiles({ page: this.page })
+			this.profileService.filterProfiles({ page: this.page }),
 		);
 
 		// Добавляем новые профили в поток

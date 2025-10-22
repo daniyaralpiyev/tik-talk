@@ -1,0 +1,16 @@
+<label class="tt-control-label mb16">
+  <ng-content></ng-content>
+
+  <div class="login-content">
+    <input
+      [ngModel]="value"
+      (ngModelChange)="onModelChange($event)"
+      class="tt-input"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      (blur)="onTouched()"
+      [disabled]="disabled()"
+    >
+    <svg icon="telegram-login" class="login-icon"></svg>
+  </div>
+</label>

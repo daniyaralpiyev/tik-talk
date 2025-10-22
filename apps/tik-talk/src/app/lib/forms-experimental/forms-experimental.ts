@@ -10,9 +10,9 @@ import {
 	Validators,
 } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MockService } from '../../../../../../libs/data-access/src/lib/data/services/mock.service';
 import { NameValidator } from './name.validator';
 import { KeyValuePipe } from '@angular/common';
+import { MockService } from '@tt/data-access';
 
 // Перечисление: тип получателя — физ./юр. лицо
 enum ReceiverType {

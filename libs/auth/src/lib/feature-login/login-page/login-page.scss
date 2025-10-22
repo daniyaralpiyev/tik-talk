@@ -15,36 +15,40 @@
   place-self: center;
 }
 
-.login-input {
-  position: relative;
-}
-
-.login-eye-btn {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #FFFFFFBF;
-  cursor: pointer;
-}
-
 .password-input {
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 32px;
+  align-items: center;
+  background: var(--dark-color);
+  border-radius: 4px;
+  margin-top: 10px;
+  padding-right: 6px;
+}
+
+.tt-input {
+  width: 100%;
+  margin: 5px 0;
+  border: none;
+  background: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.login-icon {
+  color: var(--light-color);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
 }
 
 .password-eye-btn {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
   background: none;
   border: none;
-  color: #FFFFFFBF;
   cursor: pointer;
-}
 
-.password-eye-btn.active {
-  color: var(--primary-color);
+  .password-eye-btn.active {
+    color: var(--primary-color);
+  }
 }

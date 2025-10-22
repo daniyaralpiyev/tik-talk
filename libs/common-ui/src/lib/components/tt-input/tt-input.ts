@@ -50,6 +50,4 @@ export class TtInput implements ControlValueAccessor {
 	onModelChange(val: string | null): void {
 		this.onChange(val);
 	}
-
-	isPasswordVisible = signal<boolean>(false);
 }

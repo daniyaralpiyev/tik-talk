@@ -1,11 +1,10 @@
 <label class="tt-control-label mb16">
   <ng-content></ng-content>
-
-  <div class="login-content">
+  <div class="input-content">
     <input
+      class="tt-input"
       [ngModel]="value"
       (ngModelChange)="onModelChange($event)"
-      class="tt-input"
       [type]="type()"
       [placeholder]="placeholder()"
       (blur)="onTouched()"

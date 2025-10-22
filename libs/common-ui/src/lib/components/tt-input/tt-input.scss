@@ -1,10 +1,20 @@
-.login-content {
+.input-content {
   display: grid;
   grid-template-columns: 1fr 32px;
   align-items: center;
   background: var(--dark-color);
   border-radius: 4px;
   margin-top: 10px;
+}
+
+.password-eye-btn {
+  background: none;
+  border: none;
+  padding-right: 10px;
+
+  .password-eye-btn.active {
+    color: var(--primary-color);
+  }
 }
 
 .tt-input {
@@ -24,4 +34,3 @@
   width: 20px;
   height: 20px;
 }
-

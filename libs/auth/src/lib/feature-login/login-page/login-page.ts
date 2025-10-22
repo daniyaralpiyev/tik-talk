@@ -18,7 +18,7 @@ export class LoginPage {
 	isPasswordVisible = signal<boolean>(false);
 
 	form: FormGroup = new FormGroup({
-		username: new FormControl<string | null>('USERBANE', Validators.required),
+		username: new FormControl<string | null>('the_happyy', Validators.required),
 		password: new FormControl<string | null>(null, Validators.required),
 	});
 
@@ -27,7 +27,7 @@ export class LoginPage {
 			console.log(val);
 		});
 
-		this.form.controls['username'].disable();
+		// this.form.controls['username'].disable();
 	}
 
 	onSubmit() {

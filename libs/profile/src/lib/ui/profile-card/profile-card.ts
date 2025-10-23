@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {ImgUrlPipe, SvgIcon } from '@tt/common-ui';
+import { ImgUrlPipe, SvgIcon } from '@tt/common-ui';
 import {Profile} from '@tt/data-access';
 
 @Component({

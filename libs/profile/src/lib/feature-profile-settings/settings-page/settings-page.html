@@ -30,20 +30,17 @@
       ></textarea>
     </label>
 
-    <label class="tt-form-label">
+    <div class="tt-form-label">
       <span class="tt-form-label__text">Аватар</span>
       <app-avatar-upload></app-avatar-upload>
-    </label>
+    </div>
 
     <div class="skills-two-columns">
-      <label class="tt-form-label">
-        <span class="tt-form-label__text">Навыки (стэк)</span>
-        <input type="text" class="tt-form-input" formControlName="stack">
-      </label>
+      <tt-stack-input formControlName="stack"></tt-stack-input>
 
-      <label class="tt-form-label skills-two-columns-btn">
+      <div class="tt-form-label skills-two-columns-btn">
         <button [routerLink]="['/about-myself']">Место работы</button>
-      </label>
+      </div>
     </div>
   </div>
 
@@ -51,7 +48,6 @@
     <div class="icons-svg">
       <svg class="icon-items" icon="delete"></svg>
       <svg class="icon-items" icon="cancel" (click)="cleanInput()"></svg>
-
       <svg class="icon-items" icon="exit" (click)="onLogin()"></svg>
     </div>
 

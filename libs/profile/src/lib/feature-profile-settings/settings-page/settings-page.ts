@@ -3,7 +3,7 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {firstValueFrom, fromEvent} from 'rxjs';
 import {Router, RouterLink} from '@angular/router';
 import {debounceTime} from 'rxjs/operators';
-import {SvgIcon} from '@tt/common-ui';
+import { SvgIcon, TtStackInput } from '@tt/common-ui';
 import {AvatarUpload, ProfileHeader} from '../../ui';
 import {ProfileService} from '@tt/data-access';
 
@@ -14,8 +14,9 @@ import {ProfileService} from '@tt/data-access';
     ReactiveFormsModule,
     AvatarUpload,
     SvgIcon,
-    RouterLink
-  ],
+    RouterLink,
+		TtStackInput
+	],
   templateUrl: './settings-page.html',
   styleUrl: './settings-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -32,8 +33,7 @@ export class SettingsPage implements AfterViewInit {
   form = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    // {value:'', disabled: true} ставит блок и не дает изменять изначальные значения
-    username: [{value:'', disabled: true}, Validators.required],
+		username: [{value:'', disabled: true}, Validators.required],
     description: [''],
     stack: ['']
   })
@@ -42,9 +42,7 @@ export class SettingsPage implements AfterViewInit {
     effect(() => { // выводим все данные из телеги
       //@ts-ignore
       this.form.patchValue({
-        ...this.profileService.me(),
-        //@ts-ignore
-        stack: this.mergeStack(this.profileService.me()?.stack)
+        ...this.profileService.me()
       })
     });
   }
@@ -78,23 +76,8 @@ export class SettingsPage implements AfterViewInit {
 
     //@ts-ignore
     firstValueFrom(this.profileService.patchProfile({
-      ...this.form.value,
-      stack: this.splitStack(this.form.value.stack)
+      ...this.form.value
     }))
-  }
-
-  splitStack(stack: string | null | string[] | undefined) {
-    if (!stack) return [];
-    if (Array.isArray(stack)) return stack;
-
-    return stack.split(',');
-  }
-
-  mergeStack(stack: string | null | string[] | undefined) {
-    if (!stack) return '';
-    if (Array.isArray(stack)) return stack.join(',');
-
-    return stack;
   }
 
   onCancel() {

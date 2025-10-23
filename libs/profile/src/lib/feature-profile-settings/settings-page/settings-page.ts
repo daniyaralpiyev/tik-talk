@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, inject, Renderer2, ViewChild} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {firstValueFrom, fromEvent} from 'rxjs';
+import { firstValueFrom, fromEvent } from 'rxjs';
 import {Router, RouterLink} from '@angular/router';
 import {debounceTime} from 'rxjs/operators';
 import { SvgIcon, TtStackInput } from '@tt/common-ui';

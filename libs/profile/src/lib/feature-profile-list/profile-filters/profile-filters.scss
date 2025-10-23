@@ -16,6 +16,12 @@
   padding-left: 5px;
 }
 
+.stack-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .tt-form-input-item {
   background: none;
   outline: none;

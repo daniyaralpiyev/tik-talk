@@ -31,7 +31,7 @@
   outline: none;
 }
 
-.host.disabled {
+:host.disabled {
   .stack-control {
     pointer-events: none;
     opacity: 0.5;

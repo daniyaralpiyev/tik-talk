@@ -36,6 +36,7 @@ export class SettingsPage implements AfterViewInit {
 		username: [{value:'', disabled: true}, Validators.required],
     description: [''],
     stack: ['']
+    // stack: [{value: '', disabled: true}]
   })
 
   constructor() {

@@ -3,94 +3,106 @@ import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import { firstValueFrom, fromEvent } from 'rxjs';
 import {Router, RouterLink} from '@angular/router';
 import {debounceTime} from 'rxjs/operators';
-import { SvgIcon, TtStackInput } from '@tt/common-ui';
+import { AddressInput, SvgIcon, TtStackInput } from '@tt/common-ui';
 import {AvatarUpload, ProfileHeader} from '../../ui';
-import {ProfileService} from '@tt/data-access';
+import { ProfileService } from '@tt/data-access';
 
 @Component({
-  selector: 'app-settings-page',
-  imports: [
-    ProfileHeader,
-    ReactiveFormsModule,
-    AvatarUpload,
-    SvgIcon,
-    RouterLink,
-		TtStackInput
+	selector: 'app-settings-page',
+	imports: [
+		ProfileHeader,
+		ReactiveFormsModule,
+		AvatarUpload,
+		SvgIcon,
+		RouterLink,
+		TtStackInput,
+		AddressInput,
 	],
-  templateUrl: './settings-page.html',
-  styleUrl: './settings-page.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+	templateUrl: './settings-page.html',
+	styleUrl: './settings-page.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsPage implements AfterViewInit {
-  fb = inject(FormBuilder);
-  profileService = inject(ProfileService);
-  router = inject(Router);
-  hostElement = inject(ElementRef)
-  r2 = inject(Renderer2)
+	fb = inject(FormBuilder);
+	profileService = inject(ProfileService);
+	router = inject(Router);
+	hostElement = inject(ElementRef);
+	r2 = inject(Renderer2);
 
-  @ViewChild(AvatarUpload) avatarUploader!: AvatarUpload
+	@ViewChild(AvatarUpload) avatarUploader!: AvatarUpload;
 
-  form = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-		username: [{value:'', disabled: true}, Validators.required],
-    description: [''],
-    stack: ['']
-    // stack: [{value: '', disabled: true}]
-  })
+	form = this.fb.group({
+		firstName: ['', Validators.required],
+		lastName: ['', Validators.required],
+		username: [{ value: '', disabled: true }, Validators.required],
+		description: [''],
+		stack: [''],
+		// stack: [{value: '', disabled: true}]
+		city: [null],
+	});
 
-  constructor() {
-    effect(() => { // выводим все данные из телеги
-      //@ts-ignore
-      this.form.patchValue({
-        ...this.profileService.me()
-      })
-    });
-  }
+	constructor() {
+		effect(() => {
+			// выводим все данные из телеги
+			//@ts-ignore
+			this.form.patchValue({
+				...this.profileService.me(),
+			});
+		});
+	}
 
-  ngAfterViewInit() {
-    this.resizeFeed();
+	ngAfterViewInit() {
+		this.resizeFeed();
 
-    fromEvent(window, 'resize')
-      .pipe(debounceTime(1000))
-      .subscribe(() => {
-        this.resizeFeed(); // <<< вызываем метод
-      });
-  }
+		fromEvent(window, 'resize')
+			.pipe(debounceTime(1000))
+			.subscribe(() => {
+				this.resizeFeed(); // <<< вызываем метод
+			});
+	}
 
-  resizeFeed() {
-    const { top } = this.hostElement.nativeElement.getBoundingClientRect();
-    const height = window.innerHeight - top - 24 - 24;
-    this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
-  }
+	resizeFeed() {
+		const { top } = this.hostElement.nativeElement.getBoundingClientRect();
+		const height = window.innerHeight - top - 24 - 24;
+		this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
+	}
 
+	onSave() {
+		this.form.markAllAsTouched(); // Проверка было ли интерактив с формой
+		this.form.updateValueAndValidity(); // Проверка на валидность всех Validators в форме
 
-  onSave() {
-    this.form.markAllAsTouched() // Проверка было ли интерактив с формой
-    this.form.updateValueAndValidity() // Проверка на валидность всех Validators в форме
+		if (this.form.invalid) return;
 
-    if (this.form.invalid) return
+		if (this.avatarUploader.avatar) {
+			firstValueFrom(
+				this.profileService.uploadAvatar(this.avatarUploader.avatar),
+			);
+		}
 
-    if (this.avatarUploader.avatar) {
-      firstValueFrom(this.profileService.uploadAvatar(this.avatarUploader.avatar))
-    }
+		firstValueFrom(
+		//@ts-ignore
+			this.profileService.patchProfile({
+				...this.form.value,
+			}),
+		);
+	}
 
-    //@ts-ignore
-    firstValueFrom(this.profileService.patchProfile({
-      ...this.form.value
-    }))
-  }
+	onCancel() {
+		this.router.navigate(['profile/me']);
+	}
 
-  onCancel() {
-    this.router.navigate(['profile/me']);
-  }
+	onLogin() {
+		this.router.navigate(['login']);
+	}
 
-  onLogin() {
-    this.router.navigate(['login']);
-  }
-
-  cleanInput() {
-    const fields = ['firstName', 'lastName', 'description', 'stack', 'username'];
-    fields.forEach(field => this.form.get(field)?.reset());
-  }
+	cleanInput() {
+		const fields = [
+			'firstName',
+			'lastName',
+			'description',
+			'stack',
+			'username',
+		];
+		fields.forEach((field) => this.form.get(field)?.reset());
+	}
 }

@@ -5,11 +5,11 @@ import {Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {profileActions, selectSearchTerm} from '../../data';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import { SvgIcon, TtStackInput } from '@tt/common-ui';
+import { SvgIcon } from '@tt/common-ui';
 
 @Component({
 	selector: 'app-profile-filters',
-	imports: [ReactiveFormsModule, SvgIcon, TtStackInput],
+	imports: [ReactiveFormsModule, SvgIcon],
 	templateUrl: './profile-filters.html',
 	styleUrl: './profile-filters.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush,

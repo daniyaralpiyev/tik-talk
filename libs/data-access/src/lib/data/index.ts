@@ -5,7 +5,7 @@ import { CommentCreateDto, Post, PostComment, PostCreateDto } from "./interfaces
 import { Profile } from "./interfaces/profile.interface";
 import { AboutMyselfService } from "./services/about-myself.service";
 import { AuthService } from "./services/auth.service";
-import { ChatsService } from "./services/chats.service";
+import { ChatsService } from './services/chats.service';
 import { GlobalStoreService } from "./services/global-store.service";
 import { MockService } from "./services/mock.service";
 import { PostService } from "./services/post.service";

@@ -7,7 +7,7 @@ import {
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { SvgIcon } from '@tt/common-ui';
+import { SvgIcon } from '../svg-icon/svg-icon';
 
 @Component({
 	selector: 'tt-stack-input',

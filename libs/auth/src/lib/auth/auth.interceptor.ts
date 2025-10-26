@@ -11,31 +11,32 @@ const isRefreshing$ = new  BehaviorSubject<boolean>(false);
 // перехватывает каждый HTTP-запрос,
 // добавляет в него токен авторизации (Bearer token)
 // если токен истёк (например, получен 403), автоматически обновляет его и повторяет запрос.
+// req, чтобы перехватить, next, чтобы отпустить
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
+	if (req.url.includes('dadata.ru')) return next(req)
 
-  // req, чтобы перехватить, next, чтобы отпустить
-    const authService = inject(AuthService); // получаем Auth-сервис
-    const token = authService.token; // берём текущий токен
+	const authService = inject(AuthService);
+	const token = authService.token;
 
-    if (!token) return next(req) // Если токена нет — просто отправляем запрос дальше без изменений.
+	if (!token) return next(req) // Если токена нет — просто отправляем запрос дальше без изменений.
 
-    if (isRefreshing$.value) { // Если сейчас уже происходит обновление токена, не инициируем его повторно.
-        return refreshAndProceed(authService, req, next)
-    }
+	if (isRefreshing$.value) { // Если сейчас уже происходит обновление токена, не инициируем его повторно.
+		return refreshAndProceed(authService, req, next)
+	}
 
-    // Отправляем запрос с токеном.
-    // Если получили ошибку 403 (токен истёк), пытаемся обновить токен и повторить запрос.
-    return next(addToken(req, token))
-        .pipe(
-            catchError(err => {
+	// Отправляем запрос с токеном.
+	// Если получили ошибку 403 (токен истёк), пытаемся обновить токен и повторить запрос.
+	return next(addToken(req, token))
+		.pipe(
+			catchError(err => {
 
-                if (err.status === 403) {
-                    return refreshAndProceed(authService, req, next)
-                }
+				if (err.status === 403) {
+					return refreshAndProceed(authService, req, next)
+				}
 
-                return throwError(() => err);
-            })
-        )
+				return throwError(() => err);
+			})
+		)
 }
 
 // Что делает:

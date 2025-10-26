@@ -4,11 +4,11 @@ import {
 	FormsModule, NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { SvgIcon } from '../index';
+import { SvgIcon } from '../svg-icon/svg-icon';
 
 @Component({
 	selector: 'tt-input',
-	imports: [FormsModule, ReactiveFormsModule, SvgIcon],
+	imports: [FormsModule, ReactiveFormsModule],
 	templateUrl: './tt-input.html',
 	styleUrl: './tt-input.scss',
 	providers: [

@@ -51,22 +51,6 @@ export class SettingsPage implements AfterViewInit {
 		});
 	}
 
-	ngAfterViewInit() {
-		this.resizeFeed();
-
-		fromEvent(window, 'resize')
-			.pipe(debounceTime(1000))
-			.subscribe(() => {
-				this.resizeFeed(); // <<< вызываем метод
-			});
-	}
-
-	resizeFeed() {
-		const { top } = this.hostElement.nativeElement.getBoundingClientRect();
-		const height = window.innerHeight - top - 24 - 24;
-		this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
-	}
-
 	onSave() {
 		this.form.markAllAsTouched(); // Проверка было ли интерактив с формой
 		this.form.updateValueAndValidity(); // Проверка на валидность всех Validators в форме
@@ -80,7 +64,7 @@ export class SettingsPage implements AfterViewInit {
 		}
 
 		firstValueFrom(
-		//@ts-ignore
+			//@ts-ignore
 			this.profileService.patchProfile({
 				...this.form.value,
 			}),
@@ -104,5 +88,21 @@ export class SettingsPage implements AfterViewInit {
 			'username',
 		];
 		fields.forEach((field) => this.form.get(field)?.reset());
+	}
+
+	ngAfterViewInit() {
+		this.resizeFeed();
+
+		fromEvent(window, 'resize')
+			.pipe(debounceTime(1000))
+			.subscribe(() => {
+				this.resizeFeed(); // <<< вызываем метод
+			});
+	}
+
+	resizeFeed() {
+		const { top } = this.hostElement.nativeElement.getBoundingClientRect();
+		const height = window.innerHeight - top - 24 - 24;
+		this.r2.setStyle(this.hostElement.nativeElement, 'height', `${height}px`);
 	}
 }

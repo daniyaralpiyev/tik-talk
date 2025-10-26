@@ -25,3 +25,9 @@
     color: var(--dark-color);
   }
 }
+
+.address-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 150px;
+  grid-gap: 10px;
+}

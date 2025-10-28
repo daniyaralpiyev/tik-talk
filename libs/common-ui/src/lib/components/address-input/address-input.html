@@ -1,5 +1,6 @@
 <tt-input
   [formControl]="innerSearchControl"
+  placeholder="Введите адрес"
 ></tt-input>
 
 @if (suggestion$ | async; as suggestions) {
@@ -9,7 +10,11 @@
           <button
             class="suggest-btn"
             (click)="onSuggestPick(suggest)"
-          >{{ suggest.data.city }} {{ suggest.data.street }} {{ suggest.data.house }}
+          >
+            {{ suggest.data.city }}
+            {{ suggest.data.street }}
+            {{ suggest.data.house }}
+            {{ suggest.data.flat }}
           </button>
         }
     </div>
@@ -17,7 +22,9 @@
 }
 
 <div [formGroup]="addressForm" class="address-inputs">
-  <tt-input formControlName="city">Город</tt-input>
-  <tt-input formControlName="street">Улица</tt-input>
-  <tt-input formControlName="building">Дом</tt-input>
+  <tt-input formControlName="city" placeholder="Город">Город</tt-input>
+  <tt-input formControlName="street" placeholder="Улица">Улица</tt-input>
+  <tt-input formControlName="building" placeholder="Дом">Дом</tt-input>
+  <tt-input formControlName="apartment" placeholder="Квартира">Квартира</tt-input>
+  <svg class="icon-items" icon="cancel" (click)="cleanInput()"></svg>
 </div>

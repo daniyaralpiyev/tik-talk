@@ -1,10 +1,16 @@
-import { Component, forwardRef, input, signal } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	forwardRef,
+	inject,
+	input,
+	signal,
+} from '@angular/core';
 import {
 	ControlValueAccessor,
 	FormsModule, NG_VALUE_ACCESSOR,
 	ReactiveFormsModule,
 } from '@angular/forms';
-import { SvgIcon } from '../svg-icon/svg-icon';
 
 @Component({
 	selector: 'tt-input',
@@ -23,8 +29,8 @@ import { SvgIcon } from '../svg-icon/svg-icon';
 export class TtInput implements ControlValueAccessor {
 	type = input<'text' | 'password'>('text');
 	placeholder = input<string>();
-
 	disabled = signal<boolean>(false)
+	cdr = inject(ChangeDetectorRef);
 
 	onChange: any
 	onTouched: any
@@ -33,6 +39,7 @@ export class TtInput implements ControlValueAccessor {
 
 	writeValue(val: string | null) {
 		this.value = val;
+		this.cdr.detectChanges()
 	}
 
 	registerOnChange(fn: any): void {
@@ -49,5 +56,6 @@ export class TtInput implements ControlValueAccessor {
 
 	onModelChange(val: string | null): void {
 		this.onChange(val);
+		this.cdr.detectChanges()
 	}
 }

@@ -21,14 +21,21 @@
 }
 
 .stack-ghost-input {
+  display: inline-flex;
   font-weight: 400;
   font-size: 14px;
   line-height: 21px;
   font-family: "JetBrains Mono", sans-serif;
   color: var(--light-color);
   border: none;
+  border-bottom: 1px solid var(--primary-color);
+  width: 10%;
   background: none;
   outline: none;
+
+  &:focus, &:hover {
+    border-bottom: 2px solid var(--primary-color);
+  }
 }
 
 :host.disabled {

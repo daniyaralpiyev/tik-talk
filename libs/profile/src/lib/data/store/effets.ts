@@ -9,7 +9,7 @@ import {
 	selectProfilePageable,
 } from './selectors';
 
-// Effects
+// Effects — слушает экшены и запускает асинхронные действия
 // Используются для побочных эффектов: API-запросы, навигация, localStorage и т.д.
 @Injectable({
 	providedIn: 'root'
@@ -20,7 +20,6 @@ export class ProfileEffects {
 	actions$ = inject(Actions); // поток всех действий (actions)
 	store = inject(Store); // доступ к состоянию NgRx Store
 
-	// Effect — слушает экшены и запускает асинхронные действия
 	filterProfiles = createEffect(() => {
 		return this.actions$.pipe(
 			ofType( // Реагируем на экшены filterEvents и setPage

@@ -7,6 +7,9 @@ import {chatsRoutes} from '@tt/chats';
 import {Layout} from '@tt/layout';
 import {provideState} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
+import { TestRxjs } from './lib/lists-test/test-rxjs/test-rxjs';
+import { SubjectRxjs } from './lib/lists-test/subject-rxjs/subject-rxjs';
+import { CustomRxjsOperators } from './lib/lists-test/custom-rxjs-operators/custom-rxjs-operators';
 
 export const routes: Routes = [
 	{
@@ -38,4 +41,7 @@ export const routes: Routes = [
 		canActivate: [canActivateAuth],
 	},
 	{ path: 'login', component: LoginPage },
+	{ path: 'testRxjs', component: TestRxjs },
+	{ path: 'subjectRxjs', component: SubjectRxjs },
+	{ path: 'customRxjsOperators', component: CustomRxjsOperators },
 ];

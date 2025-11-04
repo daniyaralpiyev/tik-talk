@@ -1,15 +1,11 @@
 import { Routes } from '@angular/router';
 import { canActivateAuth, LoginPage} from '@tt/auth';
-import { FormsExperimental } from './lib/forms-experimental/forms-experimental';
-import { Experimental } from './lib/experimental/experimental';
 import {AboutMyself, ProfileEffects, profileFeature, ProfilePage, SearchPage, SettingsPage} from '@tt/profile';
 import {chatsRoutes} from '@tt/chats';
 import {Layout} from '@tt/layout';
 import {provideState} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import { TestRxjs } from './lib/lists-test/test-rxjs/test-rxjs';
-import { SubjectRxjs } from './lib/lists-test/subject-rxjs/subject-rxjs';
-import { CustomRxjsOperators } from './lib/lists-test/custom-rxjs-operators/custom-rxjs-operators';
+import {CustomRxjsOperators, Experimental, FormsExperimental, SubjectRxjs, TestRxjs} from '@tt/tests';
 
 export const routes: Routes = [
 	{

@@ -2,10 +2,10 @@ import {ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChange
 import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
-import {authTokenInterceptor} from '@tt/auth';
 import {provideState, provideStore} from '@ngrx/store';
-import {provideEffects} from '@ngrx/effects';
-import {PostsEffects, postsFeature} from '../../../../libs/posts/src/lib/data';
+import { PostsEffects, postsFeature } from '../../../libs/posts/src/lib/data';
+import { authTokenInterceptor } from '@tt/auth';
+import { provideEffects } from '@ngrx/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [

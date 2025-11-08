@@ -4,8 +4,14 @@ import {AboutMyself, ProfileEffects, profileFeature, ProfilePage, SearchPage, Se
 import {chatsRoutes} from '@tt/chats';
 import {Layout} from '@tt/layout';
 import {provideState} from '@ngrx/store';
-import {provideEffects} from '@ngrx/effects';
-import {CustomRxjsOperators, Experimental, FormsExperimental, SubjectRxjs, TestRxjs} from '@tt/tests';
+import {
+	CustomRxjsOperators,
+	Experimental,
+	FormsExperimental,
+	SubjectRxjs,
+	TestRxjs,
+} from '../../../libs/tests/src';
+import { provideEffects } from '@ngrx/effects';
 
 export const routes: Routes = [
 	{

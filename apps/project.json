@@ -8,17 +8,17 @@
       "skipTests": true
     }
   },
-  "sourceRoot": "apps/tik-talk/src",
+  "sourceRoot": "apps/src",
   "prefix": "app",
   "targets": {
     "build": {
       "executor": "@angular/build:application",
       "options": {
-        "browser": "apps/tik-talk/src/main.ts",
+        "browser": "apps/src/main.ts",
         "polyfills": [
           "zone.js"
         ],
-        "tsConfig": "apps/tik-talk/tsconfig.app.json",
+        "tsConfig": "apps/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
@@ -27,7 +27,7 @@
           }
         ],
         "styles": [
-          "apps/tik-talk/src/styles.scss"
+          "apps/src/styles.scss"
         ],
         "outputPath": "dist/tik-talk"
       },
@@ -83,16 +83,16 @@
           "zone.js",
           "zone.js/testing"
         ],
-        "tsConfig": "apps/tik-talk/tsconfig.spec.json",
+        "tsConfig": "apps/tsconfig.spec.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/tik-talk/public"
+            "input": "apps/public"
           }
         ],
         "styles": [
-          "apps/tik-talk/src/styles.scss"
+          "apps/src/styles.scss"
         ]
       }
     }

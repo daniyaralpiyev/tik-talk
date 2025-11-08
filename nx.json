@@ -51,6 +51,14 @@
 				"{workspaceRoot}/.eslintignore",
 				"{workspaceRoot}/eslint.config.mjs"
 			]
+		},
+		"@angular-devkit/build-angular:browser": {
+			"cache": true,
+			"dependsOn": ["^build"],
+			"inputs": ["production", "^production"]
+		},
+		"server": {
+			"cache": true
 		}
 	},
 	"nxCloudId": "68c10f16630be60d2e26a456",
@@ -66,6 +74,12 @@
 			"style": "scss",
 			"skipTests": true,
 			"standalone": true
+		},
+		"@nx/angular:application": {
+			"e2eTestRunner": "none",
+			"linter": "eslint",
+			"style": "scss",
+			"unitTestRunner": "none"
 		}
 	}
 }

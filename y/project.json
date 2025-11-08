@@ -1,0 +1,140 @@
+{
+	"name": "y",
+	"$schema": "../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"prefix": "app",
+	"sourceRoot": "y/src",
+	"tags": [],
+	"targets": {
+		"build": {
+			"executor": "@angular-devkit/build-angular:browser",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"outputPath": "dist/y/browser",
+				"index": "y/src/index.html",
+				"main": "y/src/main.ts",
+				"polyfills": ["zone.js"],
+				"tsConfig": "y/tsconfig.app.json",
+				"inlineStyleLanguage": "scss",
+				"assets": [
+					{
+						"glob": "**/*",
+						"input": "y/public"
+					}
+				],
+				"styles": ["y/src/styles.scss"]
+			},
+			"configurations": {
+				"production": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "4kb",
+							"maximumError": "8kb"
+						}
+					],
+					"outputHashing": "all"
+				},
+				"development": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
+				}
+			},
+			"defaultConfiguration": "production"
+		},
+		"serve": {
+			"continuous": true,
+			"executor": "@angular-devkit/build-angular:dev-server",
+			"configurations": {
+				"production": {
+					"buildTarget": "y:build:production"
+				},
+				"development": {
+					"buildTarget": "y:build:development"
+				}
+			},
+			"defaultConfiguration": "development"
+		},
+		"extract-i18n": {
+			"executor": "@angular-devkit/build-angular:extract-i18n",
+			"options": {
+				"buildTarget": "y:build"
+			}
+		},
+		"lint": {
+			"executor": "@nx/eslint:lint"
+		},
+		"serve-static": {
+			"continuous": true,
+			"executor": "@nx/web:file-server",
+			"options": {
+				"buildTarget": "y:build",
+				"spa": true
+			}
+		},
+		"server": {
+			"dependsOn": ["build"],
+			"executor": "@angular-devkit/build-angular:server",
+			"options": {
+				"outputPath": "dist/y/server",
+				"main": "y/src/server.ts",
+				"tsConfig": "y/tsconfig.server.json",
+				"inlineStyleLanguage": "scss"
+			},
+			"configurations": {
+				"production": {
+					"outputHashing": "media"
+				},
+				"development": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"sourceMap": true,
+					"extractLicenses": false,
+					"vendorChunk": true
+				}
+			},
+			"defaultConfiguration": "production"
+		},
+		"serve-ssr": {
+			"continuous": true,
+			"executor": "@angular-devkit/build-angular:ssr-dev-server",
+			"configurations": {
+				"development": {
+					"browserTarget": "y:build:development",
+					"serverTarget": "y:server:development"
+				},
+				"production": {
+					"browserTarget": "y:build:production",
+					"serverTarget": "y:server:production"
+				}
+			},
+			"defaultConfiguration": "development"
+		},
+		"prerender": {
+			"executor": "@angular-devkit/build-angular:prerender",
+			"options": {
+				"routes": ["/"]
+			},
+			"configurations": {
+				"development": {
+					"browserTarget": "y:build:development",
+					"serverTarget": "y:server:development"
+				},
+				"production": {
+					"browserTarget": "y:build:production",
+					"serverTarget": "y:server:production"
+				}
+			},
+			"defaultConfiguration": "production"
+		}
+	}
+}

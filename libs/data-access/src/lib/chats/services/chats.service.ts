@@ -1,13 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable} from 'rxjs';
-import {AuthService, Chat, ProfileService } from '../index';
-import {LastMessageRes, Message} from '../interfaces/chats.interface';
+import { map, Observable } from 'rxjs';
+import { Chat, LastMessageRes, Message } from '../interfaces/chats.interface';
 import {ChatWsNativeService} from './chat-ws-native.service';
-import {ChatWSService} from '../interfaces/chata-ws-service.interface';
+import {ChatWSService} from '../interfaces/chats-ws-service.interface';
 import {ChatWSMessage} from '../interfaces/chat-ws-message.interface';
-import {isNewMessage, isUnreadMessage} from '../interfaces/type-guards';
-import {ChatWSRxjsService} from '../interfaces/chat-ws-rxjs.service';
+import {isNewMessage, isUnreadMessage} from '../../shared/interfaces/type-guards';
+import {ChatWSRxjsService} from './chat-ws-rxjs.service';
+import { AuthService } from '../../auth/index';
+import { ProfileService } from '../../profile/services/profile-service';
 
 
 @Injectable({

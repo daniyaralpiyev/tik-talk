@@ -1,7 +1,8 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map, tap} from 'rxjs';
-import { GlobalStoreService, Pageble, Profile } from '../index';
+import { map, tap } from 'rxjs';
+import { GlobalStoreService, Pageble } from '../../shared';
+import { Profile } from '../interfaces/profile.interface';
 
 @Injectable({
 	providedIn: 'root' // Регистрирует сервис в корневом инжекторе Angular (root), делая его доступным во всем приложении.

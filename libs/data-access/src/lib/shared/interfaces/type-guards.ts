@@ -1,4 +1,4 @@
-import {ChatWSMessage, ChatWSNewMessage, ChatWSUnreadMessage} from './chat-ws-message.interface';
+import {ChatWSMessage, ChatWSNewMessage, ChatWSUnreadMessage} from '../../chats/interfaces/chat-ws-message.interface';
 
 export function isUnreadMessage(message: ChatWSMessage): message is ChatWSUnreadMessage {
   return 'action' in message && message.action === 'unread'

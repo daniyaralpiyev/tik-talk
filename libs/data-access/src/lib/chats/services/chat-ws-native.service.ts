@@ -1,4 +1,4 @@
-import {ChatConnectionWSParams, ChatWSService} from '../interfaces/chata-ws-service.interface';
+import {ChatConnectionWSParams, ChatWSService} from '../interfaces/chats-ws-service.interface';
 
 export class ChatWsNativeService implements ChatWSService {
 

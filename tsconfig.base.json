@@ -16,6 +16,7 @@
 			"@tt/auth": ["libs/auth/src/index.ts"],
 			"@tt/chats": ["libs/chats/src/index.ts"],
 			"@tt/common-ui": ["libs/common-ui/src/index.ts"],
+			"@tt/communities": ["libs/communities/src/index.ts"],
 			"@tt/data-access": ["libs/data-access/src/index.ts"],
 			"@tt/layout": ["libs/layout/src/index.ts"],
 			"@tt/posts": ["libs/posts/src/index.ts"],

@@ -37,6 +37,7 @@ export class Sidebar implements OnInit {
     { id: 1, label: 'Моя Страница', icon: 'home', link: 'profile/me' },
     { id: 2, label: 'Чаты', icon: 'chat', link: 'chats' },
     { id: 3, label: 'Поиск', icon: 'search', link: 'search' },
+    { id: 4, label: 'Сообщества', icon: 'communities', link: 'communities' }
   ];
 
   colorProperty = 'orange';

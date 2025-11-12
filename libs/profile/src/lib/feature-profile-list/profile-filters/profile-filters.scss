@@ -1,6 +1,6 @@
 .profile-search-form {
   display: grid;
-  grid-template-columns: repeat(4, 1fr) 50px;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   padding: 25px;
   background: var(--dark-color);
@@ -14,6 +14,7 @@
   justify-content: space-between;
   border-bottom: 1px solid var(--light-color);
   padding-left: 5px;
+  padding-right: 10px;
 }
 
 .stack-input {
@@ -38,14 +39,4 @@
   width: 16px;
   height: 16px;
   fill: var(--light-color);
-}
-
-.filter-icon-content {
-  border-radius: 1px;
-  background-color: var(--primary-color);
-  width: 45px;
-  height: 50px;
-  border: none;
-  color: var(--light-color);
-  cursor: pointer;
 }

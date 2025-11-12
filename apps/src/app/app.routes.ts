@@ -10,35 +10,36 @@ import {
 	FormsExperimental,
 	SubjectRxjs,
 	TestRxjs,
-} from '../../../libs/tests/src';
+} from '@tt/tests';
 import { provideEffects } from '@ngrx/effects';
+import { Communities } from '@tt/communities';
 
 export const routes: Routes = [
 	{
 		path: '',
 		component: Layout,
 		children: [
-			// redirectTo: означает по пустому редиректимся в 'profile/me'
-			// pathMatch: означает полное соответствие, 'full' - означает соответствие
-			{ path: '', redirectTo: 'profile/me', pathMatch: 'full' },
+			{
+				path: '',
+				redirectTo: 'profile/me', // redirectTo: означает по пустому редиректимся в 'profile/me'
+				pathMatch: 'full' // pathMatch: означает полное соответствие, 'full' - означает соответствие
+			},
 			{ path: 'profile/:id', component: ProfilePage },
 			{ path: 'settings', component: SettingsPage },
 			{
-        path: 'search',
-        component: SearchPage,
+				path: 'search',
+				component: SearchPage,
         providers: [
-          // profileStore, // провайдим NGRX Signal Store из profile.store.ts
+          // profileStore, провайдим NGRX Signal Store из profile.store.ts
           provideState(profileFeature), // провайдим selector profileFeature
           provideEffects(ProfileEffects) // провайдим effects ProfileEffects
         ]
       },
-      { path: 'forms-experimental', component: FormsExperimental },
-      { path: 'experimental', component: Experimental },
-      { path: 'about-myself', component: AboutMyself },
 			{
 				path: 'chats',
 				loadChildren: () => chatsRoutes,
 			},
+			{ path: 'communities', component: Communities }
 		],
 		canActivate: [canActivateAuth],
 	},
@@ -46,4 +47,7 @@ export const routes: Routes = [
 	{ path: 'testRxjs', component: TestRxjs },
 	{ path: 'subjectRxjs', component: SubjectRxjs },
 	{ path: 'customRxjsOperators', component: CustomRxjsOperators },
+	{ path: 'forms-experimental', component: FormsExperimental },
+	{ path: 'experimental', component: Experimental },
+	{ path: 'about-myself', component: AboutMyself }
 ];

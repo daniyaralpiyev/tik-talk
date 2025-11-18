@@ -34,7 +34,7 @@ function customTimer(interval: number) {
 
 		const intId = setInterval(() => {
 			subscriber.next(i++)
-			console.log('INSIDE INTERVAL', i);
+			console.log('INSIDE INTERVAL!', i);
 		}, interval)
 
 		return () => {

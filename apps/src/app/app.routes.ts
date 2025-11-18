@@ -38,8 +38,7 @@ export const routes: Routes = [
 			{
 				path: 'chats',
 				loadChildren: () => chatsRoutes,
-			},
-			{ path: 'communities', component: Communities }
+			}
 		],
 		canActivate: [canActivateAuth],
 	},
